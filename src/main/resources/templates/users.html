@@ -1,0 +1,76 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+      form {
+        margin-top: 20px;
+      }
+      input {
+        padding: 5px;
+        margin-right: 5px;
+      }
+      button {
+        padding: 5px 15px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>User Management</h1>
+
+    <!-- Add User Form -->
+    <h2>Add New User</h2>
+    <form action="/users" method="post">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <button type="submit">Add User</button>
+    </form>
+
+    <!-- User List Table -->
+    <h2>User List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="user : ${users}">
+          <td th:text="${user.id}"></td>
+          <td th:text="${user.username}"></td>
+          <td th:text="${user.email}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p th:if="${#lists.isEmpty(users)}">No users found. Add one above!</p>
+  </body>
+</html>
