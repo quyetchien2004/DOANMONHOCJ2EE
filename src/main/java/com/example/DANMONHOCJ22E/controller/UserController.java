@@ -1,12 +1,13 @@
 package com.example.DANMONHOCJ22E.controller;
 
-import com.example.DANMONHOCJ22E.model.User;
-import com.example.DANMONHOCJ22E.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.example.DANMONHOCJ22E.model.User;
+import com.example.DANMONHOCJ22E.service.UserService;
 
 @Controller
 public class UserController {
@@ -22,6 +23,9 @@ public class UserController {
 
   @PostMapping("/users")
   public String save(User user) {
+    if (user.getRole() == null || user.getRole().isBlank()) {
+      user.setRole("ROLE_USER");
+    }
     userService.save(user);
     return "redirect:/users";
   }

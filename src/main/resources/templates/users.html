@@ -48,7 +48,10 @@
     <h2>Add New User</h2>
     <form action="/users" method="post">
       <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="text" name="fullName" placeholder="Full Name" required />
       <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="phone" placeholder="Phone" required />
       <button type="submit">Add User</button>
     </form>
 
@@ -59,14 +62,20 @@
         <tr>
           <th>ID</th>
           <th>Username</th>
+          <th>Full Name</th>
           <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="user : ${users}">
           <td th:text="${user.id}"></td>
           <td th:text="${user.username}"></td>
+          <td th:text="${user.fullName}"></td>
           <td th:text="${user.email}"></td>
+          <td th:text="${user.phone}"></td>
+          <td th:text="${user.role}"></td>
         </tr>
       </tbody>
     </table>

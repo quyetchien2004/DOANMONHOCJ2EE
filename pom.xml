@@ -46,6 +46,13 @@
             <artifactId>mssql-jdbc</artifactId>
         </dependency>
 
+        <!-- In-memory database for local development without external SQL Server -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- development helpers -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -71,6 +78,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Bean Validation for register/login form validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- Test -->

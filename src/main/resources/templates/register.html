@@ -1,57 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng ký</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+    <link rel="stylesheet" th:href="@{/css/auth-modern.css}" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-shell">
+      <section class="auth-brand">
+        <span class="brand-badge">Hotel Booking</span>
+        <div>
+          <h1>Tạo tài khoản để bắt đầu quản lý đặt phòng</h1>
+          <p>
+            Thiết lập tài khoản nhân viên để vận hành quy trình đặt phòng, kiểm
+            tra phòng trống và cập nhật thông tin khách.
+          </p>
+        </div>
+        <p class="auth-note">
+          Mọi thông tin đăng ký được kiểm tra hợp lệ và lưu trữ an toàn.
+        </p>
+      </section>
 
-<div class="container mt-5" style="max-width: 600px;">
-    <div class="card shadow">
-        <div class="card-body">
-            <h3 class="text-center mb-4">Đăng ký tài khoản</h3>
+      <section class="auth-panel">
+        <h2>Đăng ký</h2>
+        <p class="sub">Điền thông tin để tạo tài khoản mới cho hệ thống.</p>
 
-            <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
+        <div class="flash error" th:if="${error}" th:text="${error}"></div>
 
-            <form th:action="@{/register}" method="post" th:object="${user}">
+        <form
+          th:action="@{/register}"
+          method="post"
+          th:object="${registerRequest}"
+        >
+          <div class="form-row">
+            <label for="username">Tên đăng nhập</label>
+            <input
+              id="username"
+              class="field"
+              type="text"
+              th:field="*{username}"
+              required
+            />
+            <small
+              class="field-error"
+              th:if="${#fields.hasErrors('username')}"
+              th:errors="*{username}"
+            ></small>
+          </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Tên đăng nhập</label>
-                    <input type="text" th:field="*{username}" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Mật khẩu</label>
-                    <input type="password" th:field="*{password}" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Họ và tên</label>
-                    <input type="text" th:field="*{fullName}" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" th:field="*{email}" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Số điện thoại</label>
-                    <input type="text" th:field="*{phone}" class="form-control" required>
-                </div>
-
-                <button type="submit" class="btn btn-success w-100">
-                    Đăng ký
-                </button>
-            </form>
-
-            <div class="text-center mt-3">
-                <a th:href="@{/login}">Đã có tài khoản? Đăng nhập</a>
+          <div class="grid-2">
+            <div class="form-row">
+              <label for="password">Mật khẩu</label>
+              <input
+                id="password"
+                class="field"
+                type="password"
+                th:field="*{password}"
+                required
+              />
+              <small
+                class="field-error"
+                th:if="${#fields.hasErrors('password')}"
+                th:errors="*{password}"
+              ></small>
             </div>
 
-        </div>
-    </div>
-</div>
+            <div class="form-row">
+              <label for="confirmPassword">Xác nhận mật khẩu</label>
+              <input
+                id="confirmPassword"
+                class="field"
+                type="password"
+                th:field="*{confirmPassword}"
+                required
+              />
+              <small
+                class="field-error"
+                th:if="${#fields.hasErrors('confirmPassword')}"
+                th:errors="*{confirmPassword}"
+              ></small>
+            </div>
+          </div>
 
-</body>
+          <div class="form-row">
+            <label for="fullName">Họ và tên</label>
+            <input
+              id="fullName"
+              class="field"
+              type="text"
+              th:field="*{fullName}"
+              required
+            />
+            <small
+              class="field-error"
+              th:if="${#fields.hasErrors('fullName')}"
+              th:errors="*{fullName}"
+            ></small>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                class="field"
+                type="email"
+                th:field="*{email}"
+                required
+              />
+              <small
+                class="field-error"
+                th:if="${#fields.hasErrors('email')}"
+                th:errors="*{email}"
+              ></small>
+            </div>
+
+            <div class="form-row">
+              <label for="phone">Số điện thoại</label>
+              <input
+                id="phone"
+                class="field"
+                type="text"
+                th:field="*{phone}"
+                required
+              />
+              <small
+                class="field-error"
+                th:if="${#fields.hasErrors('phone')}"
+                th:errors="*{phone}"
+              ></small>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Đăng ký tài khoản</button>
+        </form>
+
+        <p class="switch-link">
+          Đã có tài khoản? <a th:href="@{/login}">Đăng nhập ngay</a>
+        </p>
+      </section>
+    </main>
+  </body>
 </html>

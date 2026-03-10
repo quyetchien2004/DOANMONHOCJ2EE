@@ -1,52 +1,75 @@
 package com.example.DANMONHOCJ22E.controller;
 
+import com.example.DANMONHOCJ22E.dto.RegisterRequest;
+import com.example.DANMONHOCJ22E.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.DANMONHOCJ22E.model.User;
-import com.example.DANMONHOCJ22E.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class AuthController {
 
-    private final UserRepository repo;
-    private final BCryptPasswordEncoder encoder;
+    private final UserService userService;
 
-    public AuthController(UserRepository repo, BCryptPasswordEncoder encoder) {
-        this.repo = repo;
-        this.encoder = encoder;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/register")
     public String showRegister(Model model) {
-        model.addAttribute("user", new User());
+        if (!model.containsAttribute("registerRequest")) {
+            model.addAttribute("registerRequest", new RegisterRequest());
+        }
         return "register";
     }
 
     @PostMapping("/register")
-    public String processRegister(@ModelAttribute User user, Model model) {
+    public String processRegister(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
+                                  BindingResult bindingResult,
+                                  Model model) {
 
-        if (repo.existsByUsername(user.getUsername())) {
-            model.addAttribute("error", "Username đã tồn tại!");
+        if (bindingResult.hasErrors()) {
             return "register";
         }
 
-        if (repo.existsByEmail(user.getEmail())) {
-            model.addAttribute("error", "Email đã tồn tại!");
+        if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
+            model.addAttribute("error", "Mat khau xac nhan khong khop");
             return "register";
         }
 
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setRole("ROLE_USER");
-
-        repo.save(user);
-
-        return "redirect:/login";
+        try {
+            userService.register(registerRequest);
+            return "redirect:/login?registered=true";
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "register";
+        }
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(required = false) String error,
+                        @RequestParam(required = false) String logout,
+                        @RequestParam(required = false) String registered,
+                        Model model) {
+        if (error != null) {
+            model.addAttribute("error", "Sai ten dang nhap hoac mat khau");
+        }
+
+        if (logout != null) {
+            model.addAttribute("message", "Ban da dang xuat thanh cong");
+        }
+
+        if (registered != null) {
+            model.addAttribute("message", "Dang ky thanh cong, vui long dang nhap");
+        }
+
         return "login";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "redirect:/";
     }
 }

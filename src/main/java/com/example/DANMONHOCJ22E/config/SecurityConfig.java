@@ -2,7 +2,6 @@ package com.example.DANMONHOCJ22E.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,15 +19,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // Tắt CSRF nếu test form bị lỗi 403 (có thể giữ lại nếu form có token)
-                .csrf(csrf -> csrf.disable())
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/home",
-                                "/login", "/register",
-                                "/css/**", "/js/**", "/images/**"
+                                "/login", "/register", "/access-denied",
+                                "/css/**", "/js/**", "/images/**", "/img/**", "/fonts/**", "/fontawesome/**", "/fontawesome-pro/**"
                         ).permitAll()
+                        .requestMatchers("/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
 
@@ -46,6 +43,10 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/access-denied")
                 );
 
         return http.build();
