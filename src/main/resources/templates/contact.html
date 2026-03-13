@@ -1,365 +1,61 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
-   <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Dahotel - Luxury Hotel HTML Template</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-        <!-- Place favicon.ico in the root directory -->
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Liên hệ | Golden Lotus</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('contact', 'light')}"
+    ></th:block>
 
-		<!-- CSS here -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/animate.min.css">
-        <link rel="stylesheet" href="css/magnific-popup.css">
-        <link rel="stylesheet" href="fontawesome/css/all.min.css">
-        <link rel="stylesheet" href="fontawesome-pro/css/all.min.css">
-        <link rel="stylesheet" href="css/dripicons.css">
-        <link rel="stylesheet" href="css/slick.css">
-        <link rel="stylesheet" href="css/meanmenu.css">
-        <link rel="stylesheet" href="css/default.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/responsive.css">
-    </head>
-    <body>
-        <!-- header -->
-        <header class="header-area header-three">           	
-			  <div id="header-sticky" class="menu-area">
-                <div class="container-fluid pl-85 pr-85">
-                    <div class="second-menu">
-                        <div class="row align-items-center">
-                            <div class="col-xl-2 col-lg-2">
-                                <div class="logo">
-                                    <a href="index.html"><img src="img/logo/logo.png" alt="logo"></a>
-                                </div>
-                            </div>
-                           <div class="col-xl-8 col-lg-8">
-                              
-                                <div class="main-menu text-center">
-                                    <nav id="mobile-menu">
-                                          <ul>
-                                            <li class="has-sub">
-                                                <a href="index.html">Home</a>
-                                                <ul>													
-													<li><a href="index.html">Home Page 01</a></li>
-													<li><a href="index-2.html">Home Page 02</a></li>	
-												</ul>
-                                            </li>
-                                            <li><a href="about.html">About</a></li>        
-                                            <li class="has-sub">
-                                                <a href="room.html">our rooms</a>
-                                                <ul>													
-													<li> <a href="room.html">Our Rooms</a></li>
-                                                    <li> <a href="single-rooms.html">Rooms Details</a></li>
-												</ul>
-                                            </li>     
-                                            <li class="has-sub">
-                                                <a href="services.html">Facilities</a>
-                                                <ul>													
-													<li> <a href="services.html">Services</a></li>
-                                                    <li> <a href="single-service.html">Services Details</a></li>
-												</ul>
-                                            </li>  
-                                              <li class="has-sub"><a href="contact.html#">Pages</a>
-												<ul>
-                                                    <li><a href="projects.html">Gallery</a></li>
-                                                    <li><a href="faq.html">Faq</a></li>
-                                                    <li><a href="team.html">Team</a></li>
-                                                    <li><a href="team-single.html">Team Details</a></li>
-                                                    <li><a href="pricing.html">Pricing</a></li>
-                                                    <li><a href="shop.html">Shop</a></li>
-													<li><a href="shop-details.html">Shop Details</a>
-                                                  </ul>
-											</li>
-                                            <li class="has-sub"> 
-                                                <a href="blog.html">Blog</a>
-                                                <ul>
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.html">Contact</a></li>                                               
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>   
-                             <div class="col-xl-2 col-lg-2 d-none d-lg-block">
-                                 <a href="contact.html" class="top-btn mt-10 mb-10">reservation </a>
-                            </div>
-                            
-                                <div class="col-12">
-                                    <div class="mobile-menu"></div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- header-end -->
-        <!-- main-area -->
-        <main>
-            
-            <!-- breadcrumb-area -->
-            <section class="breadcrumb-area d-flex align-items-center" style="background-image:url(img/bg/bdrc-bg.jpg)">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-12 col-lg-12">
-                            <div class="breadcrumb-wrap text-center">
-                                <div class="breadcrumb-title">
-                                    <h2>Contact Us</h2>    
-                                    <div class="breadcrumb-wrap">
-                              
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">About</li>
-                                    </ol>
-                                </nav>
-                            </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </section>
-            <!-- breadcrumb-area-end -->	
-            <!-- contact-area -->
-            <section id="contact" class="contact-area after-none contact-bg pt-120 pb-120 p-relative fix">
-                <div class="container">
-             
-					<div class="row justify-content-center align-items-center">
-						
-                         <div class="col-lg-4 order-1">
-                             
-                            <div class="contact-info">
-                                  <div class="single-cta pb-30 mb-30 wow fadeInUp animated" data-animation="fadeInDown animated" data-delay=".2s">
-                                        <div class="f-cta-icon">
-                                            <i class="far fa-map"></i>
-                                        </div>
-                                        <h5>Office Address</h5>
-                                        <p>380 St Kilda Road, Melbourne <br>
-                                            VIC 3004, Australia</p>
-                                    </div>
-                                     <div class="single-cta pb-30 mb-30 wow fadeInUp animated" data-animation="fadeInDown animated" data-delay=".2s">
-                                        <div class="f-cta-icon">
-                                            <i class="far fa-clock"></i>
-                                        </div>
-                                        <h5>Working Hours</h5>
-                                        <p>Monday to Friday 09:00 to 18:30 <br> 
-                                            Saturday 15:30</p>
-                                    </div>
-                                     <div class="single-cta wow fadeInUp animated" data-animation="fadeInDown animated" data-delay=".2s">
-                                        <div class="f-cta-icon">
-                                            <i class="far fa-envelope-open"></i>
-                                        </div>
-                                        <h5>Message Us</h5>
-                                        <p> <a href="contact.html#">support@example.com</a><br><a href="contact.html#">info@example.com</a></p>
-                                    </div>
-                                </div>							
-                        </div>
-                        <div class="col-lg-8 order-2">
-                            <div class="contact-bg02">
-                                <div class="section-title center-align mb-40 text-center wow fadeInDown animated" data-animation="fadeInDown" data-delay=".4s">
-                                <h2>
-                                  Get In Touch
-                                </h2>
-                                </div>                               
-                                <form action="https://htmldemo.zcubethemes.com/dahotel/mail.php" method="post" class="contact-form mt-30">
-                                    <div class="row">
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="contact-field p-relative c-name mb-20">                                    
-                                            <input type="text" id="firstn" name="firstn" placeholder="First Name" required>
-                                        </div>                               
-                                    </div>
+    <main class="container py-4">
+      <section class="page-head-card mb-3">
+        <h2 class="mb-1">Liên hệ</h2>
+        <p class="text-muted mb-0">
+          Cần hỗ trợ về đặt phòng, voucher, hoặc quản trị tài khoản? Liên hệ
+          ngay với chúng tôi.
+        </p>
+      </section>
 
-                                    <div class="col-lg-6 col-md-6">                               
-                                        <div class="contact-field p-relative c-subject mb-20">                                   
-                                            <input type="text" id="email" name="email" placeholder="Eamil" required>
-                                        </div>
-                                    </div>		
-                                    <div class="col-lg-6 col-md-6">                               
-                                        <div class="contact-field p-relative c-subject mb-20">                                   
-                                            <input type="text" id="phone" name="phone" placeholder="Phone No." required>
-                                        </div>
-                                    </div>	
-                                    <div class="col-lg-6 col-md-6">                               
-                                        <div class="contact-field p-relative c-subject mb-20">                                   
-                                            <input type="text" id="subject" name="subject" placeholder="Subject">
-                                        </div>
-                                    </div>	
-                                    <div class="col-lg-12">
-                                        <div class="contact-field p-relative c-message mb-30">                                  
-                                            <textarea name="message" id="message" cols="30" rows="10" placeholder="Write comments"></textarea>
-                                        </div>
-                                        <div class="slider-btn">                                          
-                                                    <button class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s"><span>Submit Now</span></button>				
-                                                </div>                             
-                                    </div>
-                                    </div>
-                            </form>                            
-                            </div>    
-                        
-						</div>
-					</div>
-                    
-                </div>
-               
-            </section>
-            <!-- contact-area-end -->
-             <!-- newslater-area -->
-            <section class="newslater-area">
-                <div class="container p-relative">
-                     <div class="newslater-text">Newsletter</div>
-                   <div class="row align-items-center">                            
-                       <div class="col-xl-7 col-lg-7 col-md-12">
-                           <div class="section-title">
-                                <h2>Subscribe here <span>for update</span></h2>
-                               <p>Subscribe us to receive market updates.</p>
-                            </div>
-                        </div>
-                       <div class="col-xl-5 col-lg-5 col-md-12">
-                            <form name="ajax-form" id="contact-form4" action="contact.html#" method="post" class="contact-form newslater">
-                               <div class="form-group">
-                                  <input class="form-control" id="email2" name="email" type="email" placeholder="Email Address..." value="" required=""> 
-                                  <button type="submit" class="btn btn-custom" id="send2">Subscribe</button>
-                               </div>
-                              
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-            </section>
-            <!-- newslater-aread-end -->
-        </main>
-        <!-- main-area-end -->
-    <!-- footer -->
-        <footer class="footer-bg footer-p" style="background-color: #2C4549;">
-            <div class="footer-top  pt-120 pb-30">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        
-                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                            <div class="footer-widget mb-30">                                
-                                <div class="f-about mb-20">
-                                    <div class="f-widget-title">
-                                        <h5> <img src="img/icon/menu-icon.png" alt="img"> MENU</h5>
-                                    </div>
-                                     <p>In industry, the heartbeat of modern civilization resonates through the relentless pursuit of progress.</p>
-                                    
-                                    </div> 
-                                 <div class="f-widget-title">
-                                    <h2>Contact</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="about.html"> Careers</a></li>
-                                        <li><a href="contact.html#"> Mon- Sat: 9am to 6pm </a></li>                                       
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-						<div class="col-xl-2 col-lg-2 col-sm-6">
-                            <div class="footer-widget mb-30">
-                                <div class="f-widget-title">
-                                    <h2>Essential</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="index.html">About us</a></li>
-                                        <li><a href="about.html"> Careers</a></li>
-                                        <li><a href="services.html"> Prices </a></li>
-                                        <li><a href="contact.html"> Services</a></li>
-                                        <li><a href="blog.html">Get In Touch </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-lg-2 col-sm-6">
-                            <div class="footer-widget mb-30">
-                                <div class="f-widget-title">
-                                    <h2>More Pages</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="index.html">Auto production</a></li>
-                                        <li><a href="about.html"> Investors</a></li>
-                                        <li><a href="services.html"> News </a></li>
-                                        <li><a href="contact.html"> FAQ’s</a></li>
-                                        <li><a href="blog.html">Contact us </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>                        
-                       <div class="col-xl-2 col-lg-2 col-sm-6">
-                            <div class="footer-widget mb-30">
-                                <div class="f-widget-title">
-                                    <h2>Downloads</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="contact.html#"><img src="img/icon/gplay-btn.png" alt="img"></a></li>
-                                        <li><a href="contact.html#"> <img src="img/icon/app-strore-btn.png" alt="img"></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5>Thông tin vận hành</h5>
+              <p class="mb-1"><i class="fa-solid fa-phone"></i> 0900 123 456</p>
+              <p class="mb-1">
+                <i class="fa-solid fa-envelope"></i> support@goldenlotus.vn
+              </p>
+              <p class="mb-0">
+                <i class="fa-solid fa-location-dot"></i> 123 Nguyen Hue, Da Nang
+              </p>
             </div>
-            <div class="copyright-wrap">
-                <div class="container">
-                    <div class="row align-items-center c-mid">
-                        <div class="col-lg-6 col-md-4">
-                            <div class="footer-social">                                    
-                                <a href="contact.html#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="contact.html#"><i class="fab fa-instagram"></i></a>
-                                <a href="contact.html#"><i class="fa-brands fa-x-twitter"></i></a>
-                                <a href="contact.html#"><i class="fab fa-youtube"></i></a>
-                                <a href="contact.html#"><i class="fab fa-linkedin"></i></a>
-                            </div>    
-                        </div>
-                         <div class="col-lg-6 col-md-8 text-right text-xl-right">
-                               <ul>
-                                    <li><a href="contact.html#">Privacy Policy</a></li>    
-                                    <li><a href="contact.html#">Terms Of Service</a></li>    
-                                    <li><a href="contact.html#">Legal</a></li>    
-                                </ul>
-                            </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <div class="col-lg-12">
-                          <div class="copy-text text-center">
-                                 Copyright &copy; Dahotel 2024. All rights reserved.       
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5>Điều hướng nhanh</h5>
+              <a class="btn btn-brand me-2 mb-2" th:href="@{/room}"
+                >Đặt phòng</a
+              >
+              <a
+                class="btn btn-outline-secondary mb-2"
+                th:href="@{/my-bookings}"
+                >Đơn của tôi</a
+              >
             </div>
-        </footer>
-        <!-- footer-end -->
-		<!-- JS here -->
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="js/vendor/jquery.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/slick.min.js"></script>
-        <script src="js/ajax-form.js"></script>
-        <script src="js/paroller.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/js_isotope.pkgd.min.js"></script>
-        <script src="js/imagesloaded.min.js"></script>
-        <script src="js/parallax.min.js"></script>
-        <script src="js/jquery.waypoints.min.js"></script>
-        <script src="js/jquery.counterup.min.js"></script>
-        <script src="js/jquery.scrollUp.min.js"></script>
-        <script src="js/jquery.meanmenu.min.js"></script>
-        <script src="js/parallax-scroll.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
-        <script src="js/element-in-view.js"></script>
-        <script src="js/main.js"></script>
-    </body>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
 </html>

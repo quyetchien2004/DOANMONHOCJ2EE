@@ -1,85 +1,119 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>User List</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #4caf50;
-        color: white;
-      }
-      form {
-        margin-top: 20px;
-      }
-      input {
-        padding: 5px;
-        margin-right: 5px;
-      }
-      button {
-        padding: 5px 15px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #45a049;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản lý người dùng</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
   </head>
-  <body>
-    <h1>User Management</h1>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('users', 'light')}"
+    ></th:block>
+    <div class="container py-4">
+      <div class="page-head-card mb-3">
+        <h2 class="mb-1">Quản lý người dùng</h2>
+        <p class="text-muted mb-0">
+          Tạo nhanh tài khoản mới và xem danh sách user hiện có.
+        </p>
+      </div>
 
-    <!-- Add User Form -->
-    <h2>Add New User</h2>
-    <form action="/users" method="post">
-      <input type="text" name="username" placeholder="Username" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <input type="text" name="fullName" placeholder="Full Name" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="text" name="phone" placeholder="Phone" required />
-      <button type="submit">Add User</button>
-    </form>
+      <div class="row g-3">
+        <div class="col-lg-4">
+          <div class="card h-100">
+            <div class="card-header fw-bold">Thêm người dùng mới</div>
+            <div class="card-body">
+              <form action="/users" method="post" class="d-grid gap-2">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  required
+                />
+                <input
+                  class="form-control"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                />
+                <input
+                  class="form-control"
+                  type="text"
+                  name="fullName"
+                  placeholder="Họ và tên"
+                  required
+                />
+                <input
+                  class="form-control"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                />
+                <input
+                  class="form-control"
+                  type="text"
+                  name="phone"
+                  placeholder="Số điện thoại"
+                  required
+                />
+                <button type="submit" class="btn btn-brand">Thêm user</button>
+              </form>
+            </div>
+          </div>
+        </div>
 
-    <!-- User List Table -->
-    <h2>User List</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Username</th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Role</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="user : ${users}">
-          <td th:text="${user.id}"></td>
-          <td th:text="${user.username}"></td>
-          <td th:text="${user.fullName}"></td>
-          <td th:text="${user.email}"></td>
-          <td th:text="${user.phone}"></td>
-          <td th:text="${user.role}"></td>
-        </tr>
-      </tbody>
-    </table>
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header fw-bold">Danh sách user</div>
+            <div class="card-body table-responsive">
+              <table
+                class="table table-sm table-striped align-middle mb-0 booking-table"
+              >
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.fullName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.phone}"></td>
+                    <td>
+                      <span
+                        class="badge rounded-pill bg-secondary"
+                        th:text="${user.role}"
+                      ></span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                class="alert alert-info mt-3 mb-0"
+                th:if="${#lists.isEmpty(users)}"
+              >
+                Chưa có user nào. Hãy thêm user mới ở cột bên trái.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <p th:if="${#lists.isEmpty(users)}">No users found. Add one above!</p>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+
+    <script th:src="@{/js/bootstrap.min.js}"></script>
   </body>
 </html>

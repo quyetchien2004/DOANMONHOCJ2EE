@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản trị hệ thống khách sạn</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('admin', 'light')}"
+    ></th:block>
+    <div class="container py-4">
+      <div class="page-head-card mb-3">
+        <h2 class="mb-1">Quản trị hệ thống khách sạn</h2>
+        <p class="text-muted mb-0">
+          Quản lý chi nhánh, phòng và voucher theo từng khu vực nhanh và rõ
+          ràng.
+        </p>
+      </div>
+
+      <div class="note-card mb-3">
+        Mẹo: Bấm "Ừ a" trên bảng để đổ dữ liệu vào form. Nếu tạo mới, bấm "Tạo
+        mới" để xoá nhanh form hiện tại.
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-4">
+          <div class="card h-100">
+            <div class="card-header fw-bold">
+              1. Thêm hoặc cập nhật chi nhánh
+            </div>
+            <div class="card-body">
+              <form
+                method="post"
+                th:action="@{/admin/branches/save}"
+                id="branchForm"
+              >
+                <input
+                  class="form-control mb-2"
+                  id="branchId"
+                  name="id"
+                  type="number"
+                  placeholder="ID (dể trống nếu thêm mới)"
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchName"
+                  name="name"
+                  placeholder="Tên chi nhánh"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchProvince"
+                  name="province"
+                  placeholder="Tỉnh/Thành"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchAddress"
+                  name="address"
+                  placeholder="Địa chỉ"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchLatitude"
+                  name="latitude"
+                  type="number"
+                  step="0.000001"
+                  placeholder="Latitude"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchLongitude"
+                  name="longitude"
+                  type="number"
+                  step="0.000001"
+                  placeholder="Longitude"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchFloors"
+                  name="totalFloors"
+                  type="number"
+                  min="1"
+                  placeholder="Số tầng"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="branchRoomsPerFloor"
+                  name="roomsPerFloor"
+                  type="number"
+                  min="1"
+                  placeholder="Phòng/tầng"
+                  required
+                />
+                <div class="d-flex gap-2">
+                  <button class="btn btn-brand w-100" type="submit">
+                    Lưu chi nhánh
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="newBranchBtn"
+                  >
+                    Tạo mới
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header fw-bold">Danh sách chi nhánh</div>
+            <div class="card-body table-responsive">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Tỉnh</th>
+                    <th>Tọa độ</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="b : ${branches}">
+                    <td th:text="${b.id}"></td>
+                    <td>
+                      <a
+                        th:href="@{/admin/manage(branchId=${b.id})}"
+                        th:text="${b.name}"
+                      ></a>
+                    </td>
+                    <td th:text="${b.province}"></td>
+                    <td th:text="${b.latitude + ', ' + b.longitude}"></td>
+                    <td>
+                      <div class="d-flex gap-1">
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          type="button"
+                          th:attr="data-id=${b.id},data-name=${b.name},data-province=${b.province},data-address=${b.address},data-lat=${b.latitude},data-lng=${b.longitude},data-floors=${b.totalFloors},data-rpf=${b.roomsPerFloor}"
+                          onclick="fillBranchForm(this)"
+                        >
+                          Sửa
+                        </button>
+                        <form
+                          th:action="@{'/admin/branches/' + ${b.id} + '/delete'}"
+                          method="post"
+                          onsubmit="return confirm('Xóa chi nhánh này?');"
+                        >
+                          <button class="btn btn-sm btn-outline-danger">
+                            Xoa
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-lg-4">
+          <div class="card h-100">
+            <div class="card-header fw-bold">2. Thêm hoặc cập nhật phòng</div>
+            <div class="card-body">
+              <form
+                method="post"
+                th:action="@{/admin/rooms/save}"
+                id="roomForm"
+              >
+                <input
+                  class="form-control mb-2"
+                  id="roomId"
+                  name="id"
+                  type="number"
+                  placeholder="ID phòng (để trống nếu thêm mới)"
+                />
+                <input
+                  class="form-control mb-2"
+                  id="roomBranchId"
+                  name="branchId"
+                  type="number"
+                  placeholder="Branch ID"
+                  th:value="${selectedBranchId}"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="roomFloor"
+                  name="floorNumber"
+                  type="number"
+                  min="1"
+                  placeholder="Tầng"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="roomNumber"
+                  name="roomNumber"
+                  type="number"
+                  min="101"
+                  placeholder="Số phòng"
+                  required
+                />
+                <select
+                  class="form-select mb-2"
+                  name="roomType"
+                  id="roomType"
+                  required
+                >
+                  <option
+                    th:each="rt : ${roomTypes}"
+                    th:value="${rt}"
+                    th:text="${rt}"
+                  ></option>
+                </select>
+                <input
+                  class="form-control mb-2"
+                  id="roomCapacity"
+                  name="capacity"
+                  type="number"
+                  min="1"
+                  placeholder="Sức chứa"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="roomHourlyRate"
+                  name="hourlyRate"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  placeholder="Giá giờ"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="roomDailyRate"
+                  name="dailyRate"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  placeholder="Giá ngày"
+                  required
+                />
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="hasNiceView"
+                    value="true"
+                    id="roomHasNiceView"
+                  />
+                  <label class="form-check-label" for="roomHasNiceView"
+                    >Phòng view đẹp</label
+                  >
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-brand w-100" type="submit">
+                    Lưu phòng
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="newRoomBtn"
+                  >
+                    Tạo mới
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header fw-bold">
+              Danh sách phòng theo chi nhánh đang chọn
+            </div>
+            <div class="card-body table-responsive">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Phòng</th>
+                    <th>Loại</th>
+                    <th>Giá giờ</th>
+                    <th>Giá ngày</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="r : ${rooms}">
+                    <td th:text="${r.id}"></td>
+                    <td
+                      th:text="${r.roomNumber + ' (Tang ' + r.floorNumber + ')'}"
+                    ></td>
+                    <td th:text="${r.roomType}"></td>
+                    <td
+                      th:text="${#numbers.formatDecimal(r.hourlyRate, 0, 'COMMA', 0, 'POINT')} + ' VND'"
+                    ></td>
+                    <td
+                      th:text="${#numbers.formatDecimal(r.dailyRate, 0, 'COMMA', 0, 'POINT')} + ' VND'"
+                    ></td>
+                    <td>
+                      <div class="d-flex gap-1">
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          type="button"
+                          th:attr="data-id=${r.id},data-branchid=${r.branch.id},data-floor=${r.floorNumber},data-roomnumber=${r.roomNumber},data-roomtype=${r.roomType},data-capacity=${r.capacity},data-hourly=${r.hourlyRate},data-daily=${r.dailyRate},data-view=${r.hasNiceView}"
+                          onclick="fillRoomForm(this)"
+                        >
+                          Sửa
+                        </button>
+                        <form
+                          th:action="@{'/admin/rooms/' + ${r.id} + '/delete'}"
+                          method="post"
+                          onsubmit="return confirm('Xóa phòng này?');"
+                        >
+                          <input
+                            type="hidden"
+                            name="branchId"
+                            th:value="${selectedBranchId}"
+                          />
+                          <button class="btn btn-sm btn-outline-danger">
+                            Xoa
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-lg-4">
+          <div class="card h-100">
+            <div class="card-header fw-bold">3. Thêm hoặc cập nhật voucher</div>
+            <div class="card-body">
+              <form
+                method="post"
+                th:action="@{/admin/vouchers/save}"
+                id="voucherForm"
+              >
+                <input
+                  class="form-control mb-2"
+                  id="voucherId"
+                  name="id"
+                  type="number"
+                  placeholder="ID voucher (để trống nếu thêm mới)"
+                />
+                <input
+                  class="form-control mb-2"
+                  id="voucherCode"
+                  name="code"
+                  placeholder="Mã voucher"
+                  required
+                />
+                <input
+                  class="form-control mb-2"
+                  id="voucherName"
+                  name="name"
+                  placeholder="Tên voucher"
+                  required
+                />
+                <select
+                  class="form-select mb-2"
+                  name="audience"
+                  id="voucherAudience"
+                  required
+                >
+                  <option
+                    th:each="a : ${voucherAudiences}"
+                    th:value="${a}"
+                    th:text="${a}"
+                  ></option>
+                </select>
+                <input
+                  class="form-control mb-2"
+                  id="voucherDiscount"
+                  name="discountPercent"
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  placeholder="% giảm"
+                  required
+                />
+                <div class="form-check mb-2">
+                  <input
+                    class="form-check-input"
+                    id="voucherIsActive"
+                    type="checkbox"
+                    name="active"
+                    value="true"
+                    checked
+                  />
+                  <label class="form-check-label" for="voucherIsActive"
+                    >Còn hoạt động</label
+                  >
+                </div>
+                <label class="form-label">Hiệu lực từ</label>
+                <input
+                  class="form-control mb-2"
+                  id="voucherValidFrom"
+                  name="validFrom"
+                  type="datetime-local"
+                />
+                <label class="form-label">Hiệu lực đến</label>
+                <input
+                  class="form-control mb-2"
+                  id="voucherValidTo"
+                  name="validTo"
+                  type="datetime-local"
+                />
+                <input
+                  type="hidden"
+                  name="branchId"
+                  id="voucherBranchId"
+                  th:value="${selectedBranchId}"
+                />
+                <div class="d-flex gap-2">
+                  <button class="btn btn-brand w-100" type="submit">
+                    Lưu voucher
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="newVoucherBtn"
+                  >
+                    Tạo mới
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header fw-bold">Danh sách voucher</div>
+            <div class="card-body table-responsive">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Code</th>
+                    <th>Đối tượng</th>
+                    <th>%</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="v : ${vouchers}">
+                    <td th:text="${v.id}"></td>
+                    <td th:text="${v.code}"></td>
+                    <td th:text="${v.audience}"></td>
+                    <td th:text="${v.discountPercent}"></td>
+                    <td th:text="${v.active ? 'ON' : 'OFF'}"></td>
+                    <td>
+                      <div class="d-flex gap-1">
+                        <button
+                          class="btn btn-sm btn-outline-primary"
+                          type="button"
+                          th:attr="data-id=${v.id},data-code=${v.code},data-name=${v.name},data-audience=${v.audience},data-discount=${v.discountPercent},data-active=${v.active},data-validfrom=${v.validFrom},data-validto=${v.validTo}"
+                          onclick="fillVoucherForm(this)"
+                        >
+                          Sửa
+                        </button>
+                        <form
+                          th:action="@{'/admin/vouchers/' + ${v.id} + '/delete'}"
+                          method="post"
+                          onsubmit="return confirm('Xóa voucher này?');"
+                        >
+                          <input
+                            type="hidden"
+                            name="branchId"
+                            th:value="${selectedBranchId}"
+                          />
+                          <button class="btn btn-sm btn-outline-danger">
+                            Xoa
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function setInputValue(id, value) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.value = value == null ? "" : value;
+        }
+      }
+
+      function formatDateTimeLocal(value) {
+        if (!value) {
+          return "";
+        }
+        var s = String(value);
+        if (s.length >= 16) {
+          return s.substring(0, 16);
+        }
+        return s;
+      }
+
+      function fillBranchForm(btn) {
+        var d = btn.dataset;
+        setInputValue("branchId", d.id);
+        setInputValue("branchName", d.name);
+        setInputValue("branchProvince", d.province);
+        setInputValue("branchAddress", d.address);
+        setInputValue("branchLatitude", d.lat);
+        setInputValue("branchLongitude", d.lng);
+        setInputValue("branchFloors", d.floors);
+        setInputValue("branchRoomsPerFloor", d.rpf);
+        document.getElementById("branchName").focus();
+      }
+
+      function fillRoomForm(btn) {
+        var d = btn.dataset;
+        setInputValue("roomId", d.id);
+        setInputValue("roomBranchId", d.branchid);
+        setInputValue("roomFloor", d.floor);
+        setInputValue("roomNumber", d.roomnumber);
+        setInputValue("roomType", d.roomtype);
+        setInputValue("roomCapacity", d.capacity);
+        setInputValue("roomHourlyRate", d.hourly);
+        setInputValue("roomDailyRate", d.daily);
+        document.getElementById("roomHasNiceView").checked = d.view === "true";
+        document.getElementById("roomNumber").focus();
+      }
+
+      function fillVoucherForm(btn) {
+        var d = btn.dataset;
+        setInputValue("voucherId", d.id);
+        setInputValue("voucherCode", d.code);
+        setInputValue("voucherName", d.name);
+        setInputValue("voucherAudience", d.audience);
+        setInputValue("voucherDiscount", d.discount);
+        setInputValue("voucherValidFrom", formatDateTimeLocal(d.validfrom));
+        setInputValue("voucherValidTo", formatDateTimeLocal(d.validto));
+        document.getElementById("voucherIsActive").checked =
+          d.active === "true";
+        document.getElementById("voucherCode").focus();
+      }
+
+      function resetBranchForm() {
+        document.getElementById("branchForm").reset();
+        setInputValue("branchId", "");
+      }
+
+      function resetRoomForm() {
+        var branch = document.getElementById("roomBranchId").value;
+        document.getElementById("roomForm").reset();
+        setInputValue("roomId", "");
+        setInputValue("roomBranchId", branch);
+      }
+
+      function resetVoucherForm() {
+        var branch = document.getElementById("voucherBranchId").value;
+        document.getElementById("voucherForm").reset();
+        setInputValue("voucherId", "");
+        setInputValue("voucherBranchId", branch);
+      }
+
+      document
+        .getElementById("newBranchBtn")
+        .addEventListener("click", resetBranchForm);
+      document
+        .getElementById("newRoomBtn")
+        .addEventListener("click", resetRoomForm);
+      document
+        .getElementById("newVoucherBtn")
+        .addEventListener("click", resetVoucherForm);
+    </script>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

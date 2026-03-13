@@ -15,14 +15,74 @@ public class PageController {
         return "about";
     }
 
+    @GetMapping("/index-2")
+    public String index2() {
+        return "index-2";
+    }
+
     @GetMapping("/contact")
     public String contact() {
         return "contact";
     }
 
+    @GetMapping("/faq")
+    public String faq() {
+        return "faq";
+    }
+
+    @GetMapping("/blog")
+    public String blog() {
+        return "blog";
+    }
+
+    @GetMapping("/blog-details")
+    public String blogDetails() {
+        return "blog-details";
+    }
+
+    @GetMapping("/pricing")
+    public String pricing() {
+        return "pricing";
+    }
+
+    @GetMapping("/projects")
+    public String projects() {
+        return "projects";
+    }
+
+    @GetMapping("/services")
+    public String services() {
+        return "services";
+    }
+
+    @GetMapping("/single-rooms")
+    public String singleRooms() {
+        return "single-rooms";
+    }
+
+    @GetMapping("/single-service")
+    public String singleService() {
+        return "single-service";
+    }
+
+    @GetMapping("/team")
+    public String team() {
+        return "team";
+    }
+
+    @GetMapping("/team-single")
+    public String teamSingle() {
+        return "team-single";
+    }
+
     @GetMapping("/room")
     public String room() {
-        return "room";
+        return "booking";
+    }
+
+    @GetMapping("/booking")
+    public String booking() {
+        return "booking";
     }
 
     @GetMapping("/shop")

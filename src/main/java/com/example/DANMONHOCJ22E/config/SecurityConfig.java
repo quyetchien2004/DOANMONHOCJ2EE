@@ -19,12 +19,24 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/home",
+                                "/index-2",
+                                "/about", "/contact", "/faq",
+                                "/blog", "/blog-details",
+                                "/pricing", "/projects",
+                                "/services", "/single-service",
+                                "/single-rooms",
+                                "/team", "/team-single",
+                                "/shop", "/shop-details",
+                                "/room", "/booking",
                                 "/login", "/register", "/access-denied",
+                                "/api/hotels/**",
                                 "/css/**", "/js/**", "/images/**", "/img/**", "/fonts/**", "/fontawesome/**", "/fontawesome-pro/**"
                         ).permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

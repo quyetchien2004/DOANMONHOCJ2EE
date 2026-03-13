@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đơn đặt phòng của tôi</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('my-bookings', 'light')}"
+    ></th:block>
+    <div class="container py-4">
+      <div class="page-head-card mb-3">
+        <h2 class="mb-1">Đơn đặt phòng của tôi</h2>
+        <p class="text-muted mb-0">
+          Theo dõi lịch sử đặt phòng, voucher đã áp dụng và tổng thanh toán mỗi
+          đơn.
+        </p>
+      </div>
+
+      <div class="row g-3 mb-3" th:if="${!#lists.isEmpty(bookings)}">
+        <div class="col-md-4">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Tổng số đơn đã đặt</div>
+            <div
+              class="mini-stat-value"
+              th:text="${#lists.size(bookings)}"
+            ></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Đơn đã dùng voucher</div>
+            <div
+              class="mini-stat-value"
+              th:text="${bookings.?[appliedVoucherCode != null].size()}"
+            ></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Đơn đang chờ xác nhận</div>
+            <div
+              class="mini-stat-value"
+              th:text="${bookings.?[status.name() == 'PENDING'].size()}"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info" th:if="${#lists.isEmpty(bookings)}">
+        Bạn chưa có đơn đặt phòng nào. Nhấn Đặt phòng mới để bắt đầu.
+      </div>
+
+      <div
+        class="table-responsive card card-body p-0"
+        th:if="${!#lists.isEmpty(bookings)}"
+      >
+        <table class="table table-hover align-middle mb-0 booking-table">
+          <thead>
+            <tr>
+              <th>Mã đơn</th>
+              <th>Thông tin phòng</th>
+              <th>Thời gian</th>
+              <th>Tài chính</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="b : ${bookings}">
+              <td>
+                <div class="fw-bold" th:text="${'#' + b.bookingId}"></div>
+                <small
+                  class="text-muted"
+                  th:text="${b.rentalMode == T(com.example.DANMONHOCJ22E.model.RentalMode).DAILY ? 'Theo ngày' : 'Theo giờ'}"
+                ></small>
+              </td>
+              <td>
+                <div class="fw-semibold" th:text="${b.branchName}"></div>
+                <small
+                  class="text-muted"
+                  th:text="${'Phòng ' + b.roomNumber}"
+                ></small>
+              </td>
+              <td>
+                <div
+                  th:text="${#temporals.format(b.checkInAt, 'dd/MM/yyyy HH:mm')}"
+                ></div>
+                <small
+                  class="text-muted"
+                  th:text="${#temporals.format(b.checkOutAt, 'dd/MM/yyyy HH:mm')}"
+                ></small>
+              </td>
+              <td>
+                <div
+                  class="text-muted small"
+                  th:text="${'Giá gốc: ' + (b.originalPrice != null ? #numbers.formatDecimal(b.originalPrice, 0, 'COMMA', 0, 'POINT') : '-') + ' VND'}"
+                ></div>
+                <div
+                  class="text-muted small"
+                  th:text="${'Giảm: ' + (b.discountAmount != null ? #numbers.formatDecimal(b.discountAmount, 0, 'COMMA', 0, 'POINT') : '-') + ' VND'}"
+                ></div>
+                <div
+                  class="text-muted small"
+                  th:text="${'Voucher: ' + (b.appliedVoucherCode != null ? b.appliedVoucherCode : '-')}"
+                ></div>
+                <div
+                  class="fw-bold text-success"
+                  th:text="${#numbers.formatDecimal(b.totalPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
+                ></div>
+              </td>
+              <td>
+                <span
+                  class="badge rounded-pill"
+                  th:classappend="${b.status.name() == 'CONFIRMED' ? 'bg-success' : (b.status.name() == 'CANCELLED' ? 'bg-secondary' : 'bg-warning text-dark')}"
+                  th:text="${b.status.name() == 'CONFIRMED' ? 'Đã xác nhận' : (b.status.name() == 'CANCELLED' ? 'Đã hủy' : 'Đang chờ')}"
+                ></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

@@ -1,0 +1,247 @@
+<!doctype html>
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <body>
+    <th:block th:fragment="siteHeader(activePage, variant)">
+      <nav
+        th:class="'navbar navbar-expand-lg ' + (${variant} == 'dark' ? 'navbar-dark nav-modern' : 'navbar-light app-nav sticky-top')"
+      >
+        <div class="container">
+          <a class="navbar-brand" th:href="@{/}">
+            <span th:if="${variant} == 'dark'" class="brand">
+              <span class="brand-mark">GL</span>
+              <span class="brand-text">Golden Lotus</span>
+            </span>
+            <span th:if="${variant} != 'dark'" class="fw-bold"
+              >Golden Lotus</span
+            >
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNav"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul
+              th:class="'navbar-nav ms-auto align-items-lg-center ' + (${variant} == 'dark' ? 'nav-links' : 'gap-lg-2')"
+            >
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'home'} ? ' active'"
+                  th:href="@{/}"
+                  >Trang chủ</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'about'} ? ' active'"
+                  th:href="@{/about}"
+                  >Giới thiệu</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'booking'} ? ' active'"
+                  th:href="@{/room}"
+                  >Đặt phòng</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'services'} ? ' active'"
+                  th:href="@{/services}"
+                  >Dịch vụ</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'shop'} ? ' active'"
+                  th:href="@{/shop}"
+                  >Shop</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'blog'} ? ' active'"
+                  th:href="@{/blog}"
+                  >Blog</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'faq'} ? ' active'"
+                  th:href="@{/faq}"
+                  >FAQ</a
+                >
+              </li>
+              <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'my-bookings'} ? ' active'"
+                  th:href="@{/my-bookings}"
+                  >Đơn của tôi</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'contact'} ? ' active'"
+                  th:href="@{/contact}"
+                  >Liên hệ</a
+                >
+              </li>
+              <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'admin'} ? ' active'"
+                  th:href="@{/admin/manage}"
+                  >Quản trị</a
+                >
+              </li>
+              <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'users'} ? ' active'"
+                  th:href="@{/users}"
+                  >Người dùng</a
+                >
+              </li>
+            </ul>
+
+            <div th:if="${variant} == 'dark'" class="nav-actions">
+              <a
+                class="btn btn-light btn-sm"
+                th:href="@{/login}"
+                sec:authorize="isAnonymous()"
+                >Đăng nhập</a
+              >
+              <a
+                class="btn btn-warning btn-sm"
+                th:href="@{/register}"
+                sec:authorize="isAnonymous()"
+                >Đăng ký</a
+              >
+              <form
+                sec:authorize="isAuthenticated()"
+                th:action="@{/logout}"
+                method="post"
+                class="d-inline"
+              >
+                <input
+                  type="hidden"
+                  th:name="${_csrf.parameterName}"
+                  th:value="${_csrf.token}"
+                />
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                  Đăng xuất
+                </button>
+              </form>
+            </div>
+
+            <ul
+              th:if="${variant} != 'dark'"
+              class="navbar-nav align-items-lg-center gap-lg-2 ms-lg-2"
+            >
+              <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="btn btn-sm btn-brand" th:href="@{/login}"
+                  >Đăng nhập</a
+                >
+              </li>
+              <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="btn btn-sm btn-warning" th:href="@{/register}"
+                  >Đăng ký</a
+                >
+              </li>
+              <li class="nav-item" sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                  <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"
+                  />
+                  <button type="submit" class="btn btn-sm btn-outline-dark">
+                    Đăng xuất
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </th:block>
+
+    <th:block th:fragment="siteFooter">
+      <footer class="site-footer">
+        <div class="container">
+          <div class="row g-4">
+            <div class="col-lg-5">
+              <h3>Golden Lotus Hotel</h3>
+              <p>
+                Nền tảng đặt phòng được tối ưu cho khách hàng và quản trị viên.
+                Giao diện được đồng bộ và kết nối đến các chức năng chính của hệ
+                thống.
+              </p>
+              <div class="social-links">
+                <a href="#" aria-label="Facebook"
+                  ><i class="fab fa-facebook-f"></i
+                ></a>
+                <a href="#" aria-label="Instagram"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a href="#" aria-label="Youtube"
+                  ><i class="fab fa-youtube"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <h4>Điều hướng nhanh</h4>
+              <ul class="footer-links">
+                <li><a th:href="@{/}">Trang chủ</a></li>
+                <li><a th:href="@{/room}">Đặt phòng</a></li>
+                <li><a th:href="@{/my-bookings}">Đơn của tôi</a></li>
+                <li><a th:href="@{/contact}">Liên hệ</a></li>
+              </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+              <h4>Thông tin liên hệ</h4>
+              <ul class="footer-info">
+                <li>
+                  <i class="fa-solid fa-location-dot"></i> 123 Nguyen Hue, Da
+                  Nang
+                </li>
+                <li><i class="fa-solid fa-phone"></i> 0900 123 456</li>
+                <li>
+                  <i class="fa-solid fa-envelope"></i> support@goldenlotus.vn
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <span>© 2026 Golden Lotus Hotel. All rights reserved.</span>
+          </div>
+        </div>
+      </footer>
+    </th:block>
+  </body>
+</html>

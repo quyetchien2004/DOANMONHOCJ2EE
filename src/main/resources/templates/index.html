@@ -1,1155 +1,238 @@
 <!doctype html>
-<html class="no-js" lang="zxx" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Dahotel - Luxury Hotel HTML Template</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
-        <!-- Place favicon.ico in the root directory -->
+<html
+  lang="vi"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Golden Lotus Hotel | Trang chủ</title>
 
-		<!-- CSS here -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/animate.min.css">
-        <link rel="stylesheet" href="css/magnific-popup.css">
-        <link rel="stylesheet" href="fontawesome/css/all.min.css">
-        <link rel="stylesheet" href="fontawesome-pro/css/all.min.css">
-        <link rel="stylesheet" href="css/dripicons.css">
-        <link rel="stylesheet" href="css/slick.css">
-        <link rel="stylesheet" href="css/meanmenu.css">
-        <link rel="stylesheet" href="css/default.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/responsive.css">
-    </head>
-    <body>
-        <!-- header -->
-        <header class="header-area header-three">           	
-			  <div id="header-sticky" class="menu-area">
-                <div class="container-fluid pl-85 pr-85">
-                    <div class="second-menu">
-                        <div class="row align-items-center">
-                            <div class="col-xl-2 col-lg-2">
-                                <div class="logo">
-                                    <a href="index.html"><img src="img/logo/logo.png" alt="logo"></a>
-                                </div>
-                            </div>
-                           <div class="col-xl-8 col-lg-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/home-modern.css}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <th:block
+        th:replace="~{fragments/layout :: siteHeader('home', 'dark')}"
+      ></th:block>
 
-                               <div class="main-menu text-center">
-                                   <nav id="mobile-menu">
-                                       <ul>
-
-                                           <li class="has-sub">
-                                               <a th:href="@{/}">Home</a>
-                                               <ul>
-                                                   <li><a th:href="@{/}">Home Page 01</a></li>
-                                                   <li><a th:href="@{/index-2}">Home Page 02</a></li>
-                                               </ul>
-                                           </li>
-
-                                           <li><a th:href="@{/about}">About</a></li>
-
-                                           <li class="has-sub">
-                                               <a th:href="@{/room}">Our Rooms</a>
-                                               <ul>
-                                                   <li><a th:href="@{/room}">Our Rooms</a></li>
-                                                   <li><a th:href="@{/single-rooms}">Rooms Details</a></li>
-                                               </ul>
-                                           </li>
-
-                                           <li class="has-sub">
-                                               <a th:href="@{/services}">Facilities</a>
-                                               <ul>
-                                                   <li><a th:href="@{/services}">Services</a></li>
-                                                   <li><a th:href="@{/single-service}">Services Details</a></li>
-                                               </ul>
-                                           </li>
-
-                                           <li class="has-sub">
-                                               <a href="#">Pages</a>
-                                               <ul>
-                                                   <li><a th:href="@{/projects}">Gallery</a></li>
-                                                   <li><a th:href="@{/faq}">Faq</a></li>
-                                                   <li><a th:href="@{/team}">Team</a></li>
-                                                   <li><a th:href="@{/team-single}">Team Details</a></li>
-                                                   <li><a th:href="@{/pricing}">Pricing</a></li>
-                                                   <li><a th:href="@{/shop}">Shop</a></li>
-                                                   <li><a th:href="@{/shop-details}">Shop Details</a></li>
-                                               </ul>
-                                           </li>
-
-                                           <li class="has-sub">
-                                               <a th:href="@{/blog}">Blog</a>
-                                               <ul>
-                                                   <li><a th:href="@{/blog}">Blog</a></li>
-                                                   <li><a th:href="@{/blog-details}">Blog Details</a></li>
-                                               </ul>
-                                           </li>
-
-                                           <!-- 🔥 ACCOUNT MENU -->
-                                           <li class="has-sub">
-                                               <a href="#"><i class="fa fa-user"></i> Account</a>
-                                               <ul>
-                                                   <li sec:authorize="isAnonymous()">
-                                                       <a th:href="@{/login}">Login</a>
-                                                   </li>
-
-                                                   <li sec:authorize="isAnonymous()">
-                                                       <a th:href="@{/register}">Register</a>
-                                                   </li>
-
-                                                   <li sec:authorize="isAuthenticated()">
-                                                       <a th:href="@{/profile}">My Profile</a>
-                                                   </li>
-
-                                                   <li sec:authorize="isAuthenticated()">
-                                                       <a th:href="@{/logout}">Logout</a>
-                                                   </li>
-                                               </ul>
-                                           </li>
-
-                                           <li><a th:href="@{/contact}">Contact</a></li>
-
-                                       </ul>
-                                   </nav>
-                               </div>
-                            </div>   
-                             <div class="col-xl-2 col-lg-2 d-none d-lg-block">
-                                 <a href="contact.html" class="top-btn mt-10 mb-10">reservation </a>
-                            </div>
-                            
-                                <div class="col-12">
-                                    <div class="mobile-menu"></div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="hero-tag">RESORT . CITY HOTEL . BUSINESS STAY</p>
+            <h1>
+              Đặt phòng dễ dàng, quản lý thông minh, tra cứu nhanh theo nhu cầu
+            </h1>
+            <p class="hero-sub">
+              Giao diện mới được kết nối trực tiếp với hệ thống tìm phòng và đặt
+              phòng hiện có. Bạn có thể tìm theo ngày, theo giờ, theo tỉnh
+              thành, và tiếp tục đặt phòng chỉ với vài bước.
+            </p>
+            <div class="hero-cta">
+              <a class="btn btn-warning btn-lg" th:href="@{/room}"
+                >Đặt phòng ngay</a
+              >
+              <a
+                class="btn btn-outline-light btn-lg"
+                th:href="@{/my-bookings}"
+                sec:authorize="isAuthenticated()"
+                >Xem đơn của tôi</a
+              >
             </div>
-        </header>
-        <!-- header-end -->
-        
-        <!-- main-area -->
-        <main>
-           <!-- slider-area -->
-            <section id="home" class="slider-area fix p-relative">
-                  <!-- slider-info-area -->
-                <div class="slider-info">                   
-                    <div class="social">
-                        <span>
-                            <a href="index.html#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="index.html#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>               
-                            <a href="index.html#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="index.html#" title="Twitter"><i class="fab fa-youtube"></i></a>
-                       </span>                    
-                       <!--  /social media icon redux -->                               
-                    </div>
-                     <div class="email">
-                      <span class="mr-15">info@dahotel.com</span> +(123) 456 789
-                    </div>
-                </div>
-                <!-- slider-info-area-end -->
-                <div class="slider-active" style="background: #101010;">
-				    <div class="single-slider slider-bg d-flex align-items-center" style="background-image: url(img/slider/slider_bg.jpg); background-size: cover;">
-                        <div class="container">
-                           <div class="row justify-content-center align-items-center">
-                              
-                               <div class="col-lg-7 col-md-7">
-                                    <div class="slider-content s-slider-content  text-center">
-                                         <h5 data-animation="fadeInUp" data-delay=".4s">LUXURY HOTEL & BEST RESORT</h5>
-                                         <h2 data-animation="fadeInUp" data-delay=".4s">Enjoy A Luxury <span>Experience</span> </h2>                                        
-                                          <div class="slider-btn mt-30 mb-105">     
-                                             <a href="contact.html" class="btn ss-btn active mr-15" data-animation="fadeInLeft" data-delay=".4s">book a seat </a>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-            </section>
-            <!-- slider-area-end -->
-             <!-- booking-area -->
-            <div id="booking" class="booking-area p-relative">
-                <div class="container">                  
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-lg-9"> 
-                            <form action="index.html#" class="contact-form" >
-                            <ul>
-                                <li> 
-                                    <div class="contact-field p-relative c-name">  
-                                       <label>CHECK-IN</label>
-                                             <input type="date" id="chackin" name="date">
-                                    </div>      
-                                </li>
-                                <li> 
-                                    <div class="contact-field p-relative c-name">  
-                                         <label>CHECK-OUT</label>
-                                             <input type="date" id="chackout" name="date">
-                                    </div>      
-                                </li>
-                                 <li> 
-                                    <div class="contact-field p-relative c-name">  
-                                         <label>GUESTS</label>
-                                        <select name="adults" id="adu">
-                                          <option value="sports-massage">Guests</option>
-                                          <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>      
-                                </li>                                 
-                                 <li> 
-                                    <div class="contact-field p-relative c-name mt-10 mb-10">  
-                                       <input type="text" id="firstn" name="firstn" placeholder="First Name" required="">
-                                    </div>      
-                                    <div class="contact-field p-relative c-name mb-10">  
-                                      <input type="text" id="email" name="email" placeholder="Eamil" required="">
-                                    </div>
-                                </li>
+          </div>
 
-                                <li>
-                                    <div class="slider-btn">    
-                                    <button class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Check <br> Availability</button>
-                                </div>     
-                                </li>
-                            </ul>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+          <aside class="quick-search-card">
+            <div class="card-head">
+              <h2>Tìm phòng nhanh</h2>
+              <p>Kết quả lấy từ API hệ thống trong thời gian thực.</p>
             </div>
-            <!-- booking-area-end -->
-            <!-- service-details2-area -->
-            <section id="service-details2" class="pt-120 pb-90 p-relative">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="section-title center-align mb-50">
-                                <h5>why choose us</h5>
-                                <h2>
-                                  Why <span>choose us</span>
-                                </h2>                                
-                            </div>                           
-                        </div>
-                        <div class="col-xl-8 col-lg-8">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                <div class="services-08-item mb-70">                                    
-                                    <div class="services-08-thumb">
-                                     <img src="img/icon/fe-icon01.png" alt="img">
-                                    </div>
-                                    <div class="services-08-content">
-                                        <h3><a href="single-service.html"> Restaurants</a></h3>
-                                        <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider</p>
-                                    </div>
-                                </div>
-                            </div>
-                               <div class="col-lg-6 col-md-6">
-                               <div class="services-08-item mb-70">                                                 
-                                    <div class="services-08-thumb">
-                                        <img src="img/icon/fe-icon02.png" alt="img">
-                                    </div>
-                                    <div class="services-08-content">
-                                        <h3><a href="single-service.html">Luxury Room</a></h3>
-                                       <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                               <div class="services-08-item mb-70">                                        
-                                    <div class="services-08-thumb">
-                                     <img src="img/icon/fe-icon03.png" alt="img">
-                                    </div>
-                                    <div class="services-08-content">
-                                        <h3><a href="single-service.html">Entertainment</a></h3>
-                                      <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider</p>
-                                    </div>
-                                </div>
-                            </div>
-                          <div class="col-lg-6 col-md-6">
-                             <div class="services-08-item mb-70">                        
-                                    <div class="services-08-thumb">
-                                     <img src="img/icon/fe-icon04.png" alt="img">
-                                    </div>
-                                    <div class="services-08-content">
-                                        <h3><a href="single-service.html">Pool Area</a></h3>
-                                        <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider</p>
-                                    </div>
-                                </div>
-                            </div>
-                              <div class="col-lg-6 col-md-6">
-                                  <div class="services-08-item mb-70">                           
-                                    <div class="services-08-thumb">
-                                   <img src="img/icon/fe-icon05.png" alt="img">
-                                    </div>
-                                    <div class="services-08-content">
-                                        <h3><a href="single-service.html">Cocktail Bar</a></h3>
-                                       <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider</p>
-                                    </div>
-                                </div>
-                            </div>
-                             <div class="col-lg-6 col-md-6">
-                               <div class="services-08-item mb-70">                        
-                                    <div class="services-08-thumb">
-                                     <img src="img/icon/fe-icon06.png" alt="img">
-                                    </div>
-                                    <div class="services-08-content">
-                                        <h3><a href="single-service.html">Tour Guide</a></h3>
-                                        <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider</p>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>        
-                        </div>
-                        
-                    </div>
+
+            <form id="homeSearchForm" class="quick-search-form">
+              <div class="row g-2">
+                <div class="col-7">
+                  <label for="province" class="form-label"
+                    >Tỉnh/Thành phố</label
+                  >
+                  <input
+                    id="province"
+                    class="form-control"
+                    placeholder="VD: Da Nang"
+                  />
                 </div>
-            </section>
-            <!-- service-details2-area-end -->
-             <!-- counter-area -->
-            <div class="counter-area p-relative wow fadeInDown animated" data-animation="fadeInDown" data-delay=".4s">
-                <div class="container">
-               
-                    <div class="row p-relative align-items-center">
-                         <div class="col-lg-4 col-md-6 col-sm-12">
-                             <div class="single-counter text-center">
-                                <div class="counter p-relative">                                   
-                                    <div class="text">
-                                          <span class="count">90</span><span>K</span>                               
-                                        <p>Guest Have Stayed at Our Hotel</p>
-                                    </div>
-                                    
-                                </div>
-                               
-                            </div>
-                        </div>
-                      <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="single-counter text-center">
-                                <div class="counter p-relative">                                   
-                                    <div class="text">
-                                          <span class="count">152</span><span>+</span>                               
-                                        <p>Guest Have Stayed at Our Hotel</p>
-                                    </div>
-                                    
-                                </div>
-                               
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                              <div class="single-counter text-center">
-                                    <div class="counter p-relative">                                
-                                    <div class="text">
-                                        <span class="count">221</span><span>+</span>     
-                                          <p>Our Luxurious Services Rooms</p>
-                                    </div>
-                                    
-                                </div>
-                                
-                              
-                            </div>
-                        </div>                        
-                    </div>
+                <div class="col-5">
+                  <label for="rentalMode" class="form-label">Kiểu thuê</label>
+                  <select id="rentalMode" class="form-select" required>
+                    <option value="DAILY">Theo ngày</option>
+                    <option value="HOURLY">Theo giờ</option>
+                  </select>
                 </div>
+              </div>
+
+              <div class="row g-2 mt-1">
+                <div class="col-6">
+                  <label for="maxPrice" class="form-label">Giá tối đa</label>
+                  <input
+                    id="maxPrice"
+                    type="number"
+                    class="form-control"
+                    min="0"
+                    step="1000"
+                    placeholder="1000000"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="voucherCode" class="form-label">Voucher</label>
+                  <input
+                    id="voucherCode"
+                    class="form-control"
+                    placeholder="WELCOME10"
+                  />
+                </div>
+              </div>
+
+              <div id="dailyFields" class="row g-2 mt-1">
+                <div class="col-6">
+                  <label for="startDate" class="form-label">Nhận phòng</label>
+                  <input id="startDate" type="date" class="form-control" />
+                </div>
+                <div class="col-6">
+                  <label for="endDate" class="form-label">Trả phòng</label>
+                  <input id="endDate" type="date" class="form-control" />
+                </div>
+              </div>
+
+              <div id="hourlyFields" class="row g-2 mt-1 d-none">
+                <div class="col-6">
+                  <label for="startDateTime" class="form-label">Bắt đầu</label>
+                  <input
+                    id="startDateTime"
+                    type="datetime-local"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="endDateTime" class="form-label">Kết thúc</label>
+                  <input
+                    id="endDateTime"
+                    type="datetime-local"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="d-grid mt-3">
+                <button
+                  id="searchBtn"
+                  type="submit"
+                  class="btn btn-dark btn-lg"
+                >
+                  Kiểm tra phòng trống
+                </button>
+              </div>
+            </form>
+
+            <div id="searchResult" class="search-result">
+              Sẵn sàng tìm phòng.
             </div>
-            <!-- counter-area-end -->	
-             <!-- about-area -->
-            <section class="about-area about-p pt-120 pb-60 fix p-relative">
-                <div class="scrollbox2">
-                    <div class="scrollbox scrollbox--secondary scrollbox--reverse">
-                     <div class="scrollbox__item"> <div class="section-t"><h2>luxury Hotel / Quality Living In DaHotel</h2></div></div>
-                     <div class="scrollbox__item"> <div class="section-t"><h2>luxury Hotel / Quality Living In DaHotel</h2></div></div>
-                     <div class="scrollbox__item"> <div class="section-t"><h2>luxury Hotel / Quality Living In DaHotel</h2></div></div>
-                    </div>         
-                </div>                 
-                <div class="container">
-                    <div class="row justify-content-center align-items-center">
-                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="s-about-img p-relative  wow fadeInUp animated" data-animation="fadeInUp" data-delay=".4s">
-                                <a href="https://www.youtube.com/watch?v=gyGsPlt06bo" class="popup-video"> <img src="img/features/about.jpg" alt="img">   </a>
-                               <div class="about-icon">
-                                     <img src="img/features/since.png" alt="img">   
-                                </div>
-                            </div>
-                          
-                        </div> 
-                    </div>
-                </div>
-            </section>
-            <!-- about-area-end -->
-            
-             <!-- room-area-->
-            <section id="services" class="services-area pb-120">
-              
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-xl-9">    
-                            <div class="section-title center-align mb-80 text-center">
-                                <div class="icon mb-50"> <img src="img/icon/hotel-icon-sub.png" alt="img">   </div>
-                                <h5>serve quality service</h5>
-                                <h2>Our <span>hotel features</span></h2>
-                                <p>Visitors to your city need to eat. In fact, some people visit new towns specifically for the food. Use your insider knowledge of the area to get them started with the must-visit eateries.</p>
-                                <div class="mt-30">     
-                                             <a href="contact.html" class="btn ss-btn mr-15">Rooms </a>
-                                             <a href="contact.html" class="btn active mr-15">suites </a>
-                                        </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row services-active">
-                        <div class="col-xl-4 col-md-6">
-                            <div class="single-services text-center mb-30">
-                                <div class="services-thumb">
-									<a class="gallery-link popup-image" href="img/gallery/room-img01.png">
-                                    <img src="img/gallery/room-img01.png" alt="img">
-									</a>
-                                </div>
-                                <div class="services-content">                                     
-                                    <h4><a href="single-rooms.html">Minimal Duplex Room</a></h4>    
-                                    <p>Visitors to your city need to eat. In fact, some people visit new towns specifically.</p>
-                                    <div class="icon">
-                                        <ul>
-                                            <li><img src="img/icon/sve-icon1.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon2.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon3.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon4.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon5.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon6.png" alt="img"></li>
-                                        </ul>
-                                    </div>
-                                    <div class="day-book">
-                                        <ul>
-                                            <li>$600/Night</li>
-                                            <li><a href="contact.html">Book Now</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                             <div class="single-services text-center mb-30">
-                                <div class="services-thumb">
-									<a class="gallery-link popup-image" href="img/gallery/room-img02.png">
-                                    <img src="img/gallery/room-img02.png" alt="img">
-									</a>
-                                </div>
-                                <div class="services-content">                                     
-                                    <h4><a href="single-rooms.html">Superior Double Room</a></h4>    
-                                    <p>Visitors to your city need to eat. In fact, some people visit new towns specifically.</p>
-                                    <div class="icon">
-                                        <ul>
-                                            <li><img src="img/icon/sve-icon1.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon2.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon3.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon4.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon5.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon6.png" alt="img"></li>
-                                        </ul>
-                                    </div>
-                                     <div class="day-book">
-                                        <ul>
-                                            <li>$400/Night</li>
-                                            <li><a href="contact.html">Book Now</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                              <div class="single-services text-center mb-30">
-                                <div class="services-thumb">
-									<a class="gallery-link popup-image" href="img/gallery/room-img03.png">
-                                    <img src="img/gallery/room-img03.png" alt="img">
-									</a>
-                                </div>
-                                <div class="services-content">                                    
-                                    <h4><a href="single-rooms.html">Super Balcony Double Room</a></h4>    
-                                   <p>Visitors to your city need to eat. In fact, some people visit new towns specifically.</p>
-                                    <div class="icon">
-                                        <ul>
-                                            <li><img src="img/icon/sve-icon1.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon2.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon3.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon4.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon5.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon6.png" alt="img"></li>
-                                        </ul>
-                                    </div>
-                                     <div class="day-book">
-                                        <ul>
-                                            <li>$100/Night</li>
-                                            <li><a href="contact.html">Book Now</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6">
-                              <div class="single-services text-center mb-30">
-                                <div class="services-thumb">
-									<a class="gallery-link popup-image" href="img/gallery/room-img04.png">
-                                    <img src="img/gallery/room-img04.png" alt="img">
-									</a>
-                                </div>
-                                <div class="services-content">                                  
-                                    <h4><a href="single-rooms.html">Delux Double Room</a></h4>    
-                                  <p>Visitors to your city need to eat. In fact, some people visit new towns specifically.</p>
-                                    <div class="icon">
-                                        <ul>
-                                            <li><img src="img/icon/sve-icon1.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon2.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon3.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon4.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon5.png" alt="img"></li>
-                                            <li><img src="img/icon/sve-icon6.png" alt="img"></li>
-                                        </ul>
-                                    </div>
-                                       <div class="day-book">
-                                        <ul>
-                                            <li>$300/Night</li>
-                                            <li><a href="contact.html">Book Now</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- room-area-end -->    
-            <!-- feature-area -->
-            <section class="feature-area2 p-relative pt-120 pb-120 fix" style="background: #2C4549;">              
-                <div class="container-fluid">
-                    <div class="row justify-content-center align-items-center">
-                         <div class="col-lg-12 col-md-12 col-sm-12 pr-30">
-                           <div class="feature-slider-active">                               
-                               <div class="feature-slider-box">                                   
-                                    <img src="img/bg/feature-slider-img.png" alt="contact-bg-an-01">
-                                    <div class="text">
-                                        <h2>Minimal Duplex Room /</h2>
-                                    </div>
-                               </div>                          
-                               <div class="feature-slider-box">                                   
-                                    <img src="img/bg/feature-slider-img.png" alt="contact-bg-an-01">
-                                    <div class="text">
-                                        <h2>wifi bed water house /</h2>
-                                    </div>
-                               </div>
-                           
-                               <div class="feature-slider-box">                                   
-                                    <img src="img/bg/feature-slider-img.png" alt="contact-bg-an-01">
-                                    <div class="text">
-                                        <h2>free wifi zone /</h2>
-                                    </div>
-                               </div>
-                             
-                               <div class="feature-slider-box">                                   
-                                    <img src="img/bg/feature-slider-img.png" alt="contact-bg-an-01">
-                                    <div class="text">
-                                        <h2>wifi bed water house /</h2>
-                                    </div>
-                               </div>
-                            </div>
-                        </div>
-					 
-                    </div>
-                </div>
-            </section>
-            <!-- feature-area-end -->
-            <!-- pricing-area -->
-            <section id="pricing" class="pricing-area pt-120 pb-60 fix p-relative">
-                <div class="container"> 
-                    
-                   <div class="row justify-content-center align-items-center">
-                        
-                        <div class="col-lg-6 col-md-12">
-                         <div class="section-title mb-80 text-center">
-                                <h5>our plans</h5>
-                                  <h2>Our pricing <span>& plans</span></h2>   
-                            </div>
-                        
-                        </div>
-                        </div>
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-lg-4 col-md-6">
-                             <div class="pricing-box pricing-box2 mb-60">
-                                    <div class="pricng-img">
-                                     <img src="img/bg/pr-img-01.jpg" alt="contact-bg-an-01">
-                                    </div>
-                                    <div class="pricing-head">  
-                                        <h3>luxury plan</h3>    
-                                        <div class="price-count">
-                                            <h2>$70</h2>
-                                            <span>/ Per Night</span>
-                                        </div> 
-                                        <hr>
-                                    </div>
-
-                                    <div class="pricing-body mt-20 mb-30">
-                                       <ul>
-                                            <li>Safe & Secure Services</li>
-                                            <li>Room Fast Cleaning</li>
-                                            <li>Drinks is Included</li>                                           
-                                            <li>Room Breakfast</li>                                           
-                                        </ul>
-                                    </div>   
-                                    <div class="pricing-btn">
-                                       <a href="contact.html" class="btn active">purchase now</a>
-                                    </div>
-                                </div>
-                      
-                        </div>
-                           <div class="col-lg-4 col-md-6">
-                             <div class="pricing-box pricing-box2 mb-60">
-                                    <div class="pricng-img">
-                                     <img src="img/bg/pr-img-02.jpg" alt="contact-bg-an-01">
-                                    </div>
-                                    <div class="pricing-head">  
-                                        <h3>couple plan</h3>    
-                                        <div class="price-count">
-                                            <h2>$99</h2>
-                                            <span>/ Per Night</span>
-                                        </div> 
-                                        <hr>
-                                    </div>
-
-                                    <div class="pricing-body mt-20 mb-30">
-                                       <ul>
-                                            <li>Safe & Secure Services</li>
-                                            <li>Room Fast Cleaning</li>
-                                            <li>Drinks is Included</li>                                           
-                                            <li>Room Breakfast</li>                                           
-                                        </ul>
-                                    </div>   
-                                    <div class="pricing-btn">
-                                       <a href="contact.html" class="btn active">purchase now</a>
-                                    </div>
-                                </div>
-                      
-                        </div>
-                          <div class="col-lg-4 col-md-6">
-                             <div class="pricing-box pricing-box2 mb-60">
-                                    <div class="pricng-img">
-                                     <img src="img/bg/pr-img-03.jpg" alt="contact-bg-an-01">
-                                    </div>
-                                    <div class="pricing-head">  
-                                        <h3>intro price</h3>    
-                                        <div class="price-count">
-                                            <h2>$299</h2>
-                                            <span>/ Per Night</span>
-                                        </div> 
-                                        <hr>
-                                    </div>
-
-                                    <div class="pricing-body mt-20 mb-30">
-                                       <ul>
-                                            <li>Safe & Secure Services</li>
-                                            <li>Room Fast Cleaning</li>
-                                            <li>Drinks is Included</li>                                           
-                                            <li>Room Breakfast</li>                                           
-                                        </ul>
-                                    </div>   
-                                    <div class="pricing-btn">
-                                       <a href="contact.html" class="btn active">purchase now</a>
-                                    </div>
-                                </div>
-                      
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- pricing-area-end -->
-             <!-- booking-area -->
-            <section class="booking pb-120 p-relative fix">
-                <div class="container">
-                    <div class="row align-items-center">
-                         <div class="col-lg-6 col-md-12">
-                             <div class="booking-img">
-                                 <img src="img/bg/booking-img.png" alt="img">
-                                 <div class="text">
-                                    <h3>Seasonal or <span>Citywide Events</span></h3>
-                                     <p>What big annual or seasonal events are can’t-miss?</p>
-                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12">
-                             <div class="contact-bg02 pl-40 pr-30">
-                                <div class="section-title center-align">
-                                    <h2>
-                                      Book Your <span>Seat</span>
-                                    </h2>
-                                </div>                                
-                                <form action="https://htmldemo.zcubethemes.com/dahotel/mail.php" method="post" class="contact-form mt-30">
-                                    <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                        <div class="contact-field p-relative c-name mb-20">                                    
-                                           <label>Check In Date</label>
-                                            <input type="date" id="chackin2" name="date">
-                                        </div>                               
-                                    </div>
-
-                                     <div class="col-lg-12 col-md-12">
-                                        <div class="contact-field p-relative c-subject mb-20">                                   
-                                           <label>Check Out Date</label>
-                                            <input type="date" id="chackout2" name="date">
-                                        </div>
-                                    </div>		
-                                     <div class="col-lg-12 col-md-12">
-                                        <div class="contact-field p-relative c-subject mb-20">                                   
-                                             <label>Adults</label>
-                                                <select name="adults" id="adu2">
-                                                  <option value="sports-massage">Adults</option>
-                                                  <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                        </div>
-                                    </div>	
-                                     <div class="col-lg-12 col-md-12">
-                                        <div class="contact-field p-relative c-option mb-20">                                   
-                                            <label>Room</label>
-                                               <select name="room" id="rm2">
-                                                  <option value="sports-massage">Room</option>
-                                                  <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="slider-btn mt-30">                                          
-                                                    <button class="btn active" data-animation="fadeInRight" data-delay=".8s"><span>Book Table Now</span></button>				
-                                                </div>                             
-                                    </div>
-                                    </div>
-                            </form>                            
-                            </div>  
-                                             
-                        </div>
-                       
-                    </div>
-                </div>
-            </section>
-            <!-- booking-area-end -->	
-             <!-- service-area -->
-            <section class="service-area pb-120 p-relative fix" style="background: #2C45490F;">
-                <div class="container">
-                    <div class="row align-items-center">
-                         <div class="col-lg-12 col-md-12">
-                             <div class="service-link">   
-                                   <ul>
-                                        <li>
-                                            <div class="s-link">
-                                                 <div class="text"><a href="single-service.html"><h3><i class="fal fa-long-arrow-right"></i> Cafe & Wine Bar</h3> <span>Start from <b>$150</b></span></a></div>
-                                                    <div class="layer img-hover"><img src="img/bg/sr-img-01.png" alt="shape"></div>
-                                            </div>
-                                           
-                                        </li>  
-                                       <li>
-                                            <div class="s-link active">
-                                           <div class="text"> <a href="single-service.html"><h3><i class="fal fa-long-arrow-right"></i> Spa & Wellness</h3> <span>Start from <b>$100</b></span></a></div>
-                                            <div class="layer img-hover"><img src="img/bg/sr-img-02.png" alt="shape"></div>
-                                           </div>
-                                        </li>  
-                                       <li>
-                                           <div class="s-link">
-                                               <div class="text"> <a href="single-service.html"><h3><i class="fal fa-long-arrow-right"></i> Restaurant</h3> <span>Start from <b>$130</b></span></a></div>
-                                               <div class="layer img-hover"><img src="img/bg/sr-img-03.png" alt="shape"></div>
-                                           </div>
-                                        </li>  
-                                      <li>
-                                          <div class="s-link">
-                                               <div class="text"><a href="single-service.html"><h3><i class="fal fa-long-arrow-right"></i> Meetings & Events</h3> <span>Start from <b>$140</b></span></a></div>
-                                               <div class="layer img-hover"><img src="img/bg/sr-img-04.png" alt="shape"></div>
-                                          </div>
-                                        </li>  
-                                   </ul>
-                            </div>
-                        </div>
-                      
-                       
-                    </div>
-                </div>
-            </section>
-            <!-- service-area-end -->	
-             <!-- testimonial-area -->
-            <section class="testimonial-area pt-120 pb-120 p-relative fix" style="background-image: url(img/bg/testimonial-bg.png); background-repeat: no-repeat;background-position: center center;">
-                <div class="container">
-                    <div class="row">
-                         <div class="col-lg-12">
-                             <div class="section-title mb-80 text-center">
-                                <h5>testimonials</h5>
-                                  <h2>Happy users <span>says</span></h2>   
-                            </div>
-                           
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="testimonial-active">
-                                <div class="single-testimonial">
-                                    <h3>Best hotel to say</h3>
-                                    <p>“ One of the clearest ways that a hotel can stand out from the competition and wow potential guests. ”</p>
-                                     <div class="testi-author">                                        
-                                        <div class="ta-info">
-                                            <h6>Rosalina William</h6>
-                                            <span>ceo</span>
-                                        </div>
-                                         <img src="img/testimonial/testi_avatar.png" alt="img">
-                                    </div>
-                                </div>
-                                <div class="single-testimonial">
-                                    <h3>Best hotel to say</h3>
-                                    <p>“ One of the clearest ways that a hotel can stand out from the competition and wow potential guests. ”</p>
-                                     <div class="testi-author">                                        
-                                        <div class="ta-info">
-                                            <h6>Nelson Helson</h6>
-                                            <span>founder</span>
-                                        </div>
-                                         <img src="img/testimonial/testi_avatar_02.png" alt="img">
-                                    </div>
-                                </div>
-                               <div class="single-testimonial">
-                                    <h3>Best hotel to say</h3>
-                                    <p>“ One of the clearest ways that a hotel can stand out from the competition and wow potential guests. ”</p>
-                                     <div class="testi-author">                                        
-                                        <div class="ta-info">
-                                            <h6>Tromazo Zelson</h6>
-                                            <span>designer</span>
-                                        </div>
-                                         <img src="img/testimonial/testi_avatar_03.png" alt="img">
-                                    </div>
-                                </div>
-                                   <div class="single-testimonial">
-                                    <h3>Best hotel to say</h3>
-                                    <p>“ One of the clearest ways that a hotel can stand out from the competition and wow potential guests. ”</p>
-                                     <div class="testi-author">                                        
-                                        <div class="ta-info">
-                                            <h6>Rosalina William</h6>
-                                            <span>ceo</span>
-                                        </div>
-                                         <img src="img/testimonial/testi_avatar.png" alt="img">
-                                    </div>
-                                </div>
-                                <div class="single-testimonial">
-                                    <h3>Best hotel to say</h3>
-                                    <p>“ One of the clearest ways that a hotel can stand out from the competition and wow potential guests. ”</p>
-                                     <div class="testi-author">                                        
-                                        <div class="ta-info">
-                                            <h6>Nelson Helson</h6>
-                                            <span>founder</span>
-                                        </div>
-                                         <img src="img/testimonial/testi_avatar_02.png" alt="img">
-                                    </div>
-                                </div>
-                               <div class="single-testimonial">
-                                    <h3>Best hotel to say</h3>
-                                    <p>“ One of the clearest ways that a hotel can stand out from the competition and wow potential guests. ”</p>
-                                     <div class="testi-author">                                        
-                                        <div class="ta-info">
-                                            <h6>Tromazo Zelson</h6>
-                                            <span>designer</span>
-                                        </div>
-                                         <img src="img/testimonial/testi_avatar_03.png" alt="img">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
-            </section>
-            <!-- testimonial-area-end -->
-           
-           
-           <!-- instagram-area -->
-            <section  class="instagram-area p-relative fix">                
-                <div class="container-fluid">                   
-                     <div class="row">
-                        <div class="col-lg-2 col-sm-6">
-                            <div class="instagram-box">
-                                 <img src="img/bg/ins-img-01.png" alt="img">
-                                <div class="hover"><a href="index.html#"><img src="img/icon/instagram-icon.png" alt="img"></a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6">
-                            <div class="instagram-box">
-                                 <img src="img/bg/ins-img-02.png" alt="img">
-                                <div class="hover"><a href="index.html#"><img src="img/icon/instagram-icon.png" alt="img"></a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6">
-                            <div class="instagram-box">
-                                 <img src="img/bg/ins-img-03.png" alt="img">
-                                 <div class="hover"><a href="index.html#"><img src="img/icon/instagram-icon.png" alt="img"></a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6">
-                            <div class="instagram-box">
-                                 <img src="img/bg/ins-img-04.png" alt="img">
-                                <div class="hover"><a href="index.html#"><img src="img/icon/instagram-icon.png" alt="img"></a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6">
-                            <div class="instagram-box">
-                                 <img src="img/bg/ins-img-05.png" alt="img">
-                                 <div class="hover"><a href="index.html#"><img src="img/icon/instagram-icon.png" alt="img"></a></div>
-                            </div>
-                        </div>
-                       <div class="col-lg-2 col-sm-6">
-                            <div class="instagram-box">
-                                 <img src="img/bg/ins-img-06.png" alt="img">
-                                 <div class="hover"><a href="index.html#"><img src="img/icon/instagram-icon.png" alt="img"></a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- instagram-area-end -->
-            
-              <!-- blog-area -->
-            <section id="blog" class="blog-area p-relative fix pt-120 pb-90">
-                <div class="container">
-                    <div class="row align-items-center"> 
-                        <div class="col-lg-12">
-                            <div class="section-title center-align mb-80 text-center wow fadeInDown animated" data-animation="fadeInDown" data-delay=".4s">
-                                 <h5>Our Blog</h5>
-                                <h2>
-                                   Company news <span>& insights</span>
-                                </h2>
-                               
-                            </div>
-                           
-                        </div>
-                    </div>
-                    <div class="row">
-                       <div class="col-lg-4 col-md-6">
-                            <div class="single-post2 hover-zoomin mb-30 wow fadeInUp animated" data-animation="fadeInUp" data-delay=".4s">
-                                <div class="blog-thumb2">
-                                    <a href="blog-details.html"><img src="img/blog/inner_b1.jpg" alt="img"></a>
-                                </div>                    
-                                <div class="blog-content2">                                     
-                                    <div class="date-home">
-                                        24th March 2024
-                                    </div>
-                                     <div class="b-meta">
-                                        <div class="meta-info">
-                                            <ul>
-                                                <li><span>By</span> Miranda H. </li>                                              
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <h4><a href="blog-details.html">Cras accumsan nulla nec lacus ultricies placerat.</a></h4>                                    
-                                    <div class="blog-btn"><a href="blog-details.html">Read More</a></div>
-                                     
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-lg-4 col-md-6">
-                            <div class="single-post2 mb-30 hover-zoomin wow fadeInUp animated" data-animation="fadeInUp" data-delay=".4s">
-                                <div class="blog-thumb2">
-                                    <a href="blog-details.html"><img src="img/blog/inner_b2.jpg" alt="img"></a>
-                                </div>
-                                <div class="blog-content2">                                    
-                                    <div class="date-home">
-                                       24th March 2024
-                                    </div>
-                                     <div class="b-meta">
-                                        <div class="meta-info">
-                                            <ul>
-                                                <li><span>By</span> Miranda H. </li>                                              
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <h4><a href="blog-details.html">Dras accumsan nulla nec lacus ultricies placerat.</a></h4>                                   
-                                    <div class="blog-btn"><a href="blog-details.html">Read More</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="single-post2 mb-30 hover-zoomin wow fadeInUp animated" data-animation="fadeInUp" data-delay=".4s">
-                                <div class="blog-thumb2">
-                                    <a href="blog-details.html"><img src="img/blog/inner_b3.jpg" alt="img"></a>
-                                </div>
-                                <div class="blog-content2">                                    
-                                    <div class="date-home">
-                                        24th March 2024
-                                    </div>
-                                     <div class="b-meta">
-                                        <div class="meta-info">
-                                            <ul>
-                                                <li><span>By</span> Miranda H. </li>                                              
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <h4><a href="blog-details.html">Seas accumsan nulla nec lacus ultricies placerat.</a></h4>                                    
-                                    <div class="blog-btn"><a href="blog-details.html">Read More</a></div>
-                                </div>
-                            </div>
-                        </div>
-                
-                        
-                    </div>
-                </div>
-            </section>
-            <!-- blog-area-end -->
-              <!-- newslater-area -->
-            <section class="newslater-area">
-                <div class="container p-relative">
-                     <div class="newslater-text">Newsletter</div>
-                   <div class="row align-items-center">                            
-                       <div class="col-xl-7 col-lg-7 col-md-12">
-                           <div class="section-title">
-                                <h2>Subscribe here <span>for update</span></h2>
-                               <p>Subscribe us to receive market updates.</p>
-                            </div>
-                        </div>
-                       <div class="col-xl-5 col-lg-5 col-md-12">
-                            <form name="ajax-form" id="contact-form4" action="index.html#" method="post" class="contact-form newslater">
-                               <div class="form-group">
-                                  <input class="form-control" id="email2" name="email" type="email" placeholder="Email Address..." value="" required=""> 
-                                  <button type="submit" class="btn btn-custom" id="send2">Subscribe</button>
-                               </div>
-                              
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-            </section>
-            <!-- newslater-aread-end -->
-        </main>
-        <!-- main-area-end -->
-    <!-- footer -->
-        <footer class="footer-bg footer-p" style="background-color: #2C4549;">
-            <div class="footer-top  pt-120 pb-30">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        
-                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                            <div class="footer-widget mb-30">                                
-                                <div class="f-about mb-20">
-                                    <div class="f-widget-title">
-                                        <h5> <img src="img/icon/menu-icon.png" alt="img"> MENU</h5>
-                                    </div>
-                                     <p>In industry, the heartbeat of modern civilization resonates through the relentless pursuit of progress.</p>
-                                    
-                                    </div> 
-                                 <div class="f-widget-title">
-                                    <h2>Contact</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="about.html"> Careers</a></li>
-                                        <li><a href="index.html#"> Mon- Sat: 9am to 6pm </a></li>                                       
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-						<div class="col-xl-2 col-lg-2 col-sm-6">
-                            <div class="footer-widget mb-30">
-                                <div class="f-widget-title">
-                                    <h2>Essential</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="index.html">About us</a></li>
-                                        <li><a href="about.html"> Careers</a></li>
-                                        <li><a href="services.html"> Prices </a></li>
-                                        <li><a href="contact.html"> Services</a></li>
-                                        <li><a href="blog.html">Get In Touch </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-lg-2 col-sm-6">
-                            <div class="footer-widget mb-30">
-                                <div class="f-widget-title">
-                                    <h2>More Pages</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="index.html">Auto production</a></li>
-                                        <li><a href="about.html"> Investors</a></li>
-                                        <li><a href="services.html"> News </a></li>
-                                        <li><a href="contact.html"> FAQ’s</a></li>
-                                        <li><a href="blog.html">Contact us </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>                        
-                       <div class="col-xl-2 col-lg-2 col-sm-6">
-                            <div class="footer-widget mb-30">
-                                <div class="f-widget-title">
-                                    <h2>Downloads</h2>
-                                </div>
-                                <div class="footer-link">
-                                    <ul>                                        
-                                        <li><a href="index.html#"><img src="img/icon/gplay-btn.png" alt="img"></a></li>
-                                        <li><a href="index.html#"> <img src="img/icon/app-strore-btn.png" alt="img"></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
+            <div class="d-grid mt-2">
+              <a
+                id="goBookingLink"
+                class="btn btn-outline-dark"
+                th:href="@{/room}"
+                >Mở trang đặt phòng chi tiết</a
+              >
             </div>
-            <div class="copyright-wrap">
-                <div class="container">
-                    <div class="row align-items-center c-mid">
-                        <div class="col-lg-6 col-md-4">
-                            <div class="footer-social">                                    
-                                <a href="index.html#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="index.html#"><i class="fab fa-instagram"></i></a>
-                                <a href="index.html#"><i class="fa-brands fa-x-twitter"></i></a>
-                                <a href="index.html#"><i class="fab fa-youtube"></i></a>
-                                <a href="index.html#"><i class="fab fa-linkedin"></i></a>
-                            </div>    
-                        </div>
-                         <div class="col-lg-6 col-md-8 text-right text-xl-right">
-                               <ul>
-                                    <li><a href="index.html#">Privacy Policy</a></li>    
-                                    <li><a href="index.html#">Terms Of Service</a></li>    
-                                    <li><a href="index.html#">Legal</a></li>    
-                                </ul>
-                            </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <div class="col-lg-12">
-                          <div class="copy-text text-center">
-                                 Copyright &copy; Dahotel 2024. All rights reserved.       
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </aside>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="feature-strip">
+        <div class="container">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <article class="feature-item">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <h3>Tìm nhanh theo khu vực</h3>
+                <p>
+                  Nhập tỉnh thành và bộ lọc, hệ thống trả về danh sách chi nhánh
+                  phù hợp ngay.
+                </p>
+              </article>
             </div>
-        </footer>
-        <!-- footer-end -->
-		<!-- JS here -->
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="js/vendor/jquery.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/slick.min.js"></script>
-        <script src="js/ajax-form.js"></script>
-        <script src="js/paroller.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/js_isotope.pkgd.min.js"></script>
-        <script src="js/imagesloaded.min.js"></script>
-        <script src="js/parallax.min.js"></script>
-        <script src="js/jquery.waypoints.min.js"></script>
-        <script src="js/jquery.counterup.min.js"></script>
-        <script src="js/jquery.scrollUp.min.js"></script>
-        <script src="js/jquery.meanmenu.min.js"></script>
-        <script src="js/parallax-scroll.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
-        <script src="js/element-in-view.js"></script>
-        <script src="js/main.js"></script>
-    </body>
+            <div class="col-md-4">
+              <article class="feature-item">
+                <i class="fa-solid fa-ticket"></i>
+                <h3>Voucher và giá linh hoạt</h3>
+                <p>
+                  Hỗ trợ giá theo ngày/giờ, tính tổng tiền và voucher tự động
+                  trong quá trình đặt.
+                </p>
+              </article>
+            </div>
+            <div class="col-md-4">
+              <article class="feature-item">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <h3>Quản lý đơn đặt phòng</h3>
+                <p>
+                  Khách hàng xem lịch sử đơn. Admin quản lý phòng, chi nhánh và
+                  voucher trên cùng hệ thống.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="modules-section">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">HỆ THỐNG CHỨC NĂNG</p>
+            <h2>Di chuyển nhanh đến các module</h2>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-lg-3 col-md-6">
+              <a class="module-card" th:href="@{/room}">
+                <h4>Đặt phòng</h4>
+                <p>Tìm phòng, xem kết quả, tạo booking.</p>
+                <span>Đi tới trang đặt phòng</span>
+              </a>
+            </div>
+            <div class="col-lg-3 col-md-6" sec:authorize="isAuthenticated()">
+              <a class="module-card" th:href="@{/my-bookings}">
+                <h4>Đơn của tôi</h4>
+                <p>Theo dõi trạng thái và tổng thanh toán.</p>
+                <span>Xem lịch sử đặt phòng</span>
+              </a>
+            </div>
+            <div class="col-lg-3 col-md-6" sec:authorize="hasRole('ADMIN')">
+              <a class="module-card" th:href="@{/admin/manage}">
+                <h4>Quản trị</h4>
+                <p>Quản lý chi nhánh, phòng và voucher.</p>
+                <span>Mở bảng quản trị</span>
+              </a>
+            </div>
+            <div class="col-lg-3 col-md-6" sec:authorize="hasRole('ADMIN')">
+              <a class="module-card" th:href="@{/users}">
+                <h4>Người dùng</h4>
+                <p>Quản lý danh sách tài khoản hệ thống.</p>
+                <span>Mở trang users</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/home-modern.js}"></script>
+  </body>
 </html>

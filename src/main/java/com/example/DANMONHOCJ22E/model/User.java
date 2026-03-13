@@ -1,6 +1,14 @@
 package com.example.DANMONHOCJ22E.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -24,6 +32,16 @@ public class User {
   private String phone;
 
   private String role;
+
+  @Column
+  private LocalDateTime createdAt;
+
+  @PrePersist
+  public void prePersist() {
+    if (createdAt == null) {
+      createdAt = LocalDateTime.now();
+    }
+  }
 
   // ====== GETTER & SETTER ======
 
@@ -81,5 +99,13 @@ public class User {
 
   public void setRole(String role) {
     this.role = role;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 }
