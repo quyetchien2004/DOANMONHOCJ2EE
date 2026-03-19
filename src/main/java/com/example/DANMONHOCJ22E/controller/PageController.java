@@ -1,6 +1,10 @@
 package com.example.DANMONHOCJ22E.controller;
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PageController {
@@ -93,5 +97,22 @@ public class PageController {
     @GetMapping("/shop-details")
     public String shopDetails() {
         return "shop-details";
+    }
+
+    @GetMapping("/payment-result")
+    public String paymentResult(@RequestParam(required = false) Long bookingId,
+                                @RequestParam(required = false) String status,
+                                @RequestParam(required = false) BigDecimal totalPrice,
+                                @RequestParam(required = false) BigDecimal requiredPaymentAmount,
+                                @RequestParam(required = false) BigDecimal paidAmount,
+                                @RequestParam(required = false) String invoiceNumber,
+                                Model model) {
+        model.addAttribute("bookingId", bookingId);
+        model.addAttribute("status", status);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("requiredPaymentAmount", requiredPaymentAmount);
+        model.addAttribute("paidAmount", paidAmount);
+        model.addAttribute("invoiceNumber", invoiceNumber);
+        return "payment-result";
     }
 }

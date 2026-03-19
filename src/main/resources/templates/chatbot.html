@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chatbot AI nội bộ</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('chatbot', 'light')}"
+    ></th:block>
+
+    <div class="container py-4">
+      <div class="page-head-card mb-3">
+        <h2 class="mb-1">Chatbot AI nội bộ</h2>
+        <p class="text-muted mb-0">
+          Hỗ trợ hỏi đáp về website, đặt phòng, VNPAY, voucher, tài khoản và xác
+          minh.
+        </p>
+      </div>
+
+      <div class="card card-body">
+        <div
+          id="chatLog"
+          style="max-height: 420px; overflow: auto"
+          class="mb-3"
+        ></div>
+        <div class="input-group">
+          <input
+            id="chatInput"
+            class="form-control"
+            placeholder="Nhập câu hỏi..."
+          />
+          <button id="chatSendBtn" class="btn btn-brand">Gửi</button>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script>
+      (function () {
+        const log = document.getElementById("chatLog");
+        const input = document.getElementById("chatInput");
+        const sendBtn = document.getElementById("chatSendBtn");
+
+        function append(role, text) {
+          const div = document.createElement("div");
+          div.className =
+            role === "user"
+              ? "alert alert-secondary py-2"
+              : "alert alert-info py-2";
+          div.innerHTML =
+            "<strong>" +
+            (role === "user" ? "Bạn" : "Bot") +
+            ":</strong> " +
+            text;
+          log.appendChild(div);
+          log.scrollTop = log.scrollHeight;
+        }
+
+        async function send() {
+          const message = input.value.trim();
+          if (!message) return;
+          append("user", message);
+          input.value = "";
+
+          try {
+            const res = await fetch("/api/chatbot/ask", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Bot không phản hồi");
+            append("bot", data.answer || "Bot chưa có phản hồi phù hợp.");
+          } catch (err) {
+            append("bot", "Lỗi: " + err.message);
+          }
+        }
+
+        sendBtn.addEventListener("click", send);
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") send();
+        });
+
+        append(
+          "bot",
+          "Xin chào, tôi hỗ trợ đặt phòng và giải đáp chức năng trong hệ thống Golden Lotus.",
+        );
+      })();
+    </script>
+  </body>
+</html>

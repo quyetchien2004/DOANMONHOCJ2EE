@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ket qua thanh toan</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('my-bookings', 'light')}"
+    ></th:block>
+
+    <div class="container py-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="fs-1 text-success" th:if="${status == 'CONFIRMED'}">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="fs-1 text-secondary" th:if="${status != 'CONFIRMED'}">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </div>
+            <div>
+              <h2 class="mb-1">Ket qua thanh toan VNPAY</h2>
+              <p
+                class="mb-0 text-muted"
+                th:text="${status == 'CONFIRMED'} ? 'Thanh toan thanh cong, don dat phong da duoc xac nhan.' : 'Thanh toan khong thanh cong hoac da bi huy.'"
+              ></p>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-1">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 bg-light">
+                <div class="small text-muted">Ma don</div>
+                <div
+                  class="fw-semibold"
+                  th:text="${bookingId != null ? '#' + bookingId : '-'}"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 bg-light">
+                <div class="small text-muted">Trang thai</div>
+                <div
+                  class="fw-semibold"
+                  th:text="${status != null} ? status : '-'"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded-3 bg-light h-100">
+                <div class="small text-muted">Tong gia tri don</div>
+                <div
+                  class="fw-semibold"
+                  th:text="${totalPrice != null ? #numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT') + ' VND' : '-'}"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded-3 bg-light h-100">
+                <div class="small text-muted">Can thanh toan</div>
+                <div
+                  class="fw-semibold"
+                  th:text="${requiredPaymentAmount != null ? #numbers.formatDecimal(requiredPaymentAmount, 0, 'COMMA', 0, 'POINT') + ' VND' : '-'}"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-3 border rounded-3 bg-light h-100">
+                <div class="small text-muted">Da thanh toan</div>
+                <div
+                  class="fw-semibold"
+                  th:text="${paidAmount != null ? #numbers.formatDecimal(paidAmount, 0, 'COMMA', 0, 'POINT') + ' VND' : '-'}"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="p-3 border rounded-3 bg-light">
+                <div class="small text-muted">So hoa don</div>
+                <div
+                  class="fw-semibold"
+                  th:text="${invoiceNumber != null && !invoiceNumber.isBlank()} ? invoiceNumber : 'Chua phat hanh'"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <a class="btn btn-brand" th:href="@{/my-bookings}">
+              <i class="fa-solid fa-receipt me-1"></i> Xem don cua toi
+            </a>
+            <a class="btn btn-outline-secondary" th:href="@{/room}">
+              <i class="fa-solid fa-hotel me-1"></i> Dat phong tiep
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

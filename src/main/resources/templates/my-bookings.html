@@ -45,7 +45,7 @@
             <div class="mini-stat-label">Đơn đang chờ xác nhận</div>
             <div
               class="mini-stat-value"
-              th:text="${bookings.?[status.name() == 'PENDING'].size()}"
+              th:text="${bookings.?[status.name() == 'PENDING_PAYMENT' || status.name() == 'PENDING'].size()}"
             ></div>
           </div>
         </div>
@@ -75,7 +75,7 @@
                 <div class="fw-bold" th:text="${'#' + b.bookingId}"></div>
                 <small
                   class="text-muted"
-                  th:text="${b.rentalMode == T(com.example.DANMONHOCJ22E.model.RentalMode).DAILY ? 'Theo ngày' : 'Theo giờ'}"
+                  th:text="${b.rentalMode != null && b.rentalMode.name() == 'DAILY' ? 'Theo ngày' : 'Theo giờ'}"
                 ></small>
               </td>
               <td>
@@ -108,6 +108,14 @@
                   th:text="${'Voucher: ' + (b.appliedVoucherCode != null ? b.appliedVoucherCode : '-')}"
                 ></div>
                 <div
+                  class="text-muted small"
+                  th:text="${'Thanh toán: ' + (b.paymentOption != null ? b.paymentOption.name() : '-') + ', đã thanh toán ' + (b.paidAmount != null ? #numbers.formatDecimal(b.paidAmount, 0, 'COMMA', 0, 'POINT') : '0') + ' VND'}"
+                ></div>
+                <div
+                  class="text-muted small"
+                  th:text="${'Hóa đơn: ' + (b.invoiceNumber != null ? b.invoiceNumber : 'Chưa phát hành')}"
+                ></div>
+                <div
                   class="fw-bold text-success"
                   th:text="${#numbers.formatDecimal(b.totalPrice, 0, 'COMMA', 0, 'POINT') + ' VND'}"
                 ></div>
@@ -115,8 +123,8 @@
               <td>
                 <span
                   class="badge rounded-pill"
-                  th:classappend="${b.status.name() == 'CONFIRMED' ? 'bg-success' : (b.status.name() == 'CANCELLED' ? 'bg-secondary' : 'bg-warning text-dark')}"
-                  th:text="${b.status.name() == 'CONFIRMED' ? 'Đã xác nhận' : (b.status.name() == 'CANCELLED' ? 'Đã hủy' : 'Đang chờ')}"
+                  th:classappend="${b.status.name() == 'CONFIRMED' ? 'bg-success' : (b.status.name() == 'PAYMENT_FAILED' || b.status.name() == 'CANCELLED' ? 'bg-secondary' : 'bg-warning text-dark')}"
+                  th:text="${b.status.name() == 'CONFIRMED' ? 'Đã xác nhận' : (b.status.name() == 'PAYMENT_FAILED' ? 'Thanh toán lỗi' : (b.status.name() == 'CANCELLED' ? 'Đã hủy' : 'Chờ thanh toán'))}"
                 ></span>
               </td>
             </tr>

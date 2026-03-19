@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.DANMONHOCJ22E.model.RentalMode;
+import com.example.DANMONHOCJ22E.model.PaymentOption;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +35,9 @@ public class CreateBookingRequest {
     private LocalDate endDate;
 
     private String voucherCode;
+
+    @NotNull(message = "paymentOption khong duoc de trong")
+    private PaymentOption paymentOption;
 
     public Long getRoomId() {
         return roomId;
@@ -97,5 +101,13 @@ public class CreateBookingRequest {
 
     public void setVoucherCode(String voucherCode) {
         this.voucherCode = voucherCode;
+    }
+
+    public PaymentOption getPaymentOption() {
+        return paymentOption;
+    }
+
+    public void setPaymentOption(PaymentOption paymentOption) {
+        this.paymentOption = paymentOption;
     }
 }

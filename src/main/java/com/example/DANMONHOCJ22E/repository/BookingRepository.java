@@ -17,6 +17,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
         long countByUser(User user);
 
+        long countByUserAndStatus(User user, BookingStatus status);
+
     @Query("""
             select b from Booking b
             where b.room.id = :roomId

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tài khoản của bạn</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block
+      th:replace="~{fragments/layout :: siteHeader('my-account', 'light')}"
+    ></th:block>
+
+    <div class="container py-4">
+      <div class="page-head-card mb-3">
+        <h2 class="mb-1">Tài khoản của bạn</h2>
+        <p class="text-muted mb-0">
+          Quản lý bảo mật, xác minh CCCD và theo dõi độ tin cậy tài khoản.
+        </p>
+      </div>
+
+      <div class="card card-body mb-3" th:if="${accountUser != null}">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div>
+              <strong>Tài khoản:</strong>
+              <span th:text="${accountUser.username}"></span>
+            </div>
+            <div>
+              <strong>Họ tên:</strong>
+              <span th:text="${accountUser.fullName}"></span>
+            </div>
+            <div>
+              <strong>Email:</strong>
+              <span th:text="${accountUser.email}"></span>
+            </div>
+            <div>
+              <strong>SĐT:</strong> <span th:text="${accountUser.phone}"></span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div>
+              <strong>Độ tin cậy:</strong>
+              <span th:text="${accountUser.trustScore + '%'}"></span>
+            </div>
+            <div>
+              <strong>Trạng thái xác minh:</strong>
+              <span th:text="${accountUser.accountVerificationStatus}"></span>
+            </div>
+            <div>
+              <strong>Xác minh CCCD lúc:</strong>
+              <span
+                th:text="${accountUser.idCardVerifiedAt != null ? #temporals.format(accountUser.idCardVerifiedAt, 'dd/MM/yyyy HH:mm') : '-'}"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-body mb-3">
+        <h5>Xác minh CCCD</h5>
+        <p class="text-muted small">
+          Upload ảnh CCCD để xác minh tên tài khoản. Sau khi xác minh đúng, độ
+          tin cậy tăng lên 80%.
+        </p>
+        <form id="verifyForm" enctype="multipart/form-data">
+          <input
+            type="file"
+            name="cccdImage"
+            class="form-control mb-2"
+            accept="image/*"
+            required
+          />
+          <button class="btn btn-brand" type="submit">
+            Upload và xác minh
+          </button>
+        </form>
+        <div id="verifyMessage" class="mt-2"></div>
+      </div>
+
+      <div class="card card-body mb-3">
+        <h5>Đổi mật khẩu qua OTP email</h5>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <input
+              id="resetEmail"
+              class="form-control"
+              placeholder="Email đăng ký"
+              th:value="${accountUser != null ? accountUser.email : ''}"
+            />
+          </div>
+          <div class="col-md-3">
+            <button id="requestOtpBtn" class="btn btn-outline-dark w-100">
+              Gửi OTP
+            </button>
+          </div>
+          <div class="col-md-2">
+            <input id="otpCode" class="form-control" placeholder="OTP" />
+          </div>
+          <div class="col-md-3">
+            <input
+              id="newPassword"
+              type="password"
+              class="form-control"
+              placeholder="Mật khẩu mới"
+            />
+          </div>
+        </div>
+        <button id="resetPasswordBtn" class="btn btn-brand mt-2">
+          Đổi mật khẩu
+        </button>
+        <div id="passwordMessage" class="mt-2"></div>
+      </div>
+
+      <div class="card card-body" th:if="${userVouchers != null}">
+        <h5>Voucher của bạn</h5>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Mã</th>
+                <th>Giảm</th>
+                <th>Lý do</th>
+                <th>Hạn dùng</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="v : ${userVouchers}">
+                <td th:text="${v.code}"></td>
+                <td th:text="${v.discountPercent + '%'}"></td>
+                <td th:text="${v.reason}"></td>
+                <td
+                  th:text="${v.validTo != null ? #temporals.format(v.validTo, 'dd/MM/yyyy HH:mm') : '-'}"
+                ></td>
+                <td
+                  th:text="${v.active ? 'Còn hiệu lực' : 'Đã dùng/Hết hạn'}"
+                ></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script>
+      (function () {
+        const verifyForm = document.getElementById("verifyForm");
+        const verifyMessage = document.getElementById("verifyMessage");
+        const requestOtpBtn = document.getElementById("requestOtpBtn");
+        const resetPasswordBtn = document.getElementById("resetPasswordBtn");
+        const passwordMessage = document.getElementById("passwordMessage");
+
+        if (verifyForm) {
+          verifyForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(verifyForm);
+            try {
+              const res = await fetch("/api/account/verify-idcard", {
+                method: "POST",
+                body: formData,
+              });
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || "Xác minh thất bại");
+              verifyMessage.innerHTML =
+                '<div class="alert alert-success mb-0">' +
+                data.message +
+                ". Trust hiện tại: " +
+                data.trustScore +
+                "%</div>";
+              window.setTimeout(() => window.location.reload(), 1200);
+            } catch (err) {
+              verifyMessage.innerHTML =
+                '<div class="alert alert-danger mb-0">' +
+                err.message +
+                "</div>";
+            }
+          });
+        }
+
+        if (requestOtpBtn) {
+          requestOtpBtn.addEventListener("click", async function () {
+            const email = document.getElementById("resetEmail").value.trim();
+            try {
+              const res = await fetch("/api/account/request-password-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+              });
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || "Không gửi được OTP");
+              passwordMessage.innerHTML =
+                '<div class="alert alert-success mb-0">' +
+                data.message +
+                "</div>";
+            } catch (err) {
+              passwordMessage.innerHTML =
+                '<div class="alert alert-danger mb-0">' +
+                err.message +
+                "</div>";
+            }
+          });
+        }
+
+        if (resetPasswordBtn) {
+          resetPasswordBtn.addEventListener("click", async function () {
+            const email = document.getElementById("resetEmail").value.trim();
+            const otpCode = document.getElementById("otpCode").value.trim();
+            const newPassword = document.getElementById("newPassword").value;
+            try {
+              const res = await fetch("/api/account/reset-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otpCode, newPassword }),
+              });
+              const data = await res.json();
+              if (!res.ok)
+                throw new Error(data.error || "Không đổi được mật khẩu");
+              passwordMessage.innerHTML =
+                '<div class="alert alert-success mb-0">' +
+                data.message +
+                "</div>";
+            } catch (err) {
+              passwordMessage.innerHTML =
+                '<div class="alert alert-danger mb-0">' +
+                err.message +
+                "</div>";
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

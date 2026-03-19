@@ -3,10 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chi tiết phòng | Golden Lotus</title>
+    <title>Thong tin phong | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+    <style>
+      .room-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+      }
+
+      .room-card {
+        border: 1px solid #e9ecef;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .room-card img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+
+      .room-card .body {
+        padding: 1rem;
+      }
+
+      .room-badge {
+        display: inline-block;
+        background: #e9f5ff;
+        color: #0b5ed7;
+        border-radius: 999px;
+        padding: 0.25rem 0.7rem;
+        font-size: 0.82rem;
+        margin-bottom: 0.6rem;
+      }
+    </style>
   </head>
   <body class="app-page">
     <th:block
@@ -14,17 +48,115 @@
     ></th:block>
 
     <main class="container py-4">
-      <article class="card">
+      <section class="card mb-3">
         <div class="card-body">
-          <h2>Chi tiết loại phòng</h2>
-          <p>
-            Trang này mô tả thông tin phòng theo sức chứa, loại phòng, giá tham
-            khảo và tiện ích. Để đặt phòng, vui lòng chuyển sang trang Đặt phòng
-            để tìm phòng trống theo thời gian cụ thể.
+          <h2 class="mb-2">Thong tin phong | CCT Hotels Company</h2>
+          <p class="mb-3">
+            Bo anh phong duoc cap nhat de khach hang de dang tham khao chat
+            luong luu tru truoc khi dat phong.
           </p>
-          <a class="btn btn-brand" th:href="@{/room}">Đi đến Đặt phòng</a>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-brand" th:href="@{/room}">Tim phong trong ngay</a>
+            <a class="btn btn-outline-secondary" th:href="@{/booking}"
+              >Den trang dat phong</a
+            >
+          </div>
         </div>
-      </article>
+      </section>
+
+      <section class="room-gallery">
+        <article class="room-card">
+          <img
+            th:src="@{/img/cct/cct-standard-01.jpg}"
+            alt="Phong standard CCT Hotels"
+            loading="lazy"
+          />
+          <div class="body">
+            <span class="room-badge">Standard</span>
+            <h5>Phong tieu chuan 2 nguoi</h5>
+            <p class="mb-0 text-muted">
+              Giuong don, tone trang sang, mini fridge, TV va noi that co ban
+              day du.
+            </p>
+          </div>
+        </article>
+
+        <article class="room-card">
+          <img
+            th:src="@{/img/cct/cct-deluxe-01.jpg}"
+            alt="Phong deluxe CCT Hotels"
+            loading="lazy"
+          />
+          <div class="body">
+            <span class="room-badge">Deluxe</span>
+            <h5>Phong cao cap 2-3 nguoi</h5>
+            <p class="mb-0 text-muted">
+              Giuong doi lon, khong gian am cung, noi that day du phu hop nghi
+              duong.
+            </p>
+          </div>
+        </article>
+
+        <article class="room-card">
+          <img
+            th:src="@{/img/cct/cct-luxury-01.jpg}"
+            alt="Phong luxury CCT Hotels"
+            loading="lazy"
+          />
+          <div class="body">
+            <span class="room-badge">Luxury</span>
+            <h5>Phong gia dinh 4 nguoi</h5>
+            <p class="mb-0 text-muted">
+              Tone xanh mat, khong gian rong, phu hop gia dinh can su thoai mai
+              va rieng tu.
+            </p>
+          </div>
+        </article>
+
+        <article class="room-card">
+          <img
+            th:src="@{/img/cct/cct-lobby-01.jpg}"
+            alt="Sanh khach san CCT Hotels"
+            loading="lazy"
+          />
+          <div class="body">
+            <span class="room-badge">Lobby</span>
+            <h5>Sanh tiep don hien dai</h5>
+            <p class="mb-0 text-muted">
+              Khong gian check-in thong thoang, decor toi gian, tao an tuong
+              ngay khi den.
+            </p>
+          </div>
+        </article>
+
+        <article class="room-card">
+          <img
+            th:src="@{/img/cct/cct-facade-01.jpg}"
+            alt="Mat tien khach san CCT Hotels"
+            loading="lazy"
+          />
+          <div class="body">
+            <span class="room-badge">Facade</span>
+            <h5>Mat tien khach san</h5>
+            <p class="mb-0 text-muted">
+              Kien truc hien dai, khu don tra khach ro rang, nang cao su tin
+              tuong khi dat phong.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section class="card mt-3">
+        <div class="card-body">
+          <h5 class="mb-2">Huong dan cap nhat anh moi</h5>
+          <p class="mb-0 text-muted">
+            Ban chi can ghi de cac file trong thu muc
+            <strong>src/main/resources/static/img/cct</strong> voi dung ten file
+            cct-standard-01.jpg, cct-deluxe-01.jpg, cct-luxury-01.jpg,
+            cct-lobby-01.jpg, cct-facade-01.jpg la web tu cap nhat.
+          </p>
+        </div>
+      </section>
     </main>
 
     <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>

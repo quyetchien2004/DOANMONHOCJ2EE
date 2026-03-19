@@ -61,6 +61,22 @@ public class Booking {
     @Column(length = 40)
     private String appliedVoucherCode;
 
+    @Column
+    private Long appliedUserVoucherId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private PaymentOption paymentOption;
+
+    @Column(precision = 14, scale = 2)
+    private BigDecimal requiredPaymentAmount;
+
+    @Column(precision = 14, scale = 2)
+    private BigDecimal paidAmount = BigDecimal.ZERO;
+
+    @Column(length = 120)
+    private String invoiceNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private BookingStatus status;
@@ -72,6 +88,9 @@ public class Booking {
     public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
+        }
+        if (paidAmount == null) {
+            paidAmount = BigDecimal.ZERO;
         }
     }
 
@@ -161,6 +180,46 @@ public class Booking {
 
     public void setAppliedVoucherCode(String appliedVoucherCode) {
         this.appliedVoucherCode = appliedVoucherCode;
+    }
+
+    public Long getAppliedUserVoucherId() {
+        return appliedUserVoucherId;
+    }
+
+    public void setAppliedUserVoucherId(Long appliedUserVoucherId) {
+        this.appliedUserVoucherId = appliedUserVoucherId;
+    }
+
+    public PaymentOption getPaymentOption() {
+        return paymentOption;
+    }
+
+    public void setPaymentOption(PaymentOption paymentOption) {
+        this.paymentOption = paymentOption;
+    }
+
+    public BigDecimal getRequiredPaymentAmount() {
+        return requiredPaymentAmount;
+    }
+
+    public void setRequiredPaymentAmount(BigDecimal requiredPaymentAmount) {
+        this.requiredPaymentAmount = requiredPaymentAmount;
+    }
+
+    public BigDecimal getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(BigDecimal paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
     }
 
     public BookingStatus getStatus() {

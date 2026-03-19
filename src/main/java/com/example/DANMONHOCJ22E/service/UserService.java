@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.DANMONHOCJ22E.dto.RegisterRequest;
+import com.example.DANMONHOCJ22E.model.AccountVerificationStatus;
 import com.example.DANMONHOCJ22E.model.User;
 import com.example.DANMONHOCJ22E.repository.UserRepository;
 
@@ -14,10 +15,14 @@ public class UserService {
 
   private final UserRepository repo;
   private final BCryptPasswordEncoder passwordEncoder;
+  private final UserVoucherService userVoucherService;
 
-  public UserService(UserRepository repo, BCryptPasswordEncoder passwordEncoder) {
+  public UserService(UserRepository repo,
+                     BCryptPasswordEncoder passwordEncoder,
+                     UserVoucherService userVoucherService) {
     this.repo = repo;
     this.passwordEncoder = passwordEncoder;
+    this.userVoucherService = userVoucherService;
   }
 
   public List<User> findAll() {
@@ -40,8 +45,15 @@ public class UserService {
     user.setEmail(request.getEmail().trim().toLowerCase());
     user.setPhone(request.getPhone().trim());
     user.setRole("ROLE_USER");
+        user.setTrustScore(0);
+        user.setAccountVerificationStatus(AccountVerificationStatus.UNVERIFIED.name());
 
-    return repo.save(user);
+        User saved = repo.save(user);
+        userVoucherService.issueIfMissing(saved,
+          UserVoucherService.REASON_NEW_ACCOUNT_10,
+          java.math.BigDecimal.TEN,
+          45);
+        return saved;
   }
 
   public User save(User u) {

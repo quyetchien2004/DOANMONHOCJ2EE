@@ -16,6 +16,7 @@
   const selectedRoomIdEl = document.getElementById('selectedRoomId');
   const selectedRoomLabelEl = document.getElementById('selectedRoomLabel');
   const customerFullNameEl = document.getElementById('customerFullName');
+  const paymentOptionEl = document.getElementById('paymentOption');
   const confirmBookingBtn = document.getElementById('confirmBookingBtn');
   const roomContextById = {};
 
@@ -92,6 +93,22 @@
     const qs = new URLSearchParams();
     Object.entries(payload).forEach(([k, v]) => qs.append(k, v));
     return qs.toString();
+  }
+
+  async function readApiResponse(res) {
+    const contentType = res.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+
+    if (isJson) {
+      return await res.json();
+    }
+
+    const raw = await res.text();
+    return {
+      error: raw && raw.trim().startsWith('<')
+        ? 'Phien dang nhap het han hoac ban chua dang nhap'
+        : (raw || 'Khong nhan duoc phan hoi hop le tu may chu')
+    };
   }
 
   function hasRequiredSearchFields(payload) {
@@ -213,7 +230,7 @@
 
     try {
       const res = await fetch('/api/hotels/search?' + toQueryString(payload));
-      const data = await res.json();
+      const data = await readApiResponse(res);
       if (!res.ok) {
         throw new Error(data && data.error ? data.error : 'Khong the tim phong');
       }
@@ -290,6 +307,7 @@
   async function submitBooking() {
     const roomId = Number(selectedRoomIdEl.value);
     const customerFullName = customerFullNameEl.value;
+    const paymentOption = paymentOptionEl ? paymentOptionEl.value : 'DEPOSIT_30';
 
     if (!lastSearchPayload || !hasRequiredSearchFields(lastSearchPayload)) {
       bookingAlert.innerHTML = '<div class="alert-inline warn">Thong tin tim kiem khong hop le. Hay tim phong lai truoc khi dat.</div>';
@@ -310,7 +328,8 @@
       roomId: roomId,
       rentalMode: lastSearchPayload.rentalMode,
       customerFullName: customerFullName.trim(),
-      voucherCode: lastSearchPayload.voucherCode
+      voucherCode: lastSearchPayload.voucherCode,
+      paymentOption: paymentOption
     };
 
     if (lastSearchPayload.rentalMode === 'HOURLY') {
@@ -328,7 +347,12 @@
         body: JSON.stringify(bookingPayload)
       });
 
-      const data = await res.json();
+      const data = await readApiResponse(res);
+
+      if (res.redirected || (res.url && res.url.includes('/login'))) {
+        bookingAlert.innerHTML = '<div class="alert-inline warn">Ban can dang nhap de dat phong. <a href="/login">Dang nhap ngay</a>.</div>';
+        return;
+      }
 
       if (res.status === 401 || res.status === 403) {
         bookingAlert.innerHTML = '<div class="alert-inline warn">Ban can dang nhap de dat phong. <a href="/login">Dang nhap ngay</a>.</div>';
@@ -339,9 +363,13 @@
         throw new Error(data && data.error ? data.error : 'Dat phong that bai');
       }
 
-      bookingAlert.innerHTML = '<div class="alert-inline ok">Dat phong thanh cong! Ma booking #' + data.bookingId + ', tong tien ' + formatCurrency(data.totalPrice) + '.</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline ok">Khoi tao dat phong thanh cong! Ma booking #' + data.bookingId + '. Dang chuyen sang VNPAY de thanh toan.</div>';
       if (bookingModal) {
         bookingModal.hide();
+      }
+
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl;
       }
     } catch (err) {
       bookingAlert.innerHTML = '<div class="alert-inline danger">Dat phong that bai: ' + err.message + '</div>';

@@ -34,12 +34,36 @@ public class User {
   private String role;
 
   @Column
+  private Integer trustScore = 0;
+
+  @Column(length = 255)
+  private String idCardImagePath;
+
+  @Column(length = 120)
+  private String idCardExtractedFullName;
+
+  @Column(length = 20)
+  private String accountVerificationStatus;
+
+  @Column
+  private LocalDateTime idCardVerifiedAt;
+
+  @Column
+  private LocalDateTime firstSuccessfulBookingAt;
+
+  @Column
   private LocalDateTime createdAt;
 
   @PrePersist
   public void prePersist() {
     if (createdAt == null) {
       createdAt = LocalDateTime.now();
+    }
+    if (trustScore == null) {
+      trustScore = 0;
+    }
+    if (accountVerificationStatus == null || accountVerificationStatus.isBlank()) {
+      accountVerificationStatus = AccountVerificationStatus.UNVERIFIED.name();
     }
   }
 
@@ -99,6 +123,54 @@ public class User {
 
   public void setRole(String role) {
     this.role = role;
+  }
+
+  public Integer getTrustScore() {
+    return trustScore;
+  }
+
+  public void setTrustScore(Integer trustScore) {
+    this.trustScore = trustScore;
+  }
+
+  public String getIdCardImagePath() {
+    return idCardImagePath;
+  }
+
+  public void setIdCardImagePath(String idCardImagePath) {
+    this.idCardImagePath = idCardImagePath;
+  }
+
+  public String getIdCardExtractedFullName() {
+    return idCardExtractedFullName;
+  }
+
+  public void setIdCardExtractedFullName(String idCardExtractedFullName) {
+    this.idCardExtractedFullName = idCardExtractedFullName;
+  }
+
+  public String getAccountVerificationStatus() {
+    return accountVerificationStatus;
+  }
+
+  public void setAccountVerificationStatus(String accountVerificationStatus) {
+    this.accountVerificationStatus = accountVerificationStatus;
+  }
+
+  public LocalDateTime getIdCardVerifiedAt() {
+    return idCardVerifiedAt;
+  }
+
+  public void setIdCardVerifiedAt(LocalDateTime idCardVerifiedAt) {
+    this.idCardVerifiedAt = idCardVerifiedAt;
+  }
+
+  public LocalDateTime getFirstSuccessfulBookingAt() {
+    return firstSuccessfulBookingAt;
+  }
+
+  public void setFirstSuccessfulBookingAt(LocalDateTime firstSuccessfulBookingAt) {
+    this.firstSuccessfulBookingAt = firstSuccessfulBookingAt;
   }
 
   public LocalDateTime getCreatedAt() {

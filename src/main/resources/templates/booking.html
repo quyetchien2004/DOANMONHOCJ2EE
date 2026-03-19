@@ -37,6 +37,12 @@
                 Chọn bộ lọc theo khu vực, thời gian, giá tiền, voucher. Kết quả
                 và bản đồ sẽ cập nhật ngay sau khi tìm.
               </p>
+              <a
+                class="btn btn-sm btn-outline-secondary"
+                th:href="@{/single-rooms}"
+              >
+                Xem bo anh phong thuc te
+              </a>
             </div>
             <div class="hero-steps">
               <span>1. Bộ lọc</span>
@@ -282,6 +288,17 @@
               id="customerFullName"
               placeholder="Nhập họ và tên"
             />
+            <label class="form-label mt-2" for="paymentOption"
+              >Hình thức thanh toán</label
+            >
+            <select class="form-select" id="paymentOption">
+              <option value="FULL_100">Thanh toán 100% giá trị đơn</option>
+              <option value="DEPOSIT_30">Đặt cọc 30% để giữ phòng</option>
+            </select>
+            <small class="text-muted d-block mt-1"
+              >Đơn chỉ có hiệu lực sau khi chuyển sang VNPAY và thanh toán thành
+              công.</small
+            >
           </div>
           <div class="modal-footer">
             <button

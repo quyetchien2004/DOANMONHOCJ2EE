@@ -2,9 +2,12 @@ package com.example.DANMONHOCJ22E.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -32,8 +35,13 @@ public class SecurityConfig {
                                 "/team", "/team-single",
                                 "/shop", "/shop-details",
                                 "/room", "/booking",
+                                "/chatbot",
                                 "/login", "/register", "/access-denied",
                                 "/api/hotels/**",
+                                "/api/chatbot/ask",
+                                "/api/payments/vnpay/callback",
+                                "/api/account/request-password-otp",
+                                "/api/account/reset-password",
                                 "/css/**", "/js/**", "/images/**", "/img/**", "/fonts/**", "/fontawesome/**", "/fontawesome-pro/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -58,6 +66,10 @@ public class SecurityConfig {
                 )
 
                 .exceptionHandling(exception -> exception
+                        .defaultAuthenticationEntryPointFor(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                                new AntPathRequestMatcher("/api/**")
+                        )
                         .accessDeniedPage("/access-denied")
                 );
 

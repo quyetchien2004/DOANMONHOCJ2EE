@@ -95,6 +95,22 @@
               <li class="nav-item" sec:authorize="isAuthenticated()">
                 <a
                   class="nav-link"
+                  th:classappend="${activePage == 'my-account'} ? ' active'"
+                  th:href="@{/my-account}"
+                  >Tài khoản của bạn</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${activePage == 'chatbot'} ? ' active'"
+                  th:href="@{/chatbot}"
+                  >Chatbot AI</a
+                >
+              </li>
+              <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a
+                  class="nav-link"
                   th:classappend="${activePage == 'my-bookings'} ? ' active'"
                   th:href="@{/my-bookings}"
                   >Đơn của tôi</a

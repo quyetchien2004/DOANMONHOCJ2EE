@@ -15,6 +15,7 @@ import com.example.DANMONHOCJ22E.dto.CreateBookingRequest;
 import com.example.DANMONHOCJ22E.service.BookingService;
 
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -28,9 +29,11 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody CreateBookingRequest request,
-                                                         Principal principal) {
+                                                         Principal principal,
+                                                         HttpServletRequest httpServletRequest) {
         String username = principal != null ? principal.getName() : null;
-        return ResponseEntity.ok(bookingService.createBooking(request, username));
+        String clientIp = httpServletRequest.getRemoteAddr();
+        return ResponseEntity.ok(bookingService.createBooking(request, username, clientIp));
     }
 
     @GetMapping("/my")

@@ -13,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.DANMONHOCJ22E.dto.BookingResponse;
 import com.example.DANMONHOCJ22E.dto.CreateBookingRequest;
+import com.example.DANMONHOCJ22E.dto.VoucherSelectionResult;
 import com.example.DANMONHOCJ22E.model.Booking;
 import com.example.DANMONHOCJ22E.model.BookingStatus;
+import com.example.DANMONHOCJ22E.model.PaymentOption;
 import com.example.DANMONHOCJ22E.model.RentalMode;
 import com.example.DANMONHOCJ22E.model.Room;
 import com.example.DANMONHOCJ22E.model.User;
-import com.example.DANMONHOCJ22E.model.Voucher;
 import com.example.DANMONHOCJ22E.repository.BookingRepository;
 import com.example.DANMONHOCJ22E.repository.RoomRepository;
 import com.example.DANMONHOCJ22E.repository.UserRepository;
@@ -31,21 +32,33 @@ public class BookingService {
     private final UserRepository userRepository;
     private final PricingService pricingService;
     private final VoucherService voucherService;
+    private final VnPayService vnPayService;
 
     public BookingService(RoomRepository roomRepository,
                           BookingRepository bookingRepository,
                           UserRepository userRepository,
                           PricingService pricingService,
-                          VoucherService voucherService) {
+                          VoucherService voucherService,
+                          VnPayService vnPayService) {
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.pricingService = pricingService;
         this.voucherService = voucherService;
+        this.vnPayService = vnPayService;
     }
 
     @Transactional
-    public BookingResponse createBooking(CreateBookingRequest request, String username) {
+    public BookingResponse createBooking(CreateBookingRequest request, String username, String clientIp) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Ban can dang nhap de dat phong va thanh toan");
+        }
+
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("Khong tim thay tai khoan dang nhap");
+        }
+
         Long roomId = Objects.requireNonNull(request.getRoomId(), "roomId khong duoc de trong");
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("Khong tim thay room"));
@@ -59,7 +72,7 @@ public class BookingService {
                 room.getId(),
                 checkIn,
                 checkOut,
-                List.of(BookingStatus.PENDING, BookingStatus.CONFIRMED)
+            List.of(BookingStatus.PENDING_PAYMENT, BookingStatus.PENDING, BookingStatus.CONFIRMED)
         ).isEmpty();
 
         if (conflicted) {
@@ -70,20 +83,22 @@ public class BookingService {
 
         Booking booking = new Booking();
         booking.setRoom(room);
-        User user = null;
-        if (username != null) {
-            user = userRepository.findByUsername(username);
-            if (user != null) {
-                booking.setUser(user);
-            }
-        }
+        booking.setUser(user);
 
-        Voucher voucher = voucherService.findAndValidate(request.getVoucherCode(), user);
-        BigDecimal discountAmount = voucherService.calculateDiscountAmount(originalPrice, voucher);
+        VoucherSelectionResult voucherSelection = voucherService.resolveDiscount(request.getVoucherCode(), user, originalPrice);
+        BigDecimal discountAmount = voucherSelection.getDiscountAmount();
         BigDecimal totalPrice = originalPrice.subtract(discountAmount).setScale(2, RoundingMode.HALF_UP);
         if (totalPrice.compareTo(BigDecimal.ZERO) < 0) {
             totalPrice = BigDecimal.ZERO;
         }
+
+        PaymentOption paymentOption = request.getPaymentOption();
+        if (paymentOption == null) {
+            throw new IllegalArgumentException("Ban can chon hinh thuc thanh toan");
+        }
+        BigDecimal requiredPaymentAmount = paymentOption == PaymentOption.FULL_100
+                ? totalPrice
+                : totalPrice.multiply(new BigDecimal("0.30")).setScale(2, RoundingMode.HALF_UP);
 
         booking.setCustomerFullName(request.getCustomerFullName().trim());
         booking.setRentalMode(request.getRentalMode());
@@ -91,11 +106,18 @@ public class BookingService {
         booking.setCheckOutAt(checkOut);
         booking.setOriginalPrice(originalPrice);
         booking.setDiscountAmount(discountAmount);
-        booking.setAppliedVoucherCode(voucher == null ? null : voucher.getCode().toUpperCase());
+        booking.setAppliedVoucherCode(voucherSelection.getAppliedCode());
+        booking.setAppliedUserVoucherId(voucherSelection.getUserVoucherId());
         booking.setTotalPrice(totalPrice);
+        booking.setPaymentOption(paymentOption);
+        booking.setRequiredPaymentAmount(requiredPaymentAmount);
+        booking.setPaidAmount(BigDecimal.ZERO);
+        // Keep compatibility with old SQL Server check constraint on status.
         booking.setStatus(BookingStatus.PENDING);
 
         Booking saved = bookingRepository.save(booking);
+        String txnRef = saved.getId() + "-" + System.currentTimeMillis();
+        String paymentUrl = vnPayService.createPaymentUrl(txnRef, requiredPaymentAmount, clientIp, "Thanh toan booking #" + saved.getId());
 
         BookingResponse response = new BookingResponse();
         response.setBookingId(saved.getId());
@@ -110,6 +132,11 @@ public class BookingService {
         response.setDiscountAmount(saved.getDiscountAmount());
         response.setAppliedVoucherCode(saved.getAppliedVoucherCode());
         response.setTotalPrice(saved.getTotalPrice());
+        response.setPaymentOption(saved.getPaymentOption());
+        response.setRequiredPaymentAmount(saved.getRequiredPaymentAmount());
+        response.setPaidAmount(saved.getPaidAmount());
+        response.setPaymentUrl(paymentUrl);
+        response.setInvoiceNumber(saved.getInvoiceNumber());
         response.setStatus(saved.getStatus());
         return response;
     }
@@ -140,6 +167,10 @@ public class BookingService {
         response.setDiscountAmount(booking.getDiscountAmount());
         response.setAppliedVoucherCode(booking.getAppliedVoucherCode());
         response.setTotalPrice(booking.getTotalPrice());
+        response.setPaymentOption(booking.getPaymentOption());
+        response.setRequiredPaymentAmount(booking.getRequiredPaymentAmount());
+        response.setPaidAmount(booking.getPaidAmount());
+        response.setInvoiceNumber(booking.getInvoiceNumber());
         response.setStatus(booking.getStatus());
         return response;
     }

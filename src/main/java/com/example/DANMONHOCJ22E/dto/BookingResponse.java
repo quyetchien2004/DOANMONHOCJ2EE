@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.DANMONHOCJ22E.model.BookingStatus;
+import com.example.DANMONHOCJ22E.model.PaymentOption;
 import com.example.DANMONHOCJ22E.model.RentalMode;
 
 public class BookingResponse {
@@ -20,6 +21,11 @@ public class BookingResponse {
     private BigDecimal discountAmount;
     private String appliedVoucherCode;
     private BigDecimal totalPrice;
+    private PaymentOption paymentOption;
+    private BigDecimal requiredPaymentAmount;
+    private BigDecimal paidAmount;
+    private String paymentUrl;
+    private String invoiceNumber;
     private BookingStatus status;
 
     public Long getBookingId() {
@@ -92,6 +98,46 @@ public class BookingResponse {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public PaymentOption getPaymentOption() {
+        return paymentOption;
+    }
+
+    public void setPaymentOption(PaymentOption paymentOption) {
+        this.paymentOption = paymentOption;
+    }
+
+    public BigDecimal getRequiredPaymentAmount() {
+        return requiredPaymentAmount;
+    }
+
+    public void setRequiredPaymentAmount(BigDecimal requiredPaymentAmount) {
+        this.requiredPaymentAmount = requiredPaymentAmount;
+    }
+
+    public BigDecimal getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(BigDecimal paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public String getPaymentUrl() {
+        return paymentUrl;
+    }
+
+    public void setPaymentUrl(String paymentUrl) {
+        this.paymentUrl = paymentUrl;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
     }
 
     public BigDecimal getOriginalPrice() {
