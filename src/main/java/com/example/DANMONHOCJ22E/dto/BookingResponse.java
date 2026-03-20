@@ -27,6 +27,8 @@ public class BookingResponse {
     private String paymentUrl;
     private String invoiceNumber;
     private BookingStatus status;
+    private String paymentStatus;
+    private String workflowStatus;
 
     public Long getBookingId() {
         return bookingId;
@@ -170,5 +172,21 @@ public class BookingResponse {
 
     public void setStatus(BookingStatus status) {
         this.status = status;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getWorkflowStatus() {
+        return workflowStatus;
+    }
+
+    public void setWorkflowStatus(String workflowStatus) {
+        this.workflowStatus = workflowStatus;
     }
 }

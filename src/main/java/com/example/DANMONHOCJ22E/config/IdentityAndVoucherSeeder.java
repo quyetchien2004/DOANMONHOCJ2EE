@@ -32,8 +32,8 @@ public class IdentityAndVoucherSeeder implements CommandLineRunner {
     public void run(String... args) {
         seedAdmin();
         seedVoucher("WELCOME10", "Giam cho user moi", VoucherAudience.NEW_USER, new BigDecimal("10"));
-        seedVoucher("LOYAL15", "Giam cho user lau nam", VoucherAudience.LOYAL_USER, new BigDecimal("15"));
-        seedVoucher("FREQUENT12", "Giam cho user dat nhieu", VoucherAudience.FREQUENT_USER, new BigDecimal("12"));
+        seedVoucher("LOYAL10", "Giam cho user quay lai dat phong lan 2", VoucherAudience.LOYAL_USER, new BigDecimal("10"));
+        seedVoucher("FREQUENT25", "Giam cho tai khoan verified trust 100", VoucherAudience.FREQUENT_USER, new BigDecimal("25"));
     }
 
     private void seedAdmin() {
@@ -45,7 +45,7 @@ public class IdentityAndVoucherSeeder implements CommandLineRunner {
         admin.setUsername("admin");
         admin.setPassword(passwordEncoder.encode("admin123"));
         admin.setFullName("System Admin");
-        admin.setEmail("admin@goldenlotus.vn");
+        admin.setEmail("admin@ccthotels.vn");
         admin.setPhone("0900000000");
         admin.setRole("ROLE_ADMIN");
         userRepository.save(admin);
@@ -67,3 +67,4 @@ public class IdentityAndVoucherSeeder implements CommandLineRunner {
         voucherRepository.save(v);
     }
 }
+

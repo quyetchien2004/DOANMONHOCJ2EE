@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const form = document.getElementById('homeSearchForm');
   if (!form) {
     return;
@@ -75,16 +75,16 @@
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data && data.error ? data.error : 'Khong the tai ket qua.');
+        throw new Error(data && data.error ? data.error : 'Không thể tải kết quả.');
       }
 
       const branchCount = data.length;
       const roomCount = countAvailableRooms(data);
 
       if (branchCount === 0) {
-        setResult('Khong tim thay phong phu hop. Ban co the doi bo loc va thu lai.', 'warn');
+        setResult('Không tìm thấy phòng phù hợp. Bạn có thể đổi bộ lọc và thử lại.', 'warn');
       } else {
-        setResult('Tim thay ' + branchCount + ' chi nhanh va ' + roomCount + ' phong trong. Nhan nut ben duoi de dat phong.', 'ok');
+        setResult('Tìm thấy ' + branchCount + ' chi nhánh và ' + roomCount + ' phòng trống. Nhấn nút bên dưới để đặt phòng.', 'ok');
       }
 
       goBookingLink.setAttribute('href', targetUrl);
@@ -100,3 +100,4 @@
 
   toggleFields();
 })();
+

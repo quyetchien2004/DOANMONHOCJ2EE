@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ket qua thanh toan</title>
+    <title>Kết quả thanh toán | CCT Hotels Company</title>
     <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
@@ -18,17 +18,20 @@
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-md-5">
           <div class="d-flex align-items-center gap-3 mb-3">
-            <div class="fs-1 text-success" th:if="${status == 'CONFIRMED'}">
+            <div class="fs-1 text-success" th:if="${paymentStatus == 'SUCCESS'}">
               <i class="fa-solid fa-circle-check"></i>
             </div>
-            <div class="fs-1 text-secondary" th:if="${status != 'CONFIRMED'}">
+            <div class="fs-1 text-warning" th:if="${paymentStatus == 'PENDING'}">
+              <i class="fa-solid fa-circle-pause"></i>
+            </div>
+            <div class="fs-1 text-danger" th:if="${paymentStatus == 'CANCELLED'}">
               <i class="fa-solid fa-circle-xmark"></i>
             </div>
             <div>
-              <h2 class="mb-1">Ket qua thanh toan VNPAY</h2>
+              <h2 class="mb-1">Kết quả thanh toán VNPAY</h2>
               <p
                 class="mb-0 text-muted"
-                th:text="${status == 'CONFIRMED'} ? 'Thanh toan thanh cong, don dat phong da duoc xac nhan.' : 'Thanh toan khong thanh cong hoac da bi huy.'"
+                th:text="${paymentStatus == 'SUCCESS'} ? 'Thanh toán thành công, đơn đặt phòng đã được xác nhận.' : (${paymentStatus == 'PENDING'} ? 'Đã thanh toán cọc. Đơn đang chờ admin duyệt.' : 'Thanh toán không thành công hoặc đã bị hủy.')"
               ></p>
             </div>
           </div>
@@ -36,7 +39,7 @@
           <div class="row g-3 mt-1">
             <div class="col-md-6">
               <div class="p-3 border rounded-3 bg-light">
-                <div class="small text-muted">Ma don</div>
+                <div class="small text-muted">Mã đơn</div>
                 <div
                   class="fw-semibold"
                   th:text="${bookingId != null ? '#' + bookingId : '-'}"
@@ -47,18 +50,18 @@
             </div>
             <div class="col-md-6">
               <div class="p-3 border rounded-3 bg-light">
-                <div class="small text-muted">Trang thai</div>
-                <div
-                  class="fw-semibold"
-                  th:text="${status != null} ? status : '-'"
-                >
-                  -
-                </div>
+                <div class="small text-muted">Trạng thái</div>
+                <span
+                  class="badge rounded-pill"
+                  th:classappend="${paymentStatus == 'SUCCESS' ? 'bg-success' : (paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}"
+                  th:text="${paymentStatus != null ? paymentStatus : '-'}"
+                ></span>
+                <div class="mt-2 text-muted small" th:text="${workflowStatus != null ? workflowStatus : status}"></div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="p-3 border rounded-3 bg-light h-100">
-                <div class="small text-muted">Tong gia tri don</div>
+                <div class="small text-muted">Tổng giá trị đơn</div>
                 <div
                   class="fw-semibold"
                   th:text="${totalPrice != null ? #numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT') + ' VND' : '-'}"
@@ -69,7 +72,7 @@
             </div>
             <div class="col-md-4">
               <div class="p-3 border rounded-3 bg-light h-100">
-                <div class="small text-muted">Can thanh toan</div>
+                <div class="small text-muted">Cần thanh toán</div>
                 <div
                   class="fw-semibold"
                   th:text="${requiredPaymentAmount != null ? #numbers.formatDecimal(requiredPaymentAmount, 0, 'COMMA', 0, 'POINT') + ' VND' : '-'}"
@@ -80,7 +83,7 @@
             </div>
             <div class="col-md-4">
               <div class="p-3 border rounded-3 bg-light h-100">
-                <div class="small text-muted">Da thanh toan</div>
+                <div class="small text-muted">Đã thanh toán</div>
                 <div
                   class="fw-semibold"
                   th:text="${paidAmount != null ? #numbers.formatDecimal(paidAmount, 0, 'COMMA', 0, 'POINT') + ' VND' : '-'}"
@@ -91,10 +94,10 @@
             </div>
             <div class="col-12">
               <div class="p-3 border rounded-3 bg-light">
-                <div class="small text-muted">So hoa don</div>
+                <div class="small text-muted">Số hóa đơn</div>
                 <div
                   class="fw-semibold"
-                  th:text="${invoiceNumber != null && !invoiceNumber.isBlank()} ? invoiceNumber : 'Chua phat hanh'"
+                  th:text="${invoiceNumber != null && !invoiceNumber.isBlank()} ? invoiceNumber : 'Chưa phát hành'"
                 >
                   -
                 </div>
@@ -104,10 +107,10 @@
 
           <div class="d-flex flex-wrap gap-2 mt-4">
             <a class="btn btn-brand" th:href="@{/my-bookings}">
-              <i class="fa-solid fa-receipt me-1"></i> Xem don cua toi
+              <i class="fa-solid fa-receipt me-1"></i> Xem đơn của tôi
             </a>
             <a class="btn btn-outline-secondary" th:href="@{/room}">
-              <i class="fa-solid fa-hotel me-1"></i> Dat phong tiep
+              <i class="fa-solid fa-hotel me-1"></i> Đặt phòng tiếp
             </a>
           </div>
         </div>
@@ -118,3 +121,6 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
   </body>
 </html>
+
+
+

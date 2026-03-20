@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cách dùng voucher đúng thời điểm | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('blog', 'light')}"></th:block>
+    <main class="container py-4">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1439130490301-25e322d88054?auto=format&fit=crop&w=1400&q=80" class="card-img-top" alt="Voucher" />
+        <div class="card-body p-4">
+          <h1 class="h3">Cách dùng voucher đúng thời điểm</h1>
+          <p class="text-muted">Cập nhật ngày 19/03/2026</p>
+          <h2 class="h5 mt-3">Voucher user mới 10%</h2>
+          <p>Sau khi đăng ký tài khoản thành công, hệ thống cấp voucher 10% tự động. Bạn chỉ cần dùng mã này khi tạo booking đầu tiên.</p>
+          <h2 class="h5 mt-3">Voucher lần đặt thứ 2</h2>
+          <p>Khi có lần đặt phòng thành công thứ hai, hệ thống cấp thêm voucher 10% để khuyến khích sử dụng tiếp tục.</p>
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mt-2" alt="Áp mã voucher" />
+          <h2 class="h5 mt-3">Voucher trust 100: giảm 25%</h2>
+          <p>Nếu tài khoản đã xác minh CCCD và có booking thành công, bạn sẽ nhận voucher 25%. Trường hợp đủ cả điều kiện lần 2 và trust 100, bạn có thể nhận cả hai voucher theo chính sách hệ thống.</p>
+          <a class="btn btn-brand mt-3" th:href="@{/blog}">Quay lại danh sách blog</a>
+        </div>
+      </article>
+    </main>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

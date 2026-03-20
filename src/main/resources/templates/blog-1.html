@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mẹo đặt phòng vào mùa cao điểm | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('blog', 'light')}"></th:block>
+    <main class="container py-4">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1400&q=80" class="card-img-top" alt="Banner đặt phòng" />
+        <div class="card-body p-4">
+          <h1 class="h3">Mẹo đặt phòng vào mùa cao điểm</h1>
+          <p class="text-muted">Cập nhật ngày 19/03/2026</p>
+          <h2 class="h5 mt-3">1. Chốt lịch sớm để có nhiều lựa chọn</h2>
+          <p>Trong mùa cao điểm, phòng đẹp thường hết nhanh. Bạn nên chốt lịch đi trước từ 2 đến 4 tuần để tránh tình trạng chỉ còn các phòng không phù hợp ngân sách.</p>
+          <h2 class="h5 mt-3">2. Dùng bộ lọc giá và khu vực</h2>
+          <p>Trang đặt phòng cho phép lọc theo tỉnh thành, mức giá tối đa và kiểu thuê. Kết hợp các bộ lọc này giúp rút ngắn thời gian tìm phòng phù hợp.</p>
+          <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb2101d?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mt-2" alt="Bộ lọc đặt phòng" />
+          <h2 class="h5 mt-3">3. Ưu tiên thanh toán sớm để giữ phòng</h2>
+          <p>Sau khi tạo booking, hãy hoàn tất thanh toán ngay để đơn được xác nhận nhanh. Nếu chọn đặt cọc 30%, đơn sẽ chuyển qua bước chờ admin duyệt.</p>
+          <a class="btn btn-brand mt-3" th:href="@{/blog}">Quay lại danh sách blog</a>
+        </div>
+      </article>
+    </main>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

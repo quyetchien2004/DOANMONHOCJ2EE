@@ -1,5 +1,6 @@
 package com.example.DANMONHOCJ22E.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.DANMONHOCJ22E.model.Booking;
 import com.example.DANMONHOCJ22E.model.BookingStatus;
+import com.example.DANMONHOCJ22E.model.PaymentOption;
 import com.example.DANMONHOCJ22E.model.User;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -18,6 +20,19 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         long countByUser(User user);
 
         long countByUserAndStatus(User user, BookingStatus status);
+
+        @Query("""
+                select b from Booking b
+                where b.paymentOption = :paymentOption
+                  and b.status = :status
+                  and b.paidAmount > :minPaidAmount
+                order by b.createdAt desc
+                """)
+        List<Booking> findPendingDepositApprovals(
+                @Param("paymentOption") PaymentOption paymentOption,
+                @Param("status") BookingStatus status,
+                @Param("minPaidAmount") BigDecimal minPaidAmount
+        );
 
     @Query("""
             select b from Booking b

@@ -16,8 +16,9 @@ public class EmailService {
     public void sendOtp(String to, String otpCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
-        message.setSubject("Ma OTP doi mat khau - Golden Lotus");
+        message.setSubject("Ma OTP doi mat khau - CCT Hotels Company");
         message.setText("Ma OTP cua ban la: " + otpCode + "\nMa co hieu luc trong 10 phut.");
         mailSender.send(message);
     }
 }
+

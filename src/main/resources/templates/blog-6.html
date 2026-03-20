@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checklist đặt phòng không lỗi | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('blog', 'light')}"></th:block>
+    <main class="container py-4">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1468824357306-a439d58ccb1c?auto=format&fit=crop&w=1400&q=80" class="card-img-top" alt="Checklist" />
+        <div class="card-body p-4">
+          <h1 class="h3">Checklist đặt phòng không lỗi cho người mới</h1>
+          <p class="text-muted">Cập nhật ngày 19/03/2026</p>
+          <h2 class="h5 mt-3">1. Kiểm tra tài khoản</h2>
+          <p>Đăng nhập đúng tài khoản để có thể đặt phòng và theo dõi đơn. Nếu quên mật khẩu, sử dụng tính năng OTP để khôi phục nhanh.</p>
+          <h2 class="h5 mt-3">2. Chọn thời gian hợp lý</h2>
+          <p>Thuê ngày cần dùng mốc check-in/check-out theo quy định hệ thống. Thuê giờ cần chọn thời điểm bắt đầu và kết thúc cụ thể.</p>
+          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mt-2" alt="Checklist đặt phòng" />
+          <h2 class="h5 mt-3">3. Chọn phương án thanh toán phù hợp</h2>
+          <p>Thanh toán 100% để xác nhận ngay, hoặc chọn cọc 30% nếu bạn muốn giữ phòng trước và chờ admin duyệt sau.</p>
+          <h2 class="h5 mt-3">4. Theo dõi trạng thái đơn</h2>
+          <p>Dùng trang Đơn của tôi để xem PENDING, SUCCESS hoặc CANCELLED và kiểm tra số tiền đã thanh toán.</p>
+          <a class="btn btn-brand mt-3" th:href="@{/blog}">Quay lại danh sách blog</a>
+        </div>
+      </article>
+    </main>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>
+
+
+
+

@@ -138,6 +138,8 @@ public class BookingService {
         response.setPaymentUrl(paymentUrl);
         response.setInvoiceNumber(saved.getInvoiceNumber());
         response.setStatus(saved.getStatus());
+        response.setPaymentStatus(BookingStatusHelper.resolvePaymentStatus(saved.getStatus()));
+        response.setWorkflowStatus(BookingStatusHelper.resolveWorkflowStatus(saved));
         return response;
     }
 
@@ -172,6 +174,8 @@ public class BookingService {
         response.setPaidAmount(booking.getPaidAmount());
         response.setInvoiceNumber(booking.getInvoiceNumber());
         response.setStatus(booking.getStatus());
+        response.setPaymentStatus(BookingStatusHelper.resolvePaymentStatus(booking.getStatus()));
+        response.setWorkflowStatus(BookingStatusHelper.resolveWorkflowStatus(booking));
         return response;
     }
 

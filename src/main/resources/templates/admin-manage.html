@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Quản trị hệ thống khách sạn</title>
+    <title>Quản trị hệ thống khách sạn | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
@@ -22,8 +22,8 @@
       </div>
 
       <div class="note-card mb-3">
-        Mẹo: Bấm "Ừ a" trên bảng để đổ dữ liệu vào form. Nếu tạo mới, bấm "Tạo
-        mới" để xoá nhanh form hiện tại.
+        Mẹo: Bấm "Sửa" trên bảng để đổ dữ liệu vào form. Nếu tạo mới, bấm "Tạo
+        mới" để xóa nhanh form hiện tại.
       </div>
 
       <div class="row g-3">
@@ -43,7 +43,7 @@
                   id="branchId"
                   name="id"
                   type="number"
-                  placeholder="ID (dể trống nếu thêm mới)"
+                  placeholder="ID (để trống nếu thêm mới)"
                 />
                 <input
                   class="form-control mb-2"
@@ -160,7 +160,7 @@
                           onsubmit="return confirm('Xóa chi nhánh này?');"
                         >
                           <button class="btn btn-sm btn-outline-danger">
-                            Xoa
+                            Xóa
                           </button>
                         </form>
                       </div>
@@ -308,7 +308,7 @@
                   <tr th:each="r : ${rooms}">
                     <td th:text="${r.id}"></td>
                     <td
-                      th:text="${r.roomNumber + ' (Tang ' + r.floorNumber + ')'}"
+                      th:text="${r.roomNumber + ' (Tầng ' + r.floorNumber + ')'}"
                     ></td>
                     <td th:text="${r.roomType}"></td>
                     <td
@@ -338,7 +338,7 @@
                             th:value="${selectedBranchId}"
                           />
                           <button class="btn btn-sm btn-outline-danger">
-                            Xoa
+                            Xóa
                           </button>
                         </form>
                       </div>
@@ -346,6 +346,48 @@
                   </tr>
                 </tbody>
               </table>
+
+              <div
+                class="d-flex justify-content-between align-items-center mt-2"
+                th:if="${totalRoomPages > 1}"
+              >
+                <small class="text-muted">
+                  Trang <span th:text="${currentRoomPage}">1</span> / <span th:text="${totalRoomPages}">1</span>
+                </small>
+                <nav aria-label="Room pagination">
+                  <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" th:classappend="${currentRoomPage == 1} ? ' disabled'">
+                      <a
+                        class="page-link"
+                        th:href="@{/admin/manage(branchId=${selectedBranchId}, roomPage=${currentRoomPage - 1}, roomSize=${roomPageSize})}"
+                        aria-label="Previous"
+                      >
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li
+                      class="page-item"
+                      th:each="p : ${#numbers.sequence(1, totalRoomPages)}"
+                      th:classappend="${p == currentRoomPage} ? ' active'"
+                    >
+                      <a
+                        class="page-link"
+                        th:href="@{/admin/manage(branchId=${selectedBranchId}, roomPage=${p}, roomSize=${roomPageSize})}"
+                        th:text="${p}"
+                      >1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentRoomPage == totalRoomPages} ? ' disabled'">
+                      <a
+                        class="page-link"
+                        th:href="@{/admin/manage(branchId=${selectedBranchId}, roomPage=${currentRoomPage + 1}, roomSize=${roomPageSize})}"
+                        aria-label="Next"
+                      >
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
           </div>
         </div>
@@ -498,7 +540,7 @@
                             th:value="${selectedBranchId}"
                           />
                           <button class="btn btn-sm btn-outline-danger">
-                            Xoa
+                            Xóa
                           </button>
                         </form>
                       </div>
@@ -607,3 +649,8 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
   </body>
 </html>
+
+
+
+
+

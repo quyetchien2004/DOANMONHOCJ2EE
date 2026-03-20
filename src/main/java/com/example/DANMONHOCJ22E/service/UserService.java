@@ -51,6 +51,7 @@ public class UserService {
         User saved = repo.save(user);
         userVoucherService.issueIfMissing(saved,
           UserVoucherService.REASON_NEW_ACCOUNT_10,
+          UserVoucherService.CODE_WELCOME10,
           java.math.BigDecimal.TEN,
           45);
         return saved;

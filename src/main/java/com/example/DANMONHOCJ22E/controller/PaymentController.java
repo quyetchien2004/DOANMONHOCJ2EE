@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.DANMONHOCJ22E.model.Booking;
+import com.example.DANMONHOCJ22E.service.BookingStatusHelper;
 import com.example.DANMONHOCJ22E.service.PaymentService;
 
 @Controller
@@ -27,6 +28,8 @@ public class PaymentController {
 
         redirectAttributes.addAttribute("bookingId", booking.getId());
         redirectAttributes.addAttribute("status", booking.getStatus().name());
+        redirectAttributes.addAttribute("paymentStatus", BookingStatusHelper.resolvePaymentStatus(booking.getStatus()));
+        redirectAttributes.addAttribute("workflowStatus", BookingStatusHelper.resolveWorkflowStatus(booking));
         redirectAttributes.addAttribute("totalPrice", booking.getTotalPrice());
         redirectAttributes.addAttribute("requiredPaymentAmount", booking.getRequiredPaymentAmount());
         redirectAttributes.addAttribute("paidAmount", booking.getPaidAmount());

@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vì sao nên xác minh CCCD sớm? | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('blog', 'light')}"></th:block>
+    <main class="container py-4">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1400&q=80" class="card-img-top" alt="Xác minh CCCD" />
+        <div class="card-body p-4">
+          <h1 class="h3">Vì sao nên xác minh CCCD sớm?</h1>
+          <p class="text-muted">Cập nhật ngày 19/03/2026</p>
+          <h2 class="h5 mt-3">Tăng độ tin cậy tài khoản</h2>
+          <p>Ngay khi xác minh CCCD hợp lệ, độ tin cậy của bạn tăng lên 80%. Đây là bước quan trọng để mở quyền lợi nâng cao trong hệ thống.</p>
+          <h2 class="h5 mt-3">Nhận ưu đãi khi hoàn tất booking thành công</h2>
+          <p>Khi đã xác minh CCCD và có booking thành công đầu tiên, trust score tăng lên 100% và hệ thống cấp voucher 25%.</p>
+          <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mt-2" alt="Trust score" />
+          <h2 class="h5 mt-3">An toàn và thuận tiện</h2>
+          <p>Thông tin định danh được dùng để giảm rủi ro gian lận, giúp quá trình xử lý booking và hỗ trợ khách hàng nhanh hơn khi có sự cố.</p>
+          <a class="btn btn-brand mt-3" th:href="@{/blog}">Quay lại danh sách blog</a>
+        </div>
+      </article>
+    </main>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>
+
+
+
+

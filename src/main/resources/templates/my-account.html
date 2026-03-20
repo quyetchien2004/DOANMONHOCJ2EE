@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tài khoản của bạn</title>
+    <title>Tài khoản của bạn | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
   </head>
@@ -66,12 +66,32 @@
         </p>
         <form id="verifyForm" enctype="multipart/form-data">
           <input
+            id="cccdImageInput"
             type="file"
             name="cccdImage"
             class="form-control mb-2"
-            accept="image/*"
+            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
             required
           />
+          <div id="verifyPreviewWrap" class="mb-2" style="display: none">
+            <img
+              id="verifyPreviewImage"
+              alt="Preview CCCD"
+              style="max-width: 320px; width: 100%; border-radius: 10px; border: 1px solid #e2d1bb"
+            />
+          </div>
+          <div class="progress mb-2" style="height: 14px; display: none" id="verifyProgressWrap">
+            <div
+              id="verifyProgressBar"
+              class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              style="width: 0%"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              0%
+            </div>
+          </div>
           <button class="btn btn-brand" type="submit">
             Upload và xác minh
           </button>
@@ -135,7 +155,7 @@
                   th:text="${v.validTo != null ? #temporals.format(v.validTo, 'dd/MM/yyyy HH:mm') : '-'}"
                 ></td>
                 <td
-                  th:text="${v.active ? 'Còn hiệu lực' : 'Đã dùng/Hết hạn'}"
+                  th:text="${v.usedAt != null ? 'Đã dùng' : (v.validTo != null && v.validTo.isBefore(T(java.time.LocalDateTime).now()) ? 'Hết hạn' : 'Còn hạn')}"
                 ></td>
               </tr>
             </tbody>
@@ -146,25 +166,105 @@
 
     <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.7.7/dist/axios.min.js"></script>
     <script>
       (function () {
         const verifyForm = document.getElementById("verifyForm");
         const verifyMessage = document.getElementById("verifyMessage");
+        const cccdImageInput = document.getElementById("cccdImageInput");
+        const verifyPreviewWrap = document.getElementById("verifyPreviewWrap");
+        const verifyPreviewImage = document.getElementById("verifyPreviewImage");
+        const verifyProgressWrap = document.getElementById("verifyProgressWrap");
+        const verifyProgressBar = document.getElementById("verifyProgressBar");
         const requestOtpBtn = document.getElementById("requestOtpBtn");
         const resetPasswordBtn = document.getElementById("resetPasswordBtn");
         const passwordMessage = document.getElementById("passwordMessage");
+        const maxFileSizeBytes = 5 * 1024 * 1024;
+        const allowedMimeTypes = ["image/jpeg", "image/png"];
+
+        function showVerifyError(message) {
+          verifyMessage.innerHTML =
+            '<div class="alert alert-danger mb-0">' + message + "</div>";
+        }
+
+        function resetProgress() {
+          verifyProgressBar.style.width = "0%";
+          verifyProgressBar.textContent = "0%";
+          verifyProgressBar.setAttribute("aria-valuenow", "0");
+          verifyProgressWrap.style.display = "none";
+        }
+
+        function validateSelectedFile(file) {
+          if (!file) {
+            return "Vui lòng chọn ảnh CCCD.";
+          }
+
+          const fileName = (file.name || "").toLowerCase();
+          const isAllowedExtension =
+            fileName.endsWith(".jpg") ||
+            fileName.endsWith(".jpeg") ||
+            fileName.endsWith(".png");
+          const isAllowedMime = allowedMimeTypes.includes(file.type);
+
+          if (!isAllowedExtension || !isAllowedMime) {
+            return "Chỉ chấp nhận file ảnh JPG, JPEG hoặc PNG.";
+          }
+          if (file.size > maxFileSizeBytes) {
+            return "Dung lượng ảnh phải nhỏ hơn 5MB.";
+          }
+
+          return null;
+        }
+
+        if (cccdImageInput) {
+          cccdImageInput.addEventListener("change", function () {
+            verifyMessage.innerHTML = "";
+            resetProgress();
+
+            const file = cccdImageInput.files && cccdImageInput.files[0];
+            const validationError = validateSelectedFile(file);
+            if (validationError) {
+              verifyPreviewWrap.style.display = "none";
+              showVerifyError(validationError);
+              return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              verifyPreviewImage.src = event.target.result;
+              verifyPreviewWrap.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          });
+        }
 
         if (verifyForm) {
           verifyForm.addEventListener("submit", async function (e) {
             e.preventDefault();
+
+            const selectedFile = cccdImageInput.files && cccdImageInput.files[0];
+            const validationError = validateSelectedFile(selectedFile);
+            if (validationError) {
+              showVerifyError(validationError);
+              return;
+            }
+
             const formData = new FormData(verifyForm);
             try {
-              const res = await fetch("/api/account/verify-idcard", {
-                method: "POST",
-                body: formData,
+              verifyProgressWrap.style.display = "block";
+              const res = await axios.post("/api/account/verify-idcard", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+                onUploadProgress: function (progressEvent) {
+                  if (!progressEvent.total) {
+                    return;
+                  }
+                  const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                  verifyProgressBar.style.width = percent + "%";
+                  verifyProgressBar.textContent = percent + "%";
+                  verifyProgressBar.setAttribute("aria-valuenow", String(percent));
+                },
               });
-              const data = await res.json();
-              if (!res.ok) throw new Error(data.error || "Xác minh thất bại");
+              const data = res.data || {};
               verifyMessage.innerHTML =
                 '<div class="alert alert-success mb-0">' +
                 data.message +
@@ -173,10 +273,13 @@
                 "%</div>";
               window.setTimeout(() => window.location.reload(), 1200);
             } catch (err) {
-              verifyMessage.innerHTML =
-                '<div class="alert alert-danger mb-0">' +
-                err.message +
-                "</div>";
+              const errorMessage =
+                (err.response && err.response.data && err.response.data.error)
+                  ? err.response.data.error
+                  : (err.message || "Xác minh thất bại");
+              showVerifyError(errorMessage);
+            } finally {
+              window.setTimeout(resetProgress, 500);
             }
           });
         }
@@ -222,7 +325,11 @@
               passwordMessage.innerHTML =
                 '<div class="alert alert-success mb-0">' +
                 data.message +
+                ". Đang chuyển về trang đăng nhập..." +
                 "</div>";
+              window.setTimeout(function () {
+                window.location.href = "/login?passwordReset=true";
+              }, 1400);
             } catch (err) {
               passwordMessage.innerHTML =
                 '<div class="alert alert-danger mb-0">' +

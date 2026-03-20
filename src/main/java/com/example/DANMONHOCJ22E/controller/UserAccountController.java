@@ -89,7 +89,7 @@ public class UserAccountController {
         User updated = accountVerificationService.uploadAndVerifyIdCard(principal.getName(), cccdImage);
 
         Map<String, Object> body = new HashMap<>();
-        body.put("message", "Xac minh CCCD thanh cong");
+        body.put("message", "Xác minh CCCD thành công");
         body.put("trustScore", updated.getTrustScore());
         body.put("verificationStatus", updated.getAccountVerificationStatus());
         return ResponseEntity.ok(body);
@@ -112,7 +112,7 @@ public class UserAccountController {
                 payload.get("otpCode"),
                 payload.get("newPassword")
         );
-        return ResponseEntity.ok(Map.of("message", "Doi mat khau thanh cong"));
+        return ResponseEntity.ok(Map.of("message", "Đổi mật khẩu thành công"));
     }
 
     private String resolveTargetEmail(String rawEmail, Principal principal) {
@@ -127,3 +127,4 @@ public class UserAccountController {
         return user != null ? user.getEmail() : rawEmail;
     }
 }
+

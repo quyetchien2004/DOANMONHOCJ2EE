@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -42,6 +43,14 @@ public class PageController {
     @GetMapping("/blog-details")
     public String blogDetails() {
         return "blog-details";
+    }
+
+    @GetMapping("/blog/{id}")
+    public String blogDetailById(@PathVariable int id) {
+        if (id < 1 || id > 6) {
+            return "redirect:/blog";
+        }
+        return "blog-" + id;
     }
 
     @GetMapping("/pricing")
@@ -102,6 +111,8 @@ public class PageController {
     @GetMapping("/payment-result")
     public String paymentResult(@RequestParam(required = false) Long bookingId,
                                 @RequestParam(required = false) String status,
+                                @RequestParam(required = false) String paymentStatus,
+                                @RequestParam(required = false) String workflowStatus,
                                 @RequestParam(required = false) BigDecimal totalPrice,
                                 @RequestParam(required = false) BigDecimal requiredPaymentAmount,
                                 @RequestParam(required = false) BigDecimal paidAmount,
@@ -109,6 +120,8 @@ public class PageController {
                                 Model model) {
         model.addAttribute("bookingId", bookingId);
         model.addAttribute("status", status);
+        model.addAttribute("paymentStatus", paymentStatus);
+        model.addAttribute("workflowStatus", workflowStatus);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("requiredPaymentAmount", requiredPaymentAmount);
         model.addAttribute("paidAmount", paidAmount);

@@ -12,7 +12,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfig {
 
-    // Mã hóa mật khẩu
+    // M� h�a m?t kh?u
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -28,7 +28,7 @@ public class SecurityConfig {
                                 "/", "/home",
                                 "/index-2",
                                 "/about", "/contact", "/faq",
-                                "/blog", "/blog-details",
+                                "/blog", "/blog/**", "/blog-details",
                                 "/pricing", "/projects",
                                 "/services", "/single-service",
                                 "/single-rooms",
@@ -50,10 +50,10 @@ public class SecurityConfig {
                 )
 
                 .formLogin(form -> form
-                        .loginPage("/login")              // Trang login tự tạo
-                        .loginProcessingUrl("/login")    // URL xử lý login
-                        .defaultSuccessUrl("/", true)    // Login thành công về trang chủ
-                        .failureUrl("/login?error=true") // Sai mật khẩu quay lại login
+                        .loginPage("/login")              // Trang login t? t?o
+                        .loginProcessingUrl("/login")    // URL x? l� login
+                        .defaultSuccessUrl("/", true)    // Login th�nh c�ng v? trang ch?
+                        .failureUrl("/login?error=true") // Sai m?t kh?u quay l?i login
                         .permitAll()
                 )
 

@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Blog | Golden Lotus</title>
+    <title>Blog | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
@@ -17,29 +17,85 @@
       <section class="page-head-card mb-3">
         <h2 class="mb-1">Blog dịch vụ</h2>
         <p class="text-muted mb-0">
-          Cập nhật kinh nghiệm du lịch, ưu đãi, và cách sử dụng hệ thống đặt
-          phòng hiệu quả.
+          Cập nhật kinh nghiệm du lịch, ưu đãi, và bí quyết đặt phòng hiệu quả
+          cùng CCT Hotels Company.
         </p>
       </section>
 
       <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-lg-4 col-md-6">
           <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Mẹo đặt phòng" />
             <div class="card-body">
               <h5>Mẹo đặt phòng vào mùa cao điểm</h5>
               <p class="mb-0">
-                Xem cách lọc theo khu vực và giá tối đa để ra kết quả phù hợp.
+                Chiến lược chọn thời điểm, khu vực và loại phòng để có giá tốt.
               </p>
+              <a class="btn btn-sm btn-brand mt-3" th:href="@{/blog/1}">Xem chi tiết</a>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-4 col-md-6">
           <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Thuê theo ngày" />
             <div class="card-body">
-              <h5>Cách áp dụng voucher đúng đối tượng</h5>
+              <h5>Thuê theo giờ hay theo ngày: chọn sao cho lợi?</h5>
               <p class="mb-0">
-                Hiểu quy tắc NEW_USER, LOYAL_USER, FREQUENT_USER để tránh lỗi.
+                So sánh chi phí và tình huống phù hợp cho từng chế độ thuê.
               </p>
+              <a class="btn btn-sm btn-brand mt-3" th:href="@{/blog/2}">Xem chi tiết</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1439130490301-25e322d88054?auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Voucher" />
+            <div class="card-body">
+              <h5>Cách dùng voucher đúng thời điểm</h5>
+              <p class="mb-0">
+                Tận dụng voucher tài khoản mới, voucher lần đặt thứ 2 và voucher trust 100.
+              </p>
+              <a class="btn btn-sm btn-brand mt-3" th:href="@{/blog/3}">Xem chi tiết</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Thanh toán cọc" />
+            <div class="card-body">
+              <h5>Thanh toán cọc 30%: cần biết điều gì?</h5>
+              <p class="mb-0">
+                Hiểu trạng thái đơn sau thanh toán cọc và quy trình admin duyệt.
+              </p>
+              <a class="btn btn-sm btn-brand mt-3" th:href="@{/blog/4}">Xem chi tiết</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="KYC CCCD" />
+            <div class="card-body">
+              <h5>Vì sao nên xác minh CCCD sớm?</h5>
+              <p class="mb-0">
+                Quyền lợi về trust score, bảo mật tài khoản và nhận voucher đặc biệt.
+              </p>
+              <a class="btn btn-sm btn-brand mt-3" th:href="@{/blog/5}">Xem chi tiết</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100">
+            <img src="https://images.unsplash.com/photo-1468824357306-a439d58ccb1c?auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Checklist đặt phòng" />
+            <div class="card-body">
+              <h5>Checklist đặt phòng không lỗi cho người mới</h5>
+              <p class="mb-0">
+                Tổng hợp các bước quan trọng từ tìm phòng tới hoàn tất thanh toán.
+              </p>
+              <a class="btn btn-sm btn-brand mt-3" th:href="@{/blog/6}">Xem chi tiết</a>
             </div>
           </div>
         </div>
@@ -50,3 +106,6 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
   </body>
 </html>
+
+
+

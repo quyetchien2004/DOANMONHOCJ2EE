@@ -1,12 +1,17 @@
 package com.example.DANMONHOCJ22E.controller;
 
-import com.example.DANMONHOCJ22E.dto.RegisterRequest;
-import com.example.DANMONHOCJ22E.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.DANMONHOCJ22E.dto.RegisterRequest;
+import com.example.DANMONHOCJ22E.service.UserService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class AuthController {
@@ -35,7 +40,7 @@ public class AuthController {
         }
 
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            model.addAttribute("error", "Mat khau xac nhan khong khop");
+            model.addAttribute("error", "Mật khẩu xác nhận không khớp");
             return "register";
         }
 
@@ -52,17 +57,22 @@ public class AuthController {
     public String login(@RequestParam(required = false) String error,
                         @RequestParam(required = false) String logout,
                         @RequestParam(required = false) String registered,
+                        @RequestParam(required = false) String passwordReset,
                         Model model) {
         if (error != null) {
-            model.addAttribute("error", "Sai ten dang nhap hoac mat khau");
+            model.addAttribute("error", "Sai tên đăng nhập hoặc mật khẩu");
         }
 
         if (logout != null) {
-            model.addAttribute("message", "Ban da dang xuat thanh cong");
+            model.addAttribute("message", "Bạn đã đăng xuất thành công");
         }
 
         if (registered != null) {
-            model.addAttribute("message", "Dang ky thanh cong, vui long dang nhap");
+            model.addAttribute("message", "Đăng ký thành công, vui lòng đăng nhập");
+        }
+
+        if (passwordReset != null) {
+            model.addAttribute("message", "Đổi mật khẩu thành công, vui lòng đăng nhập lại");
         }
 
         return "login";
@@ -73,3 +83,4 @@ public class AuthController {
         return "redirect:/";
     }
 }
+

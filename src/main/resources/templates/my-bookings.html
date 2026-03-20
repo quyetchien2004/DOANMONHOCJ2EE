@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Đơn đặt phòng của tôi</title>
+    <title>Đơn đặt phòng của tôi | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
@@ -16,8 +16,7 @@
       <div class="page-head-card mb-3">
         <h2 class="mb-1">Đơn đặt phòng của tôi</h2>
         <p class="text-muted mb-0">
-          Theo dõi lịch sử đặt phòng, voucher đã áp dụng và tổng thanh toán mỗi
-          đơn.
+          Theo dõi lịch sử đặt phòng, voucher đã áp dụng và tổng thanh toán mỗi đơn.
         </p>
       </div>
 
@@ -45,7 +44,7 @@
             <div class="mini-stat-label">Đơn đang chờ xác nhận</div>
             <div
               class="mini-stat-value"
-              th:text="${bookings.?[status.name() == 'PENDING_PAYMENT' || status.name() == 'PENDING'].size()}"
+              th:text="${bookings.?[paymentStatus == 'PENDING'].size()}"
             ></div>
           </div>
         </div>
@@ -123,9 +122,12 @@
               <td>
                 <span
                   class="badge rounded-pill"
-                  th:classappend="${b.status.name() == 'CONFIRMED' ? 'bg-success' : (b.status.name() == 'PAYMENT_FAILED' || b.status.name() == 'CANCELLED' ? 'bg-secondary' : 'bg-warning text-dark')}"
-                  th:text="${b.status.name() == 'CONFIRMED' ? 'Đã xác nhận' : (b.status.name() == 'PAYMENT_FAILED' ? 'Thanh toán lỗi' : (b.status.name() == 'CANCELLED' ? 'Đã hủy' : 'Chờ thanh toán'))}"
+                  th:classappend="${b.paymentStatus == 'SUCCESS' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}"
+                  th:text="${b.paymentStatus == 'SUCCESS' ? 'SUCCESS' : (b.paymentStatus == 'CANCELLED' ? 'CANCELLED' : 'PENDING')}"
                 ></span>
+                <div>
+                  <small class="text-muted" th:text="${b.workflowStatus}"></small>
+                </div>
               </td>
             </tr>
           </tbody>

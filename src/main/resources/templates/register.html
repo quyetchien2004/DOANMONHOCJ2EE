@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng ký</title>
+    <title>Đăng ký | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/auth-modern.css}" />
   </head>
   <body class="auth-body">
@@ -12,133 +12,52 @@
         <span class="brand-badge">Hotel Booking</span>
         <div>
           <h1>Tạo tài khoản để bắt đầu quản lý đặt phòng</h1>
-          <p>
-            Thiết lập tài khoản nhân viên để vận hành quy trình đặt phòng, kiểm
-            tra phòng trống và cập nhật thông tin khách.
-          </p>
+          <p>Thiết lập tài khoản nhân viên để vận hành quy trình đặt phòng, kiểm tra phòng trống và cập nhật thông tin khách.</p>
         </div>
-        <p class="auth-note">
-          Mọi thông tin đăng ký được kiểm tra hợp lệ và lưu trữ an toàn.
-        </p>
+        <p class="auth-note">Mọi thông tin đăng ký được kiểm tra hợp lệ và lưu trữ an toàn.</p>
       </section>
-
       <section class="auth-panel">
         <h2>Đăng ký</h2>
         <p class="sub">Điền thông tin để tạo tài khoản mới cho hệ thống.</p>
-
         <div class="flash error" th:if="${error}" th:text="${error}"></div>
-
-        <form
-          th:action="@{/register}"
-          method="post"
-          th:object="${registerRequest}"
-        >
+        <form th:action="@{/register}" method="post" th:object="${registerRequest}">
           <div class="form-row">
             <label for="username">Tên đăng nhập</label>
-            <input
-              id="username"
-              class="field"
-              type="text"
-              th:field="*{username}"
-              required
-            />
-            <small
-              class="field-error"
-              th:if="${#fields.hasErrors('username')}"
-              th:errors="*{username}"
-            ></small>
+            <input id="username" class="field" type="text" th:field="*{username}" required />
+            <small class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
           </div>
-
           <div class="grid-2">
             <div class="form-row">
               <label for="password">Mật khẩu</label>
-              <input
-                id="password"
-                class="field"
-                type="password"
-                th:field="*{password}"
-                required
-              />
-              <small
-                class="field-error"
-                th:if="${#fields.hasErrors('password')}"
-                th:errors="*{password}"
-              ></small>
+              <input id="password" class="field" type="password" th:field="*{password}" required />
+              <small class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
             </div>
-
             <div class="form-row">
               <label for="confirmPassword">Xác nhận mật khẩu</label>
-              <input
-                id="confirmPassword"
-                class="field"
-                type="password"
-                th:field="*{confirmPassword}"
-                required
-              />
-              <small
-                class="field-error"
-                th:if="${#fields.hasErrors('confirmPassword')}"
-                th:errors="*{confirmPassword}"
-              ></small>
+              <input id="confirmPassword" class="field" type="password" th:field="*{confirmPassword}" required />
+              <small class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></small>
             </div>
           </div>
-
           <div class="form-row">
             <label for="fullName">Họ và tên</label>
-            <input
-              id="fullName"
-              class="field"
-              type="text"
-              th:field="*{fullName}"
-              required
-            />
-            <small
-              class="field-error"
-              th:if="${#fields.hasErrors('fullName')}"
-              th:errors="*{fullName}"
-            ></small>
+            <input id="fullName" class="field" type="text" th:field="*{fullName}" required />
+            <small class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
           </div>
-
           <div class="grid-2">
             <div class="form-row">
               <label for="email">Email</label>
-              <input
-                id="email"
-                class="field"
-                type="email"
-                th:field="*{email}"
-                required
-              />
-              <small
-                class="field-error"
-                th:if="${#fields.hasErrors('email')}"
-                th:errors="*{email}"
-              ></small>
+              <input id="email" class="field" type="email" th:field="*{email}" required />
+              <small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
             </div>
-
             <div class="form-row">
               <label for="phone">Số điện thoại</label>
-              <input
-                id="phone"
-                class="field"
-                type="text"
-                th:field="*{phone}"
-                required
-              />
-              <small
-                class="field-error"
-                th:if="${#fields.hasErrors('phone')}"
-                th:errors="*{phone}"
-              ></small>
+              <input id="phone" class="field" type="text" th:field="*{phone}" required />
+              <small class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
             </div>
           </div>
-
           <button type="submit" class="submit-btn">Đăng ký tài khoản</button>
         </form>
-
-        <p class="switch-link">
-          Đã có tài khoản? <a th:href="@{/login}">Đăng nhập ngay</a>
-        </p>
+        <p class="switch-link">Đã có tài khoản? <a th:href="@{/login}">Đăng nhập ngay</a></p>
       </section>
     </main>
   </body>

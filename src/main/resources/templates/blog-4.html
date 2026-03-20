@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thanh toán cọc 30% và duyệt đơn | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('blog', 'light')}"></th:block>
+    <main class="container py-4">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?auto=format&fit=crop&w=1400&q=80" class="card-img-top" alt="Thanh toán cọc" />
+        <div class="card-body p-4">
+          <h1 class="h3">Thanh toán cọc 30%: quy trình và lưu ý</h1>
+          <p class="text-muted">Cập nhật ngày 19/03/2026</p>
+          <h2 class="h5 mt-3">Bước 1: Chọn hình thức cọc 30%</h2>
+          <p>Khi tạo booking, bạn có thể chọn thanh toán cọc 30% để giữ phòng. Sau thanh toán thành công qua VNPAY, trạng thái đơn sẽ chờ duyệt.</p>
+          <h2 class="h5 mt-3">Bước 2: Admin duyệt đơn</h2>
+          <p>Admin kiểm tra và duyệt hoặc từ chối đơn tại màn hình quản trị. Khi duyệt, đơn chuyển thành thành công và phát hành hóa đơn.</p>
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mt-2" alt="Quy trình duyệt" />
+          <h2 class="h5 mt-3">Bước 3: Theo dõi trạng thái</h2>
+          <p>Trang đơn của tôi hiển thị rõ các badge trạng thái PENDING, SUCCESS, CANCELLED để bạn nắm tình trạng thanh toán tức thời.</p>
+          <a class="btn btn-brand mt-3" th:href="@{/blog}">Quay lại danh sách blog</a>
+        </div>
+      </article>
+    </main>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>
+
+

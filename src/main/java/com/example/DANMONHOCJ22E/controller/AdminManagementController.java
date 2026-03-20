@@ -40,7 +40,10 @@ public class AdminManagementController {
     }
 
     @GetMapping("/manage")
-    public String manage(@RequestParam(required = false) Long branchId, Model model) {
+    public String manage(@RequestParam(required = false) Long branchId,
+                         @RequestParam(name = "roomPage", defaultValue = "1") Integer roomPage,
+                         @RequestParam(name = "roomSize", defaultValue = "8") Integer roomSize,
+                         Model model) {
         List<HotelBranch> branches = branchRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(HotelBranch::getName))
@@ -51,16 +54,35 @@ public class AdminManagementController {
             selectedBranchId = branches.get(0).getId();
         }
 
-        List<Room> rooms = selectedBranchId == null
+        List<Room> allRooms = selectedBranchId == null
                 ? List.of()
                 : roomRepository.findByBranchId(selectedBranchId)
                 .stream()
                 .sorted(Comparator.comparing(Room::getRoomNumber))
                 .toList();
 
+        int resolvedRoomSize = (roomSize == null || roomSize < 1) ? 8 : Math.min(roomSize, 50);
+        int totalRooms = allRooms.size();
+        int totalRoomPages = totalRooms == 0 ? 1 : (int) Math.ceil((double) totalRooms / resolvedRoomSize);
+        int resolvedRoomPage = roomPage == null ? 1 : roomPage;
+        if (resolvedRoomPage < 1) {
+            resolvedRoomPage = 1;
+        }
+        if (resolvedRoomPage > totalRoomPages) {
+            resolvedRoomPage = totalRoomPages;
+        }
+
+        int fromIndex = (resolvedRoomPage - 1) * resolvedRoomSize;
+        int toIndex = Math.min(fromIndex + resolvedRoomSize, totalRooms);
+        List<Room> pagedRooms = totalRooms == 0 ? List.of() : allRooms.subList(fromIndex, toIndex);
+
         model.addAttribute("branches", branches);
         model.addAttribute("selectedBranchId", selectedBranchId);
-        model.addAttribute("rooms", rooms);
+        model.addAttribute("rooms", pagedRooms);
+        model.addAttribute("totalRooms", totalRooms);
+        model.addAttribute("currentRoomPage", resolvedRoomPage);
+        model.addAttribute("totalRoomPages", totalRoomPages);
+        model.addAttribute("roomPageSize", resolvedRoomSize);
         model.addAttribute("roomTypes", RoomType.values());
         model.addAttribute("voucherAudiences", VoucherAudience.values());
         model.addAttribute("vouchers", voucherRepository.findAll().stream().sorted(Comparator.comparing(Voucher::getCode)).toList());

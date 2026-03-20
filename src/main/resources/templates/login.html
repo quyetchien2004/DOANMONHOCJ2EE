@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập</title>
+    <title>Đăng nhập | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/auth-modern.css}" />
   </head>
   <body class="auth-body">
@@ -24,46 +24,26 @@
 
       <section class="auth-panel">
         <h2>Đăng nhập</h2>
-        <p class="sub">
-          Chào mừng bạn quay trở lại hệ thống quản lý khách sạn.
-        </p>
+        <p class="sub">Chào mừng bạn quay trở lại hệ thống khách sạn.</p>
 
         <div class="flash error" th:if="${error}" th:text="${error}"></div>
-        <div
-          class="flash success"
-          th:if="${message}"
-          th:text="${message}"
-        ></div>
+        <div class="flash success" th:if="${message}" th:text="${message}"></div>
 
         <form th:action="@{/login}" method="post">
           <div class="form-row">
             <label for="username">Tên đăng nhập</label>
-            <input
-              id="username"
-              class="field"
-              type="text"
-              name="username"
-              required
-            />
+            <input id="username" class="field" type="text" name="username" required />
           </div>
 
           <div class="form-row">
             <label for="password">Mật khẩu</label>
-            <input
-              id="password"
-              class="field"
-              type="password"
-              name="password"
-              required
-            />
+            <input id="password" class="field" type="password" name="password" required />
           </div>
 
           <button type="submit" class="submit-btn">Đăng nhập</button>
         </form>
 
-        <p class="switch-link">
-          Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a>
-        </p>
+        <p class="switch-link">Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a></p>
       </section>
     </main>
   </body>

@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thuê theo giờ hay theo ngày? | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('blog', 'light')}"></th:block>
+    <main class="container py-4">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=80" class="card-img-top" alt="Thuê giờ ngày" />
+        <div class="card-body p-4">
+          <h1 class="h3">Thuê theo giờ hay theo ngày: chọn sao cho lợi?</h1>
+          <p class="text-muted">Cập nhật ngày 19/03/2026</p>
+          <h2 class="h5 mt-3">Thuê theo giờ</h2>
+          <p>Phù hợp cho nhu cầu lưu trú ngắn, công tác nhanh hoặc nghỉ tạm. Bạn cần chọn startDateTime và endDateTime chính xác.</p>
+          <h2 class="h5 mt-3">Thuê theo ngày</h2>
+          <p>Hệ thống cố định check-in 14:00 và check-out 12:00 để đảm bảo vận hành phòng. Nếu ở qua đêm, thuê ngày thường tiết kiệm hơn.</p>
+          <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded mt-2" alt="So sánh chi phí" />
+          <h2 class="h5 mt-3">Gợi ý nhanh</h2>
+          <p>Nếu thời gian dưới 8 giờ, hãy so sánh thuê giờ trước. Nếu qua đêm hoặc từ 12 giờ trở lên, thuê ngày thường hợp lý hơn về chi phí.</p>
+          <a class="btn btn-brand mt-3" th:href="@{/blog}">Quay lại danh sách blog</a>
+        </div>
+      </article>
+    </main>
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Duyệt đặt cọc | CCT Hotels Company</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+  </head>
+  <body class="app-page">
+    <th:block th:replace="~{fragments/layout :: siteHeader('admin', 'light')}"></th:block>
+
+    <div class="container py-4">
+      <div class="page-head-card mb-3">
+        <h2 class="mb-1">Duyệt đặt cọc 30%</h2>
+        <p class="text-muted mb-0">
+          Danh sách đơn đã thanh toán cọc và đang chờ admin xác nhận.
+        </p>
+      </div>
+
+      <div class="alert alert-success" th:if="${message}" th:text="${message}"></div>
+
+      <div class="card">
+        <div class="card-body table-responsive">
+          <table class="table table-sm table-striped align-middle">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Khách hàng</th>
+                <th>Chi nhánh / Phòng</th>
+                <th>Thời gian</th>
+                <th>Tổng tiền</th>
+                <th>Đã thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="b : ${pendingApprovals}">
+                <td th:text="${b.id}">1</td>
+                <td>
+                  <div class="fw-semibold" th:text="${b.customerFullName}">Nguyễn Văn A</div>
+                  <small class="text-muted" th:text="${b.user != null ? b.user.username : 'Khách vãng lai'}">user</small>
+                </td>
+                <td>
+                  <div th:text="${b.room != null && b.room.branch != null ? b.room.branch.name : '-'}">Chi nhánh A</div>
+                  <small class="text-muted" th:text="${b.room != null ? 'Phòng ' + b.room.roomNumber : '-'}">Phòng 101</small>
+                </td>
+                <td>
+                  <div th:text="${#temporals.format(b.checkInAt, 'dd/MM/yyyy HH:mm')}">20/03/2026 14:00</div>
+                  <small class="text-muted" th:text="${#temporals.format(b.checkOutAt, 'dd/MM/yyyy HH:mm')}">21/03/2026 12:00</small>
+                </td>
+                <td th:text="${#numbers.formatDecimal(b.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VND'">2,000,000 VND</td>
+                <td th:text="${#numbers.formatDecimal(b.paidAmount, 0, 'COMMA', 0, 'POINT')} + ' VND'">600,000 VND</td>
+                <td>
+                  <span class="badge rounded-pill bg-warning text-dark" th:text="${statusHelper.resolveWorkflowStatus(b)}">Chờ duyệt</span>
+                </td>
+                <td>
+                  <div class="d-flex flex-wrap gap-1">
+                    <form th:action="@{'/admin/bookings/' + ${b.id} + '/approve'}" method="post">
+                      <button class="btn btn-sm btn-success" type="submit">
+                        <i class="fa-solid fa-check"></i> Duyệt
+                      </button>
+                    </form>
+                    <form th:action="@{'/admin/bookings/' + ${b.id} + '/reject'}" method="post">
+                      <button class="btn btn-sm btn-danger" type="submit">
+                        <i class="fa-solid fa-xmark"></i> Từ chối
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(pendingApprovals)}">
+                <td colspan="8" class="text-muted">Hiện không có đơn đặt cọc nào cần duyệt.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+  </body>
+</html>

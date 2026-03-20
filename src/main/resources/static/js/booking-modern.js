@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const form = document.getElementById('searchForm');
   const rentalModeEl = document.getElementById('rentalMode');
   const hourlyFields = document.getElementById('hourlyFields');
@@ -106,8 +106,8 @@
     const raw = await res.text();
     return {
       error: raw && raw.trim().startsWith('<')
-        ? 'Phien dang nhap het han hoac ban chua dang nhap'
-        : (raw || 'Khong nhan duoc phan hoi hop le tu may chu')
+        ? 'Phiên đăng nhập hết hạn hoặc bạn chưa đăng nhập'
+        : (raw || 'Không nhận được phản hồi hợp lệ từ máy chủ')
     };
   }
 
@@ -123,10 +123,10 @@
 
   function roomTypeText(roomType) {
     switch (roomType) {
-      case 'SINGLE': return 'Phong don';
-      case 'DOUBLE': return 'Phong doi';
-      case 'TRIPLE': return 'Phong 3 nguoi';
-      case 'FAMILY': return 'Phong gia dinh';
+      case 'SINGLE': return 'Phòng đơn';
+      case 'DOUBLE': return 'Phòng đôi';
+      case 'TRIPLE': return 'Phòng 3 người';
+      case 'FAMILY': return 'Phòng gia đình';
       default: return roomType;
     }
   }
@@ -139,7 +139,7 @@
         markers.forEach((m) => map.removeLayer(m));
         markers = [];
       }
-      branchResults.innerHTML = '<div class="note-card">Khong tim thay phong phu hop voi bo loc hien tai.</div>';
+      branchResults.innerHTML = '<div class="note-card">Không tìm thấy phòng phù hợp với bộ lọc hiện tại.</div>';
       setSummary(0, 0, null);
       return;
     }
@@ -149,7 +149,7 @@
     let minPrice = null;
 
     branchResults.innerHTML = data.map((branch) => {
-      const distance = branch.distanceKm == null ? 'Chua co vi tri nguoi dung' : branch.distanceKm + ' km';
+      const distance = branch.distanceKm == null ? 'Chưa có vị trí người dùng' : branch.distanceKm + ' km';
       const roomsHtml = (branch.availableRooms || []).map((room) => {
         roomCount += 1;
         if (room.estimatedPrice != null && (minPrice == null || room.estimatedPrice < minPrice)) {
@@ -163,17 +163,17 @@
         return '<div class="room-item">'
           + '<div class="d-flex justify-content-between align-items-start flex-wrap">'
           + '<div>'
-          + '<h4>Phong ' + room.roomNumber + ' - Tang ' + room.floorNumber + '</h4>'
+          + '<h4>Phong ' + room.roomNumber + ' - Tầng ' + room.floorNumber + '</h4>'
           + '<div class="room-meta">' + roomTypeText(room.roomType) + ' • ' + room.capacity + ' khach</div>'
           + '</div>'
           + '<div>'
-          + '<span class="price-chip">Tam tinh: ' + formatCurrency(room.estimatedPrice) + '</span>'
-          + (room.hasNiceView ? '<span class="badge-view">View dep</span>' : '')
+          + '<span class="price-chip">Tạm tính: ' + formatCurrency(room.estimatedPrice) + '</span>'
+          + (room.hasNiceView ? '<span class="badge-view">View đẹp</span>' : '')
           + '</div>'
           + '</div>'
           + '<div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">'
-          + '<small>Gia gio: ' + formatCurrency(room.hourlyRate) + ' | Gia ngay: ' + formatCurrency(room.dailyRate) + '</small>'
-            + '<button type="button" class="btn btn-brand btn-sm js-book-room" data-room-id="' + room.roomId + '">Dat phong nay</button>'
+          + '<small>Giá giờ: ' + formatCurrency(room.hourlyRate) + ' | Giá ngày: ' + formatCurrency(room.dailyRate) + '</small>'
+            + '<button type="button" class="btn btn-brand btn-sm js-book-room" data-room-id="' + room.roomId + '">Đặt phòng ngay</button>'
           + '</div>'
           + '</div>';
       }).join('');
@@ -181,8 +181,8 @@
       return '<div class="branch-card">'
         + '<div class="branch-head">'
         + '<h3 class="branch-title">' + branch.branchName + ' (' + branch.province + ')</h3>'
-        + '<p class="branch-sub">' + branch.address + ' • Khoang cach: ' + distance + '</p>'
-        + '<p class="branch-sub">' + branch.totalFloors + ' tang • ' + branch.roomsPerFloor + ' phong/tang</p>'
+        + '<p class="branch-sub">' + branch.address + ' • Khoảng cách: ' + distance + '</p>'
+        + '<p class="branch-sub">' + branch.totalFloors + ' tầng • ' + branch.roomsPerFloor + ' phòng/tầng</p>'
         + '</div>'
         + '<div class="room-list">' + roomsHtml + '</div>'
         + '</div>';
@@ -222,28 +222,28 @@
 
     const payload = collectPayload();
     lastSearchPayload = payload;
-    setStatus('Dang tim phong phu hop...', 'warn');
+    setStatus('Đang tìm phòng phù hợp...', 'warn');
     if (searchBtn) {
       searchBtn.disabled = true;
-      searchBtn.textContent = 'Dang tim...';
+      searchBtn.textContent = 'Đang tìm...';
     }
 
     try {
       const res = await fetch('/api/hotels/search?' + toQueryString(payload));
       const data = await readApiResponse(res);
       if (!res.ok) {
-        throw new Error(data && data.error ? data.error : 'Khong the tim phong');
+        throw new Error(data && data.error ? data.error : 'Không thể tìm phòng');
       }
       renderResults(data);
-      setStatus('Tim thay ' + data.length + ' chi nhanh phu hop.', 'ok');
+      setStatus('Tìm thấy ' + data.length + ' chi nhánh phù hợp.', 'ok');
     } catch (err) {
       branchResults.innerHTML = '';
-      setStatus('Loi tim kiem: ' + err.message, 'danger');
+      setStatus('Lỗi tìm kiếm: ' + err.message, 'danger');
       setSummary(0, 0, null);
     } finally {
       if (searchBtn) {
         searchBtn.disabled = false;
-        searchBtn.textContent = 'Tim phong trong ngay';
+        searchBtn.textContent = 'Tìm phòng trống ngay';
       }
     }
   }
@@ -251,10 +251,10 @@
   function resetSearchForm() {
     form.reset();
     toggleModeFields();
-    branchResults.innerHTML = '<div class="note-card">Nhap bo loc va bam Tim phong trong ngay de hien ket qua.</div>';
+    branchResults.innerHTML = '<div class="note-card">Nhap bo loc va bam Tìm phòng trống ngay de hien ket qua.</div>';
     bookingAlert.innerHTML = '';
     setSummary(0, 0, null);
-    setStatus('Da dat lai bo loc. San sang tim phong.', 'ok');
+    setStatus('Đã đặt lại bộ lọc. Sẵn sàng tìm phòng.', 'ok');
     lastSearchPayload = null;
 
     if (map) {
@@ -270,17 +270,17 @@
       if (hasRequiredSearchFields(recoveredPayload)) {
         lastSearchPayload = recoveredPayload;
       } else {
-        bookingAlert.innerHTML = '<div class="alert-inline warn">Hay tim phong truoc khi dat.</div>';
+        bookingAlert.innerHTML = '<div class="alert-inline warn">Hãy tìm phòng trước khi đặt.</div>';
         return;
       }
     }
 
     selectedRoomIdEl.value = roomId;
-    selectedRoomLabelEl.textContent = 'Chi nhanh: ' + branchName + ' | Phong ' + roomNumber + ' - Tang ' + floorNumber;
+    selectedRoomLabelEl.textContent = 'Chi nhánh: ' + branchName + ' | Phong ' + roomNumber + ' - Tầng ' + floorNumber;
     customerFullNameEl.value = '';
 
     if (!bookingModal) {
-      bookingAlert.innerHTML = '<div class="alert-inline warn">Khong mo duoc hop thoai dat phong. Hay tai lai trang va thu lai.</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline warn">Không mở được hộp thoại đặt phòng. Hãy tải lại trang và thử lại.</div>';
       return;
     }
 
@@ -297,7 +297,7 @@
     const roomCtx = roomContextById[String(roomId)];
 
     if (!roomCtx) {
-      bookingAlert.innerHTML = '<div class="alert-inline warn">Khong lay duoc thong tin phong da chon. Hay tim phong lai.</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline warn">Không lấy được thông tin phòng đã chọn. Hãy tìm phòng lại.</div>';
       return;
     }
 
@@ -310,12 +310,12 @@
     const paymentOption = paymentOptionEl ? paymentOptionEl.value : 'DEPOSIT_30';
 
     if (!lastSearchPayload || !hasRequiredSearchFields(lastSearchPayload)) {
-      bookingAlert.innerHTML = '<div class="alert-inline warn">Thong tin tim kiem khong hop le. Hay tim phong lai truoc khi dat.</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline warn">Thông tin tìm kiếm không hợp lệ. Hãy tìm phòng lại trước khi đặt.</div>';
       return;
     }
 
     if (!roomId) {
-      bookingAlert.innerHTML = '<div class="alert-inline warn">Chua chon phong hop le.</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline warn">Chưa chọn phòng hợp lệ.</div>';
       return;
     }
 
@@ -350,20 +350,20 @@
       const data = await readApiResponse(res);
 
       if (res.redirected || (res.url && res.url.includes('/login'))) {
-        bookingAlert.innerHTML = '<div class="alert-inline warn">Ban can dang nhap de dat phong. <a href="/login">Dang nhap ngay</a>.</div>';
+        bookingAlert.innerHTML = '<div class="alert-inline warn">Bạn cần đăng nhập để đặt phòng. <a href="/login">Đăng nhập ngay</a>.</div>';
         return;
       }
 
       if (res.status === 401 || res.status === 403) {
-        bookingAlert.innerHTML = '<div class="alert-inline warn">Ban can dang nhap de dat phong. <a href="/login">Dang nhap ngay</a>.</div>';
+        bookingAlert.innerHTML = '<div class="alert-inline warn">Bạn cần đăng nhập để đặt phòng. <a href="/login">Đăng nhập ngay</a>.</div>';
         return;
       }
 
       if (!res.ok) {
-        throw new Error(data && data.error ? data.error : 'Dat phong that bai');
+        throw new Error(data && data.error ? data.error : 'Đặt phòng thất bại');
       }
 
-      bookingAlert.innerHTML = '<div class="alert-inline ok">Khoi tao dat phong thanh cong! Ma booking #' + data.bookingId + '. Dang chuyen sang VNPAY de thanh toan.</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline ok">Khởi tạo đặt phòng thành công! Mã booking #' + data.bookingId + '. Đang chuyển sang VNPAY để thanh toán.</div>';
       if (bookingModal) {
         bookingModal.hide();
       }
@@ -372,7 +372,7 @@
         window.location.href = data.paymentUrl;
       }
     } catch (err) {
-      bookingAlert.innerHTML = '<div class="alert-inline danger">Dat phong that bai: ' + err.message + '</div>';
+      bookingAlert.innerHTML = '<div class="alert-inline danger">Đặt phòng thất bại: ' + err.message + '</div>';
     }
   }
 
@@ -386,19 +386,21 @@
 
   useLocationBtn.addEventListener('click', function () {
     if (!navigator.geolocation) {
-      setStatus('Trinh duyet khong ho tro lay vi tri.', 'warn');
+      setStatus('Trình duyệt không hỗ trợ lấy vị trí.', 'warn');
       return;
     }
 
     navigator.geolocation.getCurrentPosition(function (pos) {
       document.getElementById('userLatitude').value = pos.coords.latitude.toFixed(6);
       document.getElementById('userLongitude').value = pos.coords.longitude.toFixed(6);
-      setStatus('Da lay vi tri hien tai.', 'ok');
+      setStatus('Đã lấy vị trí hiện tại.', 'ok');
     }, function () {
-      setStatus('Khong lay duoc vi tri. Ban co the nhap tay.', 'warn');
+      setStatus('Không lấy được vị trí. Bạn có thể nhập tay.', 'warn');
     });
   });
 
   toggleModeFields();
   setSummary(0, 0, null);
 })();
+
+

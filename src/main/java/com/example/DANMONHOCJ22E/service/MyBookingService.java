@@ -50,7 +50,13 @@ public class MyBookingService {
         response.setDiscountAmount(booking.getDiscountAmount());
         response.setAppliedVoucherCode(booking.getAppliedVoucherCode());
         response.setTotalPrice(booking.getTotalPrice());
+        response.setPaymentOption(booking.getPaymentOption());
+        response.setRequiredPaymentAmount(booking.getRequiredPaymentAmount());
+        response.setPaidAmount(booking.getPaidAmount());
+        response.setInvoiceNumber(booking.getInvoiceNumber());
         response.setStatus(booking.getStatus());
+        response.setPaymentStatus(BookingStatusHelper.resolvePaymentStatus(booking.getStatus()));
+        response.setWorkflowStatus(BookingStatusHelper.resolveWorkflowStatus(booking));
         return response;
     }
 }

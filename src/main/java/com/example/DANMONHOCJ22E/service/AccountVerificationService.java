@@ -27,7 +27,7 @@ import com.example.DANMONHOCJ22E.repository.UserRepository;
 @Service
 public class AccountVerificationService {
 
-    private static final long OCR_FREE_MAX_FILE_SIZE_BYTES = 1024 * 1024;
+    private static final long MAX_FILE_SIZE_BYTES = 5L * 1024 * 1024;
 
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
@@ -52,12 +52,27 @@ public class AccountVerificationService {
         if (cccdImage == null || cccdImage.isEmpty()) {
             throw new IllegalArgumentException("Anh CCCD khong duoc de trong");
         }
-        if (cccdImage.getSize() > OCR_FREE_MAX_FILE_SIZE_BYTES) {
-            throw new IllegalArgumentException("Anh CCCD vuot 1MB. OCR Free chi ho tro toi da 1MB/anh");
+        if (cccdImage.getSize() > MAX_FILE_SIZE_BYTES) {
+            throw new IllegalArgumentException("Anh CCCD vuot 5MB");
         }
+
+        String originalFilename = cccdImage.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isBlank()) {
+            throw new IllegalArgumentException("Ten tep khong hop le");
+        }
+
+        String loweredName = originalFilename.toLowerCase(Locale.ROOT);
+        boolean isAllowedExtension = loweredName.endsWith(".jpg")
+                || loweredName.endsWith(".jpeg")
+                || loweredName.endsWith(".png");
+        if (!isAllowedExtension) {
+            throw new IllegalArgumentException("Chi cho phep anh JPG, JPEG hoac PNG");
+        }
+
         String contentType = cccdImage.getContentType();
-        if (contentType == null || !contentType.startsWith("image/")) {
-            throw new IllegalArgumentException("Tep tai len phai la anh (jpg, jpeg, png)");
+        if (contentType == null ||
+                (!contentType.equalsIgnoreCase("image/jpeg") && !contentType.equalsIgnoreCase("image/png"))) {
+            throw new IllegalArgumentException("Tep tai len phai la anh JPG, JPEG hoac PNG");
         }
 
         User user = userRepository.findByUsername(username);
@@ -67,7 +82,7 @@ public class AccountVerificationService {
 
         String ocrText;
         try {
-            ocrText = idCardOcrService.extractFullName(cccdImage.getBytes(), cccdImage.getOriginalFilename());
+            ocrText = idCardOcrService.extractFullName(cccdImage.getBytes(), originalFilename);
         } catch (IOException ex) {
             throw new IllegalArgumentException("Khong doc duoc tep CCCD", ex);
         }
@@ -89,6 +104,7 @@ public class AccountVerificationService {
             user.setTrustScore(100);
             userVoucherService.issueIfMissing(user,
                     UserVoucherService.REASON_TRUST_100_25,
+                    UserVoucherService.CODE_FREQUENT25,
                     new BigDecimal("25"),
                     90);
         } else {

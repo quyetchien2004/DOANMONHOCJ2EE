@@ -31,9 +31,9 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         List<HotelBranch> branches = new ArrayList<>();
-        branches.add(createBranch("Golden Lotus Ha Noi", "Ha Noi", "12 Pho Hue, Hai Ba Trung", 21.0181, 105.8558, 8, 10));
-        branches.add(createBranch("Golden Lotus Da Nang", "Da Nang", "24 Vo Nguyen Giap, Son Tra", 16.0667, 108.2390, 10, 10));
-        branches.add(createBranch("Golden Lotus Sai Gon", "TP Ho Chi Minh", "56 Nguyen Hue, Quan 1", 10.7757, 106.7004, 12, 10));
+        branches.add(createBranch("CCT Hotels Company Ha Noi", "Ha Noi", "12 Pho Hue, Hai Ba Trung", 21.0181, 105.8558, 8, 10));
+        branches.add(createBranch("CCT Hotels Company Da Nang", "Da Nang", "24 Vo Nguyen Giap, Son Tra", 16.0667, 108.2390, 10, 10));
+        branches.add(createBranch("CCT Hotels Company Sai Gon", "TP Ho Chi Minh", "56 Nguyen Hue, Quan 1", 10.7757, 106.7004, 12, 10));
 
         branchRepository.saveAll(branches);
 
@@ -146,3 +146,4 @@ public class DataSeeder implements CommandLineRunner {
         };
     }
 }
+

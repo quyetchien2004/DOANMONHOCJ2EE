@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Thong tin phong | CCT Hotels Company</title>
+    <title>Thông tin phòng | CCT Hotels Company</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
@@ -50,15 +50,15 @@
     <main class="container py-4">
       <section class="card mb-3">
         <div class="card-body">
-          <h2 class="mb-2">Thong tin phong | CCT Hotels Company</h2>
+          <h2 class="mb-2">Thông tin phòng | CCT Hotels Company</h2>
           <p class="mb-3">
-            Bo anh phong duoc cap nhat de khach hang de dang tham khao chat
-            luong luu tru truoc khi dat phong.
+            Bộ ảnh phòng được cập nhật để khách hàng dễ dàng tham khảo chất
+            lượng lưu trú trước khi đặt phòng.
           </p>
           <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-brand" th:href="@{/room}">Tim phong trong ngay</a>
+            <a class="btn btn-brand" th:href="@{/room}">Tìm phòng trong ngày</a>
             <a class="btn btn-outline-secondary" th:href="@{/booking}"
-              >Den trang dat phong</a
+              >Đến trang đặt phòng</a
             >
           </div>
         </div>
@@ -68,15 +68,15 @@
         <article class="room-card">
           <img
             th:src="@{/img/cct/cct-standard-01.jpg}"
-            alt="Phong standard CCT Hotels"
+            alt="Phòng standard CCT Hotels"
             loading="lazy"
           />
           <div class="body">
             <span class="room-badge">Standard</span>
-            <h5>Phong tieu chuan 2 nguoi</h5>
+            <h5>Phòng tiêu chuẩn 2 người</h5>
             <p class="mb-0 text-muted">
-              Giuong don, tone trang sang, mini fridge, TV va noi that co ban
-              day du.
+              Giường đơn, tone trắng sáng, mini fridge, TV và nội thất cơ bản
+              đầy đủ.
             </p>
           </div>
         </article>
@@ -84,15 +84,15 @@
         <article class="room-card">
           <img
             th:src="@{/img/cct/cct-deluxe-01.jpg}"
-            alt="Phong deluxe CCT Hotels"
+            alt="Phòng deluxe CCT Hotels"
             loading="lazy"
           />
           <div class="body">
             <span class="room-badge">Deluxe</span>
-            <h5>Phong cao cap 2-3 nguoi</h5>
+            <h5>Phòng cao cấp 2-3 người</h5>
             <p class="mb-0 text-muted">
-              Giuong doi lon, khong gian am cung, noi that day du phu hop nghi
-              duong.
+              Giường đôi lớn, không gian ấm cúng, nội thất đầy đủ phù hợp nghỉ
+              dưỡng.
             </p>
           </div>
         </article>
@@ -100,15 +100,15 @@
         <article class="room-card">
           <img
             th:src="@{/img/cct/cct-luxury-01.jpg}"
-            alt="Phong luxury CCT Hotels"
+            alt="Phòng luxury CCT Hotels"
             loading="lazy"
           />
           <div class="body">
             <span class="room-badge">Luxury</span>
-            <h5>Phong gia dinh 4 nguoi</h5>
+            <h5>Phòng gia đình 4 người</h5>
             <p class="mb-0 text-muted">
-              Tone xanh mat, khong gian rong, phu hop gia dinh can su thoai mai
-              va rieng tu.
+              Tone xanh mát, không gian rộng, phù hợp gia đình cần sự thoải mái
+              và riêng tư.
             </p>
           </div>
         </article>
@@ -116,15 +116,15 @@
         <article class="room-card">
           <img
             th:src="@{/img/cct/cct-lobby-01.jpg}"
-            alt="Sanh khach san CCT Hotels"
+            alt="Sảnh khách sạn CCT Hotels"
             loading="lazy"
           />
           <div class="body">
             <span class="room-badge">Lobby</span>
-            <h5>Sanh tiep don hien dai</h5>
+            <h5>Sảnh tiếp đón hiện đại</h5>
             <p class="mb-0 text-muted">
-              Khong gian check-in thong thoang, decor toi gian, tao an tuong
-              ngay khi den.
+              Không gian check-in thông thoáng, decor tối giản, tạo ấn tượng
+              ngay khi đến.
             </p>
           </div>
         </article>
@@ -132,15 +132,15 @@
         <article class="room-card">
           <img
             th:src="@{/img/cct/cct-facade-01.jpg}"
-            alt="Mat tien khach san CCT Hotels"
+            alt="Mặt tiền khách sạn CCT Hotels"
             loading="lazy"
           />
           <div class="body">
             <span class="room-badge">Facade</span>
-            <h5>Mat tien khach san</h5>
+            <h5>Mặt tiền khách sạn</h5>
             <p class="mb-0 text-muted">
-              Kien truc hien dai, khu don tra khach ro rang, nang cao su tin
-              tuong khi dat phong.
+              Kiến trúc hiện đại, khu đón trả khách rõ ràng, nâng cao sự tin
+              tưởng khi đặt phòng.
             </p>
           </div>
         </article>
@@ -148,12 +148,12 @@
 
       <section class="card mt-3">
         <div class="card-body">
-          <h5 class="mb-2">Huong dan cap nhat anh moi</h5>
+          <h5 class="mb-2">Hướng dẫn cập nhật ảnh mới</h5>
           <p class="mb-0 text-muted">
-            Ban chi can ghi de cac file trong thu muc
-            <strong>src/main/resources/static/img/cct</strong> voi dung ten file
+            Bạn chỉ cần ghi đè các file trong thư mục
+            <strong>src/main/resources/static/img/cct</strong> với đúng tên file
             cct-standard-01.jpg, cct-deluxe-01.jpg, cct-luxury-01.jpg,
-            cct-lobby-01.jpg, cct-facade-01.jpg la web tu cap nhat.
+            cct-lobby-01.jpg, cct-facade-01.jpg là web tự cập nhật.
           </p>
         </div>
       </section>
@@ -163,3 +163,4 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
   </body>
 </html>
+

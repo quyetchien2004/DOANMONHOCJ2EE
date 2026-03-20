@@ -3,6 +3,7 @@ package com.example.DANMONHOCJ22E.service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import com.example.DANMONHOCJ22E.model.AccountVerificationStatus;
 import com.example.DANMONHOCJ22E.model.Booking;
 import com.example.DANMONHOCJ22E.model.BookingInvoice;
 import com.example.DANMONHOCJ22E.model.BookingStatus;
+import com.example.DANMONHOCJ22E.model.PaymentOption;
 import com.example.DANMONHOCJ22E.model.PaymentStatus;
 import com.example.DANMONHOCJ22E.model.PaymentTransaction;
 import com.example.DANMONHOCJ22E.model.User;
@@ -62,6 +64,10 @@ public class PaymentService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Khong tim thay booking can thanh toan"));
 
+        if (booking.getStatus() == BookingStatus.CONFIRMED || booking.getStatus() == BookingStatus.CANCELLED) {
+            return booking;
+        }
+
         PaymentTransaction tx = paymentTransactionRepository.findByTxnRef(txnRef).orElseGet(PaymentTransaction::new);
         tx.setBooking(booking);
         tx.setTxnRef(txnRef);
@@ -74,13 +80,15 @@ public class PaymentService {
 
         if (success) {
             booking.setPaidAmount(tx.getAmount());
-            booking.setStatus(BookingStatus.CONFIRMED);
             tx.setStatus(PaymentStatus.SUCCESS);
-            tx.setNote("Thanh toan VNPAY thanh cong");
-
-            voucherService.markPersonalVoucherUsed(booking.getAppliedUserVoucherId());
-            createInvoiceIfMissing(booking);
-            updateTrustAndRewards(booking);
+            if (booking.getPaymentOption() == PaymentOption.DEPOSIT_30) {
+                booking.setStatus(BookingStatus.PENDING);
+                tx.setNote("Da thanh toan coc 30%, cho admin duyet");
+            } else {
+                booking.setStatus(BookingStatus.CONFIRMED);
+                tx.setNote("Thanh toan VNPAY thanh cong");
+                finalizeSuccessfulBooking(booking);
+            }
         } else {
             // Keep compatibility with old SQL Server check constraint on status.
             booking.setStatus(BookingStatus.CANCELLED);
@@ -89,6 +97,43 @@ public class PaymentService {
         }
 
         paymentTransactionRepository.save(tx);
+        return bookingRepository.save(booking);
+    }
+
+    public java.util.List<Booking> getPendingDepositApprovals() {
+        return bookingRepository.findPendingDepositApprovals(PaymentOption.DEPOSIT_30, BookingStatus.PENDING, BigDecimal.ZERO);
+    }
+
+    @Transactional
+    public Booking approvePendingDeposit(Long bookingId) {
+        Booking booking = bookingRepository.findById(Objects.requireNonNull(bookingId))
+                .orElseThrow(() -> new IllegalArgumentException("Khong tim thay booking"));
+
+        if (booking.getPaymentOption() != PaymentOption.DEPOSIT_30) {
+            throw new IllegalArgumentException("Booking nay khong phai don coc 30% de duyet");
+        }
+        if (booking.getStatus() != BookingStatus.PENDING) {
+            throw new IllegalArgumentException("Don nay khong o trang thai cho duyet");
+        }
+
+        booking.setStatus(BookingStatus.CONFIRMED);
+        finalizeSuccessfulBooking(booking);
+        return bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public Booking rejectPendingDeposit(Long bookingId) {
+        Booking booking = bookingRepository.findById(Objects.requireNonNull(bookingId))
+                .orElseThrow(() -> new IllegalArgumentException("Khong tim thay booking"));
+
+        if (booking.getPaymentOption() != PaymentOption.DEPOSIT_30) {
+            throw new IllegalArgumentException("Booking nay khong phai don coc 30% de huy");
+        }
+        if (booking.getStatus() != BookingStatus.PENDING) {
+            throw new IllegalArgumentException("Don nay khong o trang thai cho duyet");
+        }
+
+        booking.setStatus(BookingStatus.CANCELLED);
         return bookingRepository.save(booking);
     }
 
@@ -139,6 +184,7 @@ public class PaymentService {
         if (successfulCount == 2) {
             userVoucherService.issueIfMissing(user,
                     UserVoucherService.REASON_SECOND_BOOKING_10,
+                    UserVoucherService.CODE_LOYAL10,
                     new BigDecimal("10"),
                     60);
         }
@@ -147,10 +193,17 @@ public class PaymentService {
             user.setTrustScore(100);
             userVoucherService.issueIfMissing(user,
                     UserVoucherService.REASON_TRUST_100_25,
+                    UserVoucherService.CODE_FREQUENT25,
                     new BigDecimal("25"),
                     90);
         }
 
         userRepository.save(user);
+    }
+
+    private void finalizeSuccessfulBooking(Booking booking) {
+        voucherService.markPersonalVoucherUsed(booking.getAppliedUserVoucherId());
+        createInvoiceIfMissing(booking);
+        updateTrustAndRewards(booking);
     }
 }
