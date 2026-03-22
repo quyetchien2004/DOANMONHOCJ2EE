@@ -7,36 +7,185 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+    <style>
+      .svc-hero {
+        background: linear-gradient(135deg, #0f2655 0%, #1a3f8f 55%, #1e5ba8 100%);
+        border-radius: 22px;
+        padding: 52px 48px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 32px;
+      }
+      .svc-hero::before {
+        content:'';
+        position:absolute; inset:0;
+        background: radial-gradient(circle at 85% 15%, rgba(100,175,255,.18) 0%,transparent 50%),
+                    radial-gradient(circle at 10% 85%, rgba(50,100,200,.13) 0%,transparent 45%);
+      }
+      .svc-hero h1 { font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; position:relative; }
+      .svc-hero p  { opacity:.82; max-width:560px; position:relative; font-size:.97rem; }
+      .svc-stat-row { display:flex; gap:36px; flex-wrap:wrap; margin-top:28px; position:relative; }
+      .svc-stat strong { display:block; font-size:1.5rem; font-weight:800; line-height:1; }
+      .svc-stat span   { font-size:.78rem; opacity:.75; letter-spacing:.5px; text-transform:uppercase; }
+      .svc-card {
+        border-radius:20px;
+        border:1px solid #dde8ff;
+        background:#fff;
+        box-shadow:0 12px 28px rgba(20,50,110,.07);
+        padding:28px 24px;
+        height:100%;
+        transition:transform .28s ease, box-shadow .28s ease;
+        display:flex; flex-direction:column;
+      }
+      .svc-card:hover { transform:translateY(-5px); box-shadow:0 24px 44px rgba(20,50,110,.14); }
+      .svc-icon {
+        width:52px; height:52px; border-radius:16px;
+        background:linear-gradient(135deg,#2050c8,#3b82f6);
+        display:flex; align-items:center; justify-content:center;
+        margin-bottom:16px;
+        color:#fff; font-size:1.3rem;
+        flex-shrink:0;
+      }
+      .svc-card h5 { font-weight:700; color:#1d2a4f; margin-bottom:10px; font-size:1rem; }
+      .svc-card p  { color:#5a6a8e; font-size:.88rem; line-height:1.6; flex-grow:1; margin-bottom:16px; }
+      .svc-tag {
+        display:inline-flex; align-items:center; gap:5px;
+        border-radius:999px; padding:4px 12px;
+        font-size:.78rem; font-weight:700;
+        background:#ebf1ff; color:#2448a3;
+        margin-right:4px; margin-bottom:4px;
+      }
+      .svc-divider {
+        background:linear-gradient(120deg,#f0f5ff,#e8f0fe);
+        border:1px solid #d1dfff;
+        border-radius:18px;
+        padding:36px 40px;
+        margin:32px 0;
+        text-align:center;
+      }
+      .svc-divider h3 { font-size:1.4rem; font-weight:800; color:#1d2a4f; margin-bottom:8px; }
+      .svc-divider p  { color:#5a6a8e; max-width:560px; margin:0 auto 20px; font-size:.94rem; }
+      .svc-step-row {
+        display:flex; align-items:flex-start; gap:12px;
+        margin-bottom:12px;
+      }
+      .svc-step-num {
+        width:32px; height:32px; border-radius:50%; flex-shrink:0;
+        background:linear-gradient(135deg,#2050c8,#3b82f6);
+        color:#fff; font-weight:700; font-size:.85rem;
+        display:flex; align-items:center; justify-content:center;
+      }
+      .svc-step-text { font-size:.9rem; color:#3c4f72; }
+    </style>
   </head>
   <body class="app-page">
-    <th:block
-      th:replace="~{fragments/layout :: siteHeader('services', 'light')}"
-    ></th:block>
+    <th:block th:replace="~{fragments/layout :: siteHeader('services', 'light')}"></th:block>
 
     <main class="container py-4">
-      <section class="page-head-card mb-3">
-        <h2 class="mb-1">Dịch vụ nổi bật</h2>
-        <p class="text-muted mb-0">
-          Hệ thống phòng đa dạng, giá linh hoạt, và quy trình booking nhanh gọn.
-        </p>
-      </section>
-      <div class="row g-3">
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body"><h5>Đặt phòng theo giờ/ngày</h5></div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body"><h5>Voucher theo nhóm khách</h5></div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body"><h5>Quản trị chi nhánh và phòng</h5></div>
-          </div>
+
+      <div class="svc-hero">
+        <h1>Dịch vụ &amp; Tiện ích</h1>
+        <p>CCT Hotels cung cấp trải nghiệm đặt phòng thông minh, thanh toán linh hoạt và chương trình khách hàng thân thiết theo từng cấp độ.</p>
+        <div class="svc-stat-row">
+          <div class="svc-stat"><strong>3+</strong><span>Chi nhánh</span></div>
+          <div class="svc-stat"><strong>50+</strong><span>Loại phòng</span></div>
+          <div class="svc-stat"><strong>3</strong><span>Loại voucher</span></div>
+          <div class="svc-stat"><strong>24/7</strong><span>AI hỗ trợ</span></div>
         </div>
       </div>
+
+      <div class="row g-3 mb-3">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="svc-card">
+            <div class="svc-icon"><i class="fa-solid fa-bed"></i></div>
+            <h5>Đặt phòng theo giờ &amp; ngày</h5>
+            <p>Linh hoạt chọn kiểu thuê phù hợp mục đích: nghỉ pân, công tác ngắn ngày hay lưu trú dài hạn. Hệ thống xử lý đơn theo thời gian thực.</p>
+            <div>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>Theo giờ</span>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>Theo ngày</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="svc-card">
+            <div class="svc-icon"><i class="fa-solid fa-credit-card"></i></div>
+            <h5>Thanh toán VNPAY an toàn</h5>
+            <p>Thanh toán toàn bộ hoặc đặt cọc 30% qua cổng VNPAY bảo mật. Đơn hàng được xác nhận ngay sau khi thanh toán thành công.</p>
+            <div>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>100% giá trị</span>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>Cọc 30%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="svc-card">
+            <div class="svc-icon"><i class="fa-solid fa-tags"></i></div>
+            <h5>Voucher theo cấp độ khách hàng</h5>
+            <p>Chương trình voucher 3 cấp: WELCOME10 cho tài khoản mới, LOYAL10 sau lần đặt thứ 2, FREQUENT25 khi xác minh CCCD &amp; trust 100.</p>
+            <div>
+              <span class="svc-tag" style="background:#fff3e0;color:#b45309;">WELCOME10</span>
+              <span class="svc-tag" style="background:#e8f5e9;color:#2e7d32;">LOYAL10</span>
+              <span class="svc-tag" style="background:#ede7f6;color:#512da8;">FREQUENT25</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="svc-card">
+            <div class="svc-icon"><i class="fa-solid fa-id-card"></i></div>
+            <h5>Xác minh CCCD &amp; Trust Score</h5>
+            <p>Upload ảnh CCCD để OCR tự động xác nhận họ tên. Trust score tăng lên 80&ndash;100 mở khoá vị trí khách hàng ưu tiên và voucher đặc biệt.</p>
+            <div>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>OCR tự động</span>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>Trust 80/100</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="svc-card">
+            <div class="svc-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h5>Tìm phòng theo GPS</h5>
+            <p>Hệ thống Leaflet Map hiển thị chi nhánh gần nhất theo vị trí thực. Lọc phòng theo tỉnh thành, giá, kiểu thuê và thời gian.</p>
+            <div>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>GPS thực</span>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>Bản đồ trực tiếp</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="svc-card">
+            <div class="svc-icon"><i class="fa-solid fa-robot"></i></div>
+            <h5>AI Concierge 24/7</h5>
+            <p>Trợ lý AI tư vấn đặt phòng, giải đáp voucher, hướng dẫn CCCD và thanh toán mọi lúc. Phản hồi tư nhiên với hiệu ứng typing chân thực.</p>
+            <div>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>24/7</span>
+              <span class="svc-tag"><i class="fa-solid fa-check"></i>Typing AI</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="svc-divider">
+        <h3>Quy trình đặt phòng chỉ 4 bước</h3>
+        <p>Tìm kiếm, chọn phòng, xác nhận và thanh toán &mdash; toàn bộ trong vài phút.</p>
+        <div class="row g-2 justify-content-center text-start" style="max-width:600px;margin:0 auto 20px;">
+          <div class="col-12">
+            <div class="svc-step-row"><div class="svc-step-num">1</div><div class="svc-step-text"><strong>Bộ lọc thông minh</strong> &mdash; chọn tỉnh, kiểu thuê, giá, GPS và voucher.</div></div>
+            <div class="svc-step-row"><div class="svc-step-num">2</div><div class="svc-step-text"><strong>Chọn phòng</strong> &mdash; xem chi tiết phòng, giá tạm tính và đạt yêu cầu.</div></div>
+            <div class="svc-step-row"><div class="svc-step-num">3</div><div class="svc-step-text"><strong>Xác nhận đơn</strong> &mdash; điền họ tên, chọn hình thức thanh toán.</div></div>
+            <div class="svc-step-row"><div class="svc-step-num">4</div><div class="svc-step-text"><strong>VNPAY</strong> &mdash; thanh toán an toàn, đơn được xác nhận ngay.</div></div>
+          </div>
+        </div>
+        <a class="btn btn-brand" th:href="@{/room}">Đặt phòng ngay</a>
+      </div>
+
     </main>
 
     <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>

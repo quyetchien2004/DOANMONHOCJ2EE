@@ -338,12 +338,65 @@ h6,
 
 .room-list {
   padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .room-item {
   border-radius: 14px;
   padding: 14px;
-  margin-bottom: 12px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-item-media {
+  margin: -6px -6px 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #d9e5ff;
+  background: #f4f8ff;
+}
+
+.room-item-media img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  display: block;
+}
+
+.room-pagination {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.room-page-btn {
+  min-width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid #c9d9ff;
+  background: #fff;
+  color: #2a4f9a;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.room-page-btn:hover {
+  border-color: #8eb0ff;
+  transform: translateY(-1px);
+}
+
+.room-page-btn.active {
+  border-color: #2f62d0;
+  background: linear-gradient(135deg, #2f62d0, #3f87e5);
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(47, 98, 208, 0.28);
 }
 
 .room-item h4 {
@@ -356,6 +409,30 @@ h6,
   margin: 6px 0 10px;
   color: #5f7397;
   font-size: 0.9rem;
+}
+
+@media (max-width: 1199.98px) {
+  .room-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .room-item {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .room-list {
+    grid-template-columns: 1fr;
+  }
+
+  .room-item {
+    min-height: auto;
+  }
+
+  .room-item-media img {
+    height: 210px;
+  }
 }
 
 .price-chip {
@@ -391,8 +468,45 @@ h6,
 #branchMap {
   width: 100%;
   height: 360px;
+  min-height: 360px;
   border-radius: 14px;
   border: 1px solid #d1e1ff;
+}
+
+/* When inside a flex-column section (h-100), grow to fill the column */
+.filter-panel.h-100.d-flex.flex-column #branchMap {
+  flex: 1;
+  height: auto;
+  min-height: 420px;
+}
+
+/* Blog article narrow layout + inline image sizing */
+article.card {
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.booking-gallery-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1.5px solid #2f5fd0;
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2f5fd0;
+  background: rgba(47, 95, 208, 0.06);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease;
+  text-decoration: none;
+}
+
+.booking-gallery-btn:hover {
+  background: linear-gradient(135deg, #2050c8 0%, #3382df 100%);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(47, 95, 208, 0.28);
+  transform: translateY(-2px);
 }
 
 .alert-inline {

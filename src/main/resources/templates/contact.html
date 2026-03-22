@@ -7,56 +7,219 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+    <style>
+      .contact-hero {
+        background: linear-gradient(135deg, #0f2655 0%, #1a3f8f 55%, #1e5ba8 100%);
+        border-radius: 22px;
+        padding: 52px 48px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 28px;
+      }
+      .contact-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 80% 20%, rgba(100,170,255,.18) 0%, transparent 55%),
+                    radial-gradient(circle at 10% 90%, rgba(60,120,220,.14) 0%, transparent 45%);
+      }
+      .contact-hero h1 { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; position:relative; }
+      .contact-hero p  { opacity: .82; max-width: 520px; position:relative; font-size:.97rem; }
+      .contact-kpi {
+        display: flex;
+        gap: 28px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+        position:relative;
+      }
+      .contact-kpi-item { min-width: 110px; }
+      .contact-kpi-item strong { display:block; font-size:1.5rem; font-weight:800; line-height:1; }
+      .contact-kpi-item span  { font-size:.8rem; opacity:.75; letter-spacing:.4px; }
+      .ci-card {
+        border-radius: 20px;
+        border: 1px solid #dde8ff;
+        background: #fff;
+        box-shadow: 0 12px 28px rgba(20,50,110,.08);
+        padding: 28px 24px;
+        height: 100%;
+        transition: transform .28s ease, box-shadow .28s ease;
+      }
+      .ci-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 40px rgba(20,50,110,.14);
+      }
+      .ci-icon {
+        width: 48px; height: 48px; border-radius: 14px;
+        background: linear-gradient(135deg,#2050c8,#3b82f6);
+        display: flex; align-items:center; justify-content:center;
+        margin-bottom: 14px;
+        color: #fff; font-size: 1.1rem;
+      }
+      .ci-card h5 { font-size:.97rem; font-weight:700; color:#1d2a4f; margin-bottom:12px; }
+      .ci-row { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; font-size:.9rem; color:#3c4f72; }
+      .ci-row i { margin-top:2px; width:16px; text-align:center; color:#3b82f6; }
+      .contact-form-card {
+        border-radius: 20px;
+        border: 1px solid #dde8ff;
+        background: linear-gradient(145deg,#f8faff 0%,#fff 100%);
+        box-shadow: 0 12px 28px rgba(20,50,110,.08);
+        padding: 32px;
+      }
+      .contact-form-card h4 { font-size: 1.1rem; font-weight:700; color:#1d2a4f; margin-bottom:6px; }
+      .cta-strip {
+        border-radius: 18px;
+        background: linear-gradient(120deg,#f0f5ff 0%,#e8f0fe 100%);
+        border: 1px solid #d1dfff;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 28px;
+      }
+      .cta-strip h5 { font-weight:700; color:#1d2a4f; margin:0; }
+      .cta-strip p  { color:#5a6a8e; margin:4px 0 0; font-size:.9rem; }
+    </style>
   </head>
   <body class="app-page">
-    <th:block
-      th:replace="~{fragments/layout :: siteHeader('contact', 'light')}"
-    ></th:block>
+    <th:block th:replace="~{fragments/layout :: siteHeader('contact', 'light')}"></th:block>
 
     <main class="container py-4">
-      <section class="page-head-card mb-3">
-        <h2 class="mb-1">Liên hệ</h2>
-        <p class="text-muted mb-0">
-          Cần hỗ trợ về đặt phòng, voucher, hoặc quản trị tài khoản? Liên hệ
-          ngay với chúng tôi.
-        </p>
-      </section>
+
+      <div class="contact-hero">
+        <h1>Liên hệ &amp; Hỗ trợ</h1>
+        <p>Chuyên viên tư vấn của CCT Hotels luôn sẵn sàng hỗ trợ bạn 24/7 &mdash; từ đặt phòng, thanh toán cho đến voucher và xác minh tài khoản.</p>
+        <div class="contact-kpi">
+          <div class="contact-kpi-item"><strong>24/7</strong><span>Hỗ trợ trực tuyến</span></div>
+          <div class="contact-kpi-item"><strong>&lt; 2h</strong><span>Thời gian phản hồi</span></div>
+          <div class="contact-kpi-item"><strong>3</strong><span>Chi nhánh toàn quốc</span></div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-2">
+
+        <div class="col-lg-4">
+          <div class="ci-card">
+            <div class="ci-icon"><i class="fa-solid fa-phone"></i></div>
+            <h5>Hotline hỗ trợ</h5>
+            <div class="ci-row"><i class="fa-solid fa-phone"></i><span><strong>0900 123 456</strong><br><small class="text-muted">Thứ 2 &ndash; CN | 08:00 &ndash; 22:00</small></span></div>
+            <div class="ci-row"><i class="fa-brands fa-line"></i><span>LINE/Zalo: <strong>0900 123 456</strong></span></div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="ci-card">
+            <div class="ci-icon"><i class="fa-solid fa-envelope"></i></div>
+            <h5>Email liên hệ</h5>
+            <div class="ci-row"><i class="fa-solid fa-envelope"></i><span>support@ccthotels.vn</span></div>
+            <div class="ci-row"><i class="fa-solid fa-circle-info"></i><span>Phản hồi trong vòng 2 giờ trong giờ hành chính.</span></div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="ci-card">
+            <div class="ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <h5>Văn phòng đại diện</h5>
+            <div class="ci-row"><i class="fa-solid fa-location-dot"></i><span>123 Nguyễn Huệ, Q1, TP.HCM</span></div>
+            <div class="ci-row"><i class="fa-solid fa-location-dot"></i><span>45 Bạch Đằng, Hải Châu, Đà Nẵng</span></div>
+            <div class="ci-row"><i class="fa-solid fa-location-dot"></i><span>88 Lý Thường Kiệt, Hoàn Kiếm, Hà Nội</span></div>
+          </div>
+        </div>
+
+      </div>
 
       <div class="row g-3">
-        <div class="col-lg-6">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5>Thông tin vận hành</h5>
-              <p class="mb-1"><i class="fa-solid fa-phone"></i> 0900 123 456</p>
-              <p class="mb-1">
-                <i class="fa-solid fa-envelope"></i> support@ccthotels.vn
-              </p>
-              <p class="mb-0">
-                <i class="fa-solid fa-location-dot"></i> 123 Nguyen Hue, Da Nang
-              </p>
+        <div class="col-lg-7">
+          <div class="contact-form-card">
+            <h4>Gửi tin nhắn cho chúng tôi</h4>
+            <p class="text-muted small mb-3">Hãy cho chúng tôi biết bạn cần hỗ trợ điều gì, đội ngũ sẽ liên hệ lại sớm nhất.</p>
+            <div class="row g-2">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Họ tên</label>
+                <input class="form-control" id="ctName" placeholder="Nguyễn Văn A" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Email</label>
+                <input class="form-control" id="ctEmail" type="email" placeholder="example@email.com" />
+              </div>
+              <div class="col-md-12">
+                <label class="form-label small fw-semibold">Chủ đề</label>
+                <select class="form-select" id="ctTopic">
+                  <option>Đặt phòng &amp; booking</option>
+                  <option>Thanh toán / VNPAY</option>
+                  <option>Voucher &amp; khuyến mãi</option>
+                  <option>Xác minh CCCD / tài khoản</option>
+                  <option>Phản ánh khác</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold">Nội dung</label>
+                <textarea class="form-control" id="ctMsg" rows="4" placeholder="Mô tả vấn đề bạn đang gặp phải..."></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-brand" id="ctSendBtn" type="button">Gửi yêu cầu hỗ trợ</button>
+              </div>
+              <div class="col-12" id="ctMsg2"></div>
             </div>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5>Điều hướng nhanh</h5>
-              <a class="btn btn-brand me-2 mb-2" th:href="@{/room}"
-                >Đặt phòng</a
-              >
-              <a
-                class="btn btn-outline-secondary mb-2"
-                th:href="@{/my-bookings}"
-                >Đơn của tôi</a
-              >
+        <div class="col-lg-5">
+          <div class="ci-card d-flex flex-column gap-3">
+            <div>
+              <h5 style="font-size:.97rem;">Giờ làm việc</h5>
+              <table class="table table-sm mb-0" style="font-size:.88rem;">
+                <tbody>
+                  <tr><td>Thứ 2 &ndash; Thứ 6</td><td class="text-end fw-semibold">08:00 &ndash; 18:00</td></tr>
+                  <tr><td>Thứ 7</td><td class="text-end fw-semibold">09:00 &ndash; 17:00</td></tr>
+                  <tr><td>Chủ nhật</td><td class="text-end fw-semibold">10:00 &ndash; 15:00</td></tr>
+                  <tr><td>Chat bot 24/7</td><td class="text-end fw-semibold">Mọi ngày</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <hr class="my-0" />
+            <div>
+              <h5 style="font-size:.97rem;">Điều hướng nhanh</h5>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-brand btn-sm" th:href="@{/room}">Đặt phòng</a>
+                <a class="btn btn-outline-secondary btn-sm" th:href="@{/my-bookings}">Đơn của tôi</a>
+                <a class="btn btn-outline-secondary btn-sm" th:href="@{/chatbot}">AI Chatbot</a>
+                <a class="btn btn-outline-secondary btn-sm" th:href="@{/my-account}">Tài khoản</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="cta-strip">
+        <div>
+          <h5>Bạn cần hỗ trợ ngay?</h5>
+          <p>Truyện trực tiếp với AI chatbot &mdash; sẵn sàng hỗ trợ mọi lúc.</p>
+        </div>
+        <a class="btn btn-brand" th:href="@{/chatbot}">Mở Chat AI ngay</a>
+      </div>
+
     </main>
 
     <th:block th:replace="~{fragments/layout :: siteFooter}"></th:block>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script>
+      (function(){
+        var btn = document.getElementById('ctSendBtn');
+        var msg = document.getElementById('ctMsg2');
+        if(btn) btn.addEventListener('click', function(){
+          var name = document.getElementById('ctName').value.trim();
+          var email = document.getElementById('ctEmail').value.trim();
+          var content = document.getElementById('ctMsg').value.trim();
+          if(!name || !email || !content){
+            msg.innerHTML = '<div class="alert alert-warning mb-0">Vui lòng điền đầy đủ thông tin.</div>'; return;
+          }
+          msg.innerHTML = '<div class="alert alert-success mb-0">Đã gửi yêu cầu. Chúng tôi sẽ liên hệ lại sớm!</div>';
+          btn.disabled = true;
+        });
+      })();
+    </script>
   </body>
 </html>
 

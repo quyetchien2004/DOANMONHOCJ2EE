@@ -24,6 +24,7 @@ public class User {
   @Column(nullable = false)
   private String password;
 
+  @Column(columnDefinition = "NVARCHAR(255)")
   private String fullName;
 
   @Column(unique = true)
@@ -39,7 +40,7 @@ public class User {
   @Column(length = 255)
   private String idCardImagePath;
 
-  @Column(length = 120)
+  @Column(columnDefinition = "NVARCHAR(120)")
   private String idCardExtractedFullName;
 
   @Column(length = 20)

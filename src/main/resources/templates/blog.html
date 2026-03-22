@@ -7,6 +7,11 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/fontawesome/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/css/booking-modern.css}" />
+    <style>
+      .card.h-100 .card-body { display: flex; flex-direction: column; }
+      .card.h-100 .card-body p { flex-grow: 1; }
+      .card.h-100 .card-body .btn { align-self: flex-start; margin-top: auto !important; }
+    </style>
   </head>
   <body class="app-page">
     <th:block

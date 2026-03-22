@@ -19,6 +19,22 @@
   const paymentOptionEl = document.getElementById('paymentOption');
   const confirmBookingBtn = document.getElementById('confirmBookingBtn');
   const roomContextById = {};
+  const ROOM_DETAIL_BASE = '/img/rooms-details/';
+  const ROOM_IMAGE_GROUPS = {
+    '2_standard': ['2_nguoi.jpg', '2_nguoi(2).jpg'],
+    '2_luxury': ['2_nguoi_luxury.jpg'],
+    '2_luxury_ban_cong': ['2_nguoi_luxury_ban_cong.png'],
+    '4_standard': ['4_nguoi.jpg', '4_nguoi(2).jpg'],
+    '4_luxury': ['4_nguoi_luxury.jpg', '4_nguoi_luxury(2).jpg'],
+    '4_luxury_ban_cong': ['4_nguoi_luxury_ban_cong.jpg'],
+    '6_standard': ['6_nguoi.jpg'],
+    '6_luxury': ['6_nguoi_luxury.jpg'],
+    '6_luxury_ban_cong': ['6_nguoi_luxury_ban_cong.jpg'],
+    '10_standard': ['10_nguoi.jpg'],
+    '10_luxury': ['10_nguoi_luxury.jpg'],
+    '10_luxury_ban_cong': ['10_nguoi_luxury_ban_cong.jpg']
+  };
+  const ROOM_IMAGE_COUNTERS = {};
 
   const map = window.L ? L.map(mapElement).setView([16.5, 107.5], 6) : null;
   const bookingModal = window.bootstrap ? new bootstrap.Modal(document.getElementById('bookingModal')) : null;
@@ -31,6 +47,14 @@
   }
 
   let lastSearchPayload = null;
+  const ROOMS_PER_PAGE = 9;
+  const roomPaginationState = {
+    items: [],
+    currentPage: 1,
+    totalPages: 1,
+    branchCount: 0,
+    capacityStats: {}
+  };
 
   function formatCurrency(vnd) {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(vnd);
@@ -131,8 +155,168 @@
     }
   }
 
+  function toNumber(value) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function normalizeCapacity(capacity) {
+    const cap = toNumber(capacity);
+    const supported = [2, 4, 6, 10];
+    if (supported.includes(cap)) {
+      return cap;
+    }
+    // If backend returns 1/3/... map to nearest configured photo group
+    return supported.reduce((best, cur) => {
+      return Math.abs(cur - cap) < Math.abs(best - cap) ? cur : best;
+    }, supported[0]);
+  }
+
+  function buildCapacityDailyStats(branches) {
+    const grouped = {};
+    (branches || []).forEach((branch) => {
+      (branch.availableRooms || []).forEach((room) => {
+        const cap = normalizeCapacity(room.capacity);
+        if (!grouped[cap]) {
+          grouped[cap] = [];
+        }
+        const daily = toNumber(room.dailyRate);
+        if (daily > 0) {
+          grouped[cap].push(daily);
+        }
+      });
+    });
+
+    const stats = {};
+    Object.keys(grouped).forEach((capKey) => {
+      const values = grouped[capKey].slice().sort((a, b) => a - b);
+      if (values.length === 0) {
+        stats[capKey] = 0;
+        return;
+      }
+      const middle = Math.floor(values.length / 2);
+      const median = values.length % 2 === 0
+        ? (values[middle - 1] + values[middle]) / 2
+        : values[middle];
+      stats[capKey] = median;
+    });
+    return stats;
+  }
+
+  function inferRoomImageKey(room, capacityStats) {
+    const cap = normalizeCapacity(room.capacity);
+    const capMedian = capacityStats[String(cap)] || 0;
+    const dailyRate = toNumber(room.dailyRate);
+    // Suy luận "luxury" từ mức giá tương đối trong cùng nhóm sức chứa
+    const isLuxury = capMedian > 0 && dailyRate >= capMedian * 1.12;
+    const hasBalconyView = Boolean(room.hasNiceView);
+
+    if (isLuxury && hasBalconyView) {
+      return cap + '_luxury_ban_cong';
+    }
+    if (isLuxury) {
+      return cap + '_luxury';
+    }
+    // Nếu chỉ có view đẹp, ưu tiên ảnh balcony cùng nhóm để đúng ý nghĩa minh họa
+    if (hasBalconyView && ROOM_IMAGE_GROUPS[cap + '_luxury_ban_cong']) {
+      return cap + '_luxury_ban_cong';
+    }
+    return cap + '_standard';
+  }
+
+  function resolveRoomImage(room, capacityStats) {
+    const imageKey = inferRoomImageKey(room, capacityStats);
+    const files = ROOM_IMAGE_GROUPS[imageKey] || [];
+    if (!files.length) {
+      return ROOM_DETAIL_BASE + 'CCT_floor.jpg';
+    }
+
+    const usedCount = ROOM_IMAGE_COUNTERS[imageKey] || 0;
+    ROOM_IMAGE_COUNTERS[imageKey] = usedCount + 1;
+    const picked = files[usedCount % files.length];
+    return ROOM_DETAIL_BASE + picked;
+  }
+
+  function flattenRoomsWithBranch(data) {
+    const flattened = [];
+    (data || []).forEach((branch) => {
+      (branch.availableRooms || []).forEach((room) => {
+        flattened.push({ room, branch });
+      });
+    });
+    return flattened;
+  }
+
+  function buildPaginationHtml(totalPages, currentPage) {
+    if (totalPages <= 1) {
+      return '';
+    }
+
+    const buttons = [];
+    for (let page = 1; page <= totalPages; page++) {
+      buttons.push(
+        '<button type="button" class="room-page-btn ' + (page === currentPage ? 'active' : '')
+        + ' js-room-page" data-page="' + page + '">' + page + '</button>'
+      );
+    }
+
+    return '<div class="room-pagination">' + buttons.join('') + '</div>';
+  }
+
+  function createRoomCardHtml(item, capacityStats) {
+    const room = item.room;
+    const branch = item.branch;
+    const roomImage = resolveRoomImage(room, capacityStats);
+
+    return '<div class="room-item">'
+      + '<div class="room-item-media">'
+      + '<img src="' + roomImage + '" alt="Ảnh minh họa phòng ' + room.roomNumber + '" loading="lazy" />'
+      + '</div>'
+      + '<div class="d-flex justify-content-between align-items-start flex-wrap">'
+      + '<div>'
+      + '<h4>Phòng ' + room.roomNumber + ' - Tầng ' + room.floorNumber + '</h4>'
+      + '<div class="room-meta">' + roomTypeText(room.roomType) + ' • ' + room.capacity + ' khách</div>'
+      + '<div class="room-meta" style="margin-top:-6px;">' + branch.branchName + ' (' + branch.province + ')</div>'
+      + '</div>'
+      + '<div>'
+      + '<span class="price-chip">Tạm tính: ' + formatCurrency(room.estimatedPrice) + '</span>'
+      + (room.hasNiceView ? '<span class="badge-view">View đẹp</span>' : '')
+      + '</div>'
+      + '</div>'
+      + '<div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2 mt-auto">'
+      + '<small>Giá giờ: ' + formatCurrency(room.hourlyRate) + ' | Giá ngày: ' + formatCurrency(room.dailyRate) + '</small>'
+      + '<button type="button" class="btn btn-brand btn-sm js-book-room" data-room-id="' + room.roomId + '">Đặt phòng ngay</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function renderRoomPage(page) {
+    if (!roomPaginationState.items.length) {
+      branchResults.innerHTML = '<div class="note-card">Không tìm thấy phòng phù hợp với bộ lọc hiện tại.</div>';
+      return;
+    }
+
+    const safePage = Math.max(1, Math.min(page, roomPaginationState.totalPages));
+    roomPaginationState.currentPage = safePage;
+
+    const start = (safePage - 1) * ROOMS_PER_PAGE;
+    const pageItems = roomPaginationState.items.slice(start, start + ROOMS_PER_PAGE);
+    const roomsHtml = pageItems
+      .map((item) => createRoomCardHtml(item, roomPaginationState.capacityStats))
+      .join('');
+    const paginationHtml = buildPaginationHtml(roomPaginationState.totalPages, safePage);
+
+    branchResults.innerHTML = '<div class="note-card" style="margin-top:0;">'
+      + 'Hiển thị ' + pageItems.length + ' phòng trên trang ' + safePage + '/' + roomPaginationState.totalPages
+      + ' • Tổng cộng ' + roomPaginationState.items.length + ' phòng trống từ ' + roomPaginationState.branchCount + ' chi nhánh.'
+      + '</div>'
+      + '<div class="room-list room-list--paged mt-2">' + roomsHtml + '</div>'
+      + paginationHtml;
+  }
+
   function renderResults(data) {
     Object.keys(roomContextById).forEach((k) => delete roomContextById[k]);
+    Object.keys(ROOM_IMAGE_COUNTERS).forEach((k) => delete ROOM_IMAGE_COUNTERS[k]);
 
     if (!Array.isArray(data) || data.length === 0) {
       if (map) {
@@ -147,48 +331,30 @@
     renderMapMarkers(data);
     let roomCount = 0;
     let minPrice = null;
+    const capacityStats = buildCapacityDailyStats(data);
+    const flattenedRooms = flattenRoomsWithBranch(data);
 
-    branchResults.innerHTML = data.map((branch) => {
-      const distance = branch.distanceKm == null ? 'Chưa có vị trí người dùng' : branch.distanceKm + ' km';
-      const roomsHtml = (branch.availableRooms || []).map((room) => {
-        roomCount += 1;
-        if (room.estimatedPrice != null && (minPrice == null || room.estimatedPrice < minPrice)) {
-          minPrice = room.estimatedPrice;
-        }
-        roomContextById[String(room.roomId)] = {
-          roomNumber: room.roomNumber,
-          floorNumber: room.floorNumber,
-          branchName: branch.branchName
-        };
-        return '<div class="room-item">'
-          + '<div class="d-flex justify-content-between align-items-start flex-wrap">'
-          + '<div>'
-          + '<h4>Phong ' + room.roomNumber + ' - Tầng ' + room.floorNumber + '</h4>'
-          + '<div class="room-meta">' + roomTypeText(room.roomType) + ' • ' + room.capacity + ' khach</div>'
-          + '</div>'
-          + '<div>'
-          + '<span class="price-chip">Tạm tính: ' + formatCurrency(room.estimatedPrice) + '</span>'
-          + (room.hasNiceView ? '<span class="badge-view">View đẹp</span>' : '')
-          + '</div>'
-          + '</div>'
-          + '<div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">'
-          + '<small>Giá giờ: ' + formatCurrency(room.hourlyRate) + ' | Giá ngày: ' + formatCurrency(room.dailyRate) + '</small>'
-            + '<button type="button" class="btn btn-brand btn-sm js-book-room" data-room-id="' + room.roomId + '">Đặt phòng ngay</button>'
-          + '</div>'
-          + '</div>';
-      }).join('');
+    flattenedRooms.forEach((item) => {
+      const room = item.room;
+      roomCount += 1;
+      if (room.estimatedPrice != null && (minPrice == null || room.estimatedPrice < minPrice)) {
+        minPrice = room.estimatedPrice;
+      }
+      roomContextById[String(room.roomId)] = {
+        roomNumber: room.roomNumber,
+        floorNumber: room.floorNumber,
+        branchName: item.branch.branchName
+      };
+    });
 
-      return '<div class="branch-card">'
-        + '<div class="branch-head">'
-        + '<h3 class="branch-title">' + branch.branchName + ' (' + branch.province + ')</h3>'
-        + '<p class="branch-sub">' + branch.address + ' • Khoảng cách: ' + distance + '</p>'
-        + '<p class="branch-sub">' + branch.totalFloors + ' tầng • ' + branch.roomsPerFloor + ' phòng/tầng</p>'
-        + '</div>'
-        + '<div class="room-list">' + roomsHtml + '</div>'
-        + '</div>';
-    }).join('');
+    roomPaginationState.items = flattenedRooms;
+    roomPaginationState.branchCount = data.length;
+    roomPaginationState.totalPages = Math.max(1, Math.ceil(flattenedRooms.length / ROOMS_PER_PAGE));
+    roomPaginationState.currentPage = 1;
+    roomPaginationState.capacityStats = capacityStats;
 
-      setSummary(data.length, roomCount, minPrice);
+    renderRoomPage(1);
+    setSummary(data.length, roomCount, minPrice);
   }
 
   function renderMapMarkers(data) {
@@ -251,11 +417,16 @@
   function resetSearchForm() {
     form.reset();
     toggleModeFields();
-    branchResults.innerHTML = '<div class="note-card">Nhap bo loc va bam Tìm phòng trống ngay de hien ket qua.</div>';
+    branchResults.innerHTML = '<div class="note-card">Nhập bộ lọc và bấm Tìm phòng trống ngay để hiển thị kết quả.</div>';
     bookingAlert.innerHTML = '';
     setSummary(0, 0, null);
     setStatus('Đã đặt lại bộ lọc. Sẵn sàng tìm phòng.', 'ok');
     lastSearchPayload = null;
+    roomPaginationState.items = [];
+    roomPaginationState.currentPage = 1;
+    roomPaginationState.totalPages = 1;
+    roomPaginationState.branchCount = 0;
+    roomPaginationState.capacityStats = {};
 
     if (map) {
       markers.forEach((m) => map.removeLayer(m));
@@ -288,6 +459,14 @@
   }
 
   function handleBranchResultsClick(evt) {
+    const pageBtn = evt.target.closest('.js-room-page');
+    if (pageBtn) {
+      const page = Number(pageBtn.dataset.page || 1);
+      renderRoomPage(page);
+      window.scrollTo({ top: branchResults.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+      return;
+    }
+
     const btn = evt.target.closest('.js-book-room');
     if (!btn) {
       return;

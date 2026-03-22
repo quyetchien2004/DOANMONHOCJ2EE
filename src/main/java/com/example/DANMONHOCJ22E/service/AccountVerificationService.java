@@ -194,37 +194,54 @@ public class AccountVerificationService {
             return true;
         }
 
+        int allowedDistance = expectedToken.length() >= 6 ? 2 : 1;
         for (String ocrToken : ocrTokens) {
             if (ocrToken.equals(expectedToken)) {
                 return true;
             }
-            int allowedDistance = expectedToken.length() >= 6 ? 2 : 1;
-            if (levenshteinDistance(expectedToken, ocrToken) <= allowedDistance) {
+            // Skip expensive Levenshtein when length gap already rules it out
+            if (Math.abs(ocrToken.length() - expectedToken.length()) <= allowedDistance
+                    && levenshteinDistance(expectedToken, ocrToken, allowedDistance) <= allowedDistance) {
                 return true;
             }
         }
         return false;
     }
 
-    private int levenshteinDistance(String left, String right) {
-        int[][] distances = new int[left.length() + 1][right.length() + 1];
-        for (int i = 0; i <= left.length(); i++) {
-            distances[i][0] = i;
+    /**
+     * Levenshtein distance with 1-D rolling array and early-exit when the running
+     * minimum for a row already exceeds {@code threshold} – avoids unnecessary work
+     * for tokens that will clearly not match.
+     */
+    private int levenshteinDistance(String left, String right, int threshold) {
+        int m = left.length();
+        int n = right.length();
+        // Length difference alone can never be bridged under the threshold
+        if (Math.abs(m - n) > threshold) {
+            return threshold + 1;
         }
-        for (int j = 0; j <= right.length(); j++) {
-            distances[0][j] = j;
+        int[] prev = new int[n + 1];
+        for (int j = 0; j <= n; j++) {
+            prev[j] = j;
         }
-
-        for (int i = 1; i <= left.length(); i++) {
-            for (int j = 1; j <= right.length(); j++) {
+        for (int i = 1; i <= m; i++) {
+            int[] curr = new int[n + 1];
+            curr[0] = i;
+            int rowMin = i;
+            for (int j = 1; j <= n; j++) {
                 int cost = left.charAt(i - 1) == right.charAt(j - 1) ? 0 : 1;
-                distances[i][j] = Math.min(
-                        Math.min(distances[i - 1][j] + 1, distances[i][j - 1] + 1),
-                        distances[i - 1][j - 1] + cost
-                );
+                curr[j] = Math.min(Math.min(prev[j] + 1, curr[j - 1] + 1), prev[j - 1] + cost);
+                if (curr[j] < rowMin) {
+                    rowMin = curr[j];
+                }
             }
+            // No cell in this row can produce a distance <= threshold – stop early
+            if (rowMin > threshold) {
+                return threshold + 1;
+            }
+            prev = curr;
         }
-        return distances[left.length()][right.length()];
+        return prev[n];
     }
 
     private String abbreviate(String value) {
