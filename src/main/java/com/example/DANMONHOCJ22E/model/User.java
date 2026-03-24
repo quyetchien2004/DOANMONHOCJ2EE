@@ -55,6 +55,16 @@ public class User {
   @Column
   private LocalDateTime createdAt;
 
+  // OAuth2 fields
+  @Column(unique = true, nullable = true)
+  private String googleId;
+
+  @Column(nullable = true)
+  private String oauthProvider; // "google", "facebook", etc.
+
+  @Column(nullable = true)
+  private String profileImageUrl; // From OAuth provider
+
   @PrePersist
   public void prePersist() {
     if (createdAt == null) {
@@ -180,5 +190,30 @@ public class User {
 
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  // OAuth2 getters & setters
+  public String getGoogleId() {
+    return googleId;
+  }
+
+  public void setGoogleId(String googleId) {
+    this.googleId = googleId;
+  }
+
+  public String getOauthProvider() {
+    return oauthProvider;
+  }
+
+  public void setOauthProvider(String oauthProvider) {
+    this.oauthProvider = oauthProvider;
+  }
+
+  public String getProfileImageUrl() {
+    return profileImageUrl;
+  }
+
+  public void setProfileImageUrl(String profileImageUrl) {
+    this.profileImageUrl = profileImageUrl;
   }
 }

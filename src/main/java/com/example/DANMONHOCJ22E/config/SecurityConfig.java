@@ -3,19 +3,42 @@ package com.example.DANMONHOCJ22E.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.example.DANMONHOCJ22E.service.CustomOAuth2UserService;
+
 @Configuration
 public class SecurityConfig {
 
-    // M� h�a m?t kh?u
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+                         UserDetailsService userDetailsService) {
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.userDetailsService = userDetailsService;
+    }
+
+    // Mã hóa mật khẩu
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(authProvider);
     }
 
     @Bean
@@ -50,11 +73,19 @@ public class SecurityConfig {
                 )
 
                 .formLogin(form -> form
-                        .loginPage("/login")              // Trang login t? t?o
-                        .loginProcessingUrl("/login")    // URL x? l� login
-                        .defaultSuccessUrl("/", true)    // Login th�nh c�ng v? trang ch?
-                        .failureUrl("/login?error=true") // Sai m?t kh?u quay l?i login
+                        .loginPage("/login")              
+                        .loginProcessingUrl("/login")    
+                        .defaultSuccessUrl("/my-account", true)    
+                        .failureUrl("/login?error=true") 
                         .permitAll()
+                )
+
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .defaultSuccessUrl("/my-account", true)
                 )
 
                 .logout(logout -> logout

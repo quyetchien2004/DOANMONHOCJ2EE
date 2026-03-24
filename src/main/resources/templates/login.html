@@ -27,23 +27,64 @@
         <p class="sub">Chào mừng bạn quay trở lại hệ thống khách sạn.</p>
 
         <div class="flash error" th:if="${error}" th:text="${error}"></div>
-        <div class="flash success" th:if="${message}" th:text="${message}"></div>
+        <div
+          class="flash success"
+          th:if="${message}"
+          th:text="${message}"
+        ></div>
 
         <form th:action="@{/login}" method="post">
           <div class="form-row">
             <label for="username">Tên đăng nhập</label>
-            <input id="username" class="field" type="text" name="username" required />
+            <input
+              id="username"
+              class="field"
+              type="text"
+              name="username"
+              required
+            />
           </div>
 
           <div class="form-row">
             <label for="password">Mật khẩu</label>
-            <input id="password" class="field" type="password" name="password" required />
+            <input
+              id="password"
+              class="field"
+              type="password"
+              name="password"
+              required
+            />
           </div>
 
           <button type="submit" class="submit-btn">Đăng nhập</button>
         </form>
 
-        <p class="switch-link">Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a></p>
+        <div class="oauth-divider">
+          <span>Hoặc</span>
+        </div>
+
+        <a
+          th:href="@{/oauth2/authorization/google}"
+          class="oauth-btn google-btn"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.84 14.05c-1.1.19-1.84-.75-1.84-1.89v-3.68c0-1.45.92-2.3 2.45-2.3.6 0 1.11.12 1.54.35l-.3 1.5c-.32-.12-.7-.18-1.11-.18-.6 0-.99.38-.99 1.05v3.64c0 .76.28.95.86.95.42 0 .79-.1.99-.22l.4 1.38c-.53.33-1.33.52-2.04.52zm-4.34-6.28c0-.76.28-.95.86-.95.42 0 .79.1.99.22l.4-1.38c-.53-.33-1.33-.52-2.04-.52-1.1.19-1.84.75-1.84 1.89v3.68c0 1.45.92 2.3 2.45 2.3.6 0 1.11-.12 1.54-.35l-.3-1.5c-.32.12-.7.18-1.11.18-.6 0-.99-.38-.99-1.05v-3.52z"
+              fill="currentColor"
+            />
+          </svg>
+          Đăng nhập bằng Google
+        </a>
+
+        <p class="switch-link">
+          Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a>
+        </p>
       </section>
     </main>
   </body>
